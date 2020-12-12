@@ -8,7 +8,7 @@ class BaseCommand
 {
     public static function dir_and_file($input): array
     {
-        $controllerPath = static::controllers_path();
+        $controllerPath = Config::controllers_path();
         $path_info = pathinfo($input->getArgument("controller"));
 
         $dirname = $path_info["dirname"] == "." ? $controllerPath : $controllerPath . $path_info["dirname"];
@@ -21,45 +21,5 @@ class BaseCommand
         }
 
         return [$dirname, $filename];
-    }
-
-    public static function rootpath($file = null)
-    {
-        return dirname(dirname(__DIR__)) . "/$file";
-    }
-
-    public static function controllers_path($file = null)
-    {
-        return dirname(dirname(__DIR__)) . controllers_path($file);
-    }
-
-    public static function models_path($file = null)
-    {
-        return dirname(dirname(__DIR__)) . models_path($file);
-    }
-
-    public static function migrations_path($file = null)
-    {
-        return dirname(dirname(__DIR__)) . migrations_path($file);
-    }
-
-    public static function seeds_path($file = null)
-    {
-        return dirname(dirname(__DIR__)) . seeds_path($file);
-    }
-
-    public static function commands_path($file = null)
-    {
-        return dirname(dirname(__DIR__)) . commands_path($file);
-    }
-
-    public static function helpers_path($file = null)
-    {
-        return dirname(dirname(__DIR__)) . helpers_path($file);
-    }
-
-    public static function factories_path($file = null)
-    {
-        return dirname(dirname(__DIR__)) . factories_path($file);
     }
 }

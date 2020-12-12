@@ -1,14 +1,7 @@
 {
     "name": "leafs/aloe",
     "description": "Overpowered command line tool for your leaf apps.",
-    "keywords": [
-        "cli",
-        "rest",
-        "router",
-        "leaf",
-        "php",
-        "framework"
-    ],
+    "keywords": ["cli", "console", "cmd", "bash", "leaf", "php"],
     "homepage": "https://leafphp.netlify.app/#/",
     "type": "library",
     "license": "MIT",
