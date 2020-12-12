@@ -24,7 +24,7 @@ class GenerateModelCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $model = BaseCommand::models_path(Str::singular(Str::studly($input->getArgument("model"))) . '.php');
+        $model = Config::models_path(Str::singular(Str::studly($input->getArgument("model"))) . '.php');
 
         if (!file_exists($model)) :
             $model = $this->_createModel($input);
@@ -51,7 +51,7 @@ class GenerateModelCommand extends Command
 
         $fileContent = \file_get_contents(__DIR__ . '/stubs/model.stub');
         $fileContent = str_replace("ClassName", $className, $fileContent);
-        $filePath = BaseCommand::models_path("$model.php");
+        $filePath = Config::models_path("$model.php");
 
         if (!is_dir(dirname($filePath))) mkdir(dirname($filePath));
 
@@ -64,7 +64,7 @@ class GenerateModelCommand extends Command
     {
         $model = $input->getArgument("model");
         $filename = Str::snake(Str::plural($model));
-        $file = BaseCommand::migrations_path(date("Y_m_d_His") . "_create_$filename.php");
+        $file = Config::migrations_path(date("Y_m_d_His") . "_create_$filename.php");
 
         touch($file);
 
@@ -80,6 +80,6 @@ class GenerateModelCommand extends Command
         );
         file_put_contents($file, $fileContent);
 
-        return str_replace([BaseCommand::migrations_path(), ".php"], "", $file);
+        return str_replace([Config::migrations_path(), ".php"], "", $file);
     }
 }

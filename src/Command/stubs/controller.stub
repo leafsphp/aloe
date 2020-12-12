@@ -1,8 +1,11 @@
 <?php
+
 namespace App\Controllers;
 
-class ClassName extends \Leaf\Controller {
-    public function index() {
+class ClassName extends Controller
+{
+    public function index()
+    {
         render("ClassName");
     }
 }

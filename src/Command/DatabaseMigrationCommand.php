@@ -26,7 +26,7 @@ class DatabaseMigrationCommand extends Command
     {
         $fileToRollback = $input->getOption('file');
 
-        $migrations = glob(BaseCommand::migrations_path('*.php'));
+        $migrations = glob(Config::migrations_path('*.php'));
 
         foreach ($migrations as $migration) {
             $file = pathinfo($migration);
@@ -38,7 +38,7 @@ class DatabaseMigrationCommand extends Command
                 if ($fileToRollback) {
                     if (strpos($migration, Str::snake("_create_$fileToRollback.php")) !== false) {
                         $this->migrate($className, $filename);
-                        $output->writeln("<info>db migration on <comment>" . str_replace(BaseCommand::migrations_path(), "", $migration) . "</comment></info>");
+                        $output->writeln("<info>db migration on <comment>" . str_replace(Config::migrations_path(), "", $migration) . "</comment></info>");
 
                         if ($input->getOption("seed")) {
                             $seederClass = $this->seedTable(str_replace(
@@ -58,7 +58,7 @@ class DatabaseMigrationCommand extends Command
                     continue;
                 } else {
                     $this->migrate($className, $filename);
-                    $output->writeln("> db migration on <comment>" . str_replace(BaseCommand::migrations_path(), "", $migration) . "</comment>");
+                    $output->writeln("> db migration on <comment>" . str_replace(Config::migrations_path(), "", $migration) . "</comment>");
 
                     if ($input->getOption("seed")) {
                         $seederClass = $this->seedTable(str_replace(

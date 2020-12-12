@@ -2,33 +2,36 @@
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Aloe\Command;
+use Leaf\Str;
 use Symfony\Component\Console\Input\InputArgument;
-use Illuminate\Support\Str;
-use Aloe\Command\BaseCommand;
 
 class DeleteControllerCommand extends Command {
 
-    protected static $defaultName = "d:controller";
+    public $name = "d:controller";
+    public $description = 'Delete a controller';
+    public $help = 'Delete a controller';
 
-    protected function configure() {
-        $this
-            ->setDescription("Delete a controller")
-            ->setHelp("Delete a controller")
-            ->addArgument("controller", InputArgument::REQUIRED, "controller name");
+    public function config() {
+        $this->addArgument("controller", InputArgument::REQUIRED, "controller name");
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
-        list($dirname, $filename) = BaseCommand::dir_and_file($input);
+    public function handle()
+    {
+        $controller = Str::studly(Str::plural($this->argument("controller")));
 
-        if (!file_exists($dirname . '/' . $filename)) {
-            return $output->writeln("<error>Controller does not exist!</error>");
+        if (!strpos($controller, "Controller")) {
+            $controller .= "Controller";
         }
 
-        unlink($dirname . '/' . $filename);
+        $controllerFile = Config::controllers_path("$controller.php");
 
-        return $output->writeln("<comment>$filename controller deleted successfully</comment>");
+        if (!file_exists($controllerFile)) {
+            return $this->error("$controller doesn't exist!");
+        }
+
+        unlink($controllerFile);
+
+        $this->comment("$controller deleted successfully");
     }
 }

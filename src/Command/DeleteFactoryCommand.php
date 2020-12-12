@@ -34,7 +34,7 @@ class DeleteFactoryCommand extends Command
 
     public function dir_and_file($input): array
     {
-        $factoriesPath = BaseCommand::factories_path();
+        $factoriesPath = Config::factories_path();
 
         $path_to_factory = Str::singular($input->getArgument("factory"));
         $path_info = pathinfo($path_to_factory);

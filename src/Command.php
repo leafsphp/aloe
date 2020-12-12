@@ -2,12 +2,12 @@
 namespace Aloe;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Process\Process;
 
 abstract class Command extends SymfonyCommand
 {
@@ -292,5 +292,16 @@ abstract class Command extends SymfonyCommand
     public function link($link, $display, $options = 0)
     {
         return $this->writeln("<href=$link>$display</>", $options);
+    }
+
+    // misc features
+    
+    /**
+     * Run a new cli process
+     */
+    public function runProcess(string $process)
+    {
+        $process = new Process($process);
+        return $process->run();
     }
 }

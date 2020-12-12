@@ -3,6 +3,8 @@ namespace Aloe\Command;
 
 class Config
 {
+    public static $env = "WEB";
+
     public static function rootpath($file = null)
     {
         return dirname(dirname(dirname(dirname(dirname(__DIR__))))) . "/$file";

@@ -24,14 +24,14 @@ class GenerateHelperCommand extends Command
     {
         list($helper, $modelName) = $this->mapNames($input->getArgument("helper"));
 
-        $file = BaseCommand::helpers_path("$helper.php");
+        $file = Config::helpers_path("$helper.php");
 
         if (file_exists($file)) {
             return $output->writeln("<error>$helper already exists!</error>");
         }
 
-        if (file_exists(BaseCommand::helpers_path(".init"))) {
-            unlink(BaseCommand::helpers_path(".init"));
+        if (file_exists(Config::helpers_path(".init"))) {
+            unlink(Config::helpers_path(".init"));
         }
 
         touch($file);

@@ -9,8 +9,7 @@ class ClassName extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index() {
         /*
         |--------------------------------------------------------------------------
         |
@@ -20,14 +19,6 @@ class ClassName extends Controller
         |
         */
         // respond(ModelName::all());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -51,14 +42,6 @@ class ClassName extends Controller
      * Display the specified resource.
      */
     public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
     {
         //
     }

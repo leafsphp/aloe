@@ -21,12 +21,12 @@ class DatabaseSeedCommand extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!file_exists(BaseCommand::seeds_path("DatabaseSeeder.php"))) {
+        if (!file_exists(Config::seeds_path("DatabaseSeeder.php"))) {
             return $output->writeln("<error>DatabaseSeeder not found! Refer to the docs.</error>");
         }
 
         $seeder = new \App\Database\Seeds\DatabaseSeeder;
-        $seeds = glob(BaseCommand::seeds_path("*.php"));
+        $seeds = glob(Config::seeds_path("*.php"));
 
         if (count($seeds) === 1) {
             return $output->writeln("<error>No seeds found! Create one with the g:seed command.</error>");

@@ -34,7 +34,7 @@ class DeleteSeedCommand extends Command
 
     public function dir_and_file($input): array
     {
-        $seedsPath = BaseCommand::seeds_path();
+        $seedsPath = Config::seeds_path();
 
         $path_to_seed = ($input->getArgument("seed"));
         $path_info = pathinfo($path_to_seed);

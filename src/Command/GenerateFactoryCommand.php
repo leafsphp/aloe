@@ -2,37 +2,34 @@
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Aloe\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Support\Str;
 
 class GenerateFactoryCommand extends Command
 {
-    protected static $defaultName = 'g:factory';
+    public $name = 'g:factory';
+    public $description = 'Create a new model factory';
+    public $help = 'Create a new model factory';
 
-    protected function configure()
+    public function config()
     {
-        $this 
-            ->setDescription("Create a new model factory")
-            ->setHelp("Create a new model factory")
-            ->addArgument("factory", InputArgument::REQUIRED, "factory name");
+        $this->addArgument("factory", InputArgument::REQUIRED, "factory name");
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
-        $factory = Str::studly(Str::singular($input->getArgument("factory")));
+        $factory = Str::studly(Str::singular($this->argument("factory")));
         $modelName = $factory;
         
         if (!strpos($factory, "Factory")) {
             $factory .= "Factory";
         }
 
-        $file = BaseCommand::factories_path("$factory.php");
+        $file = Config::factories_path("$factory.php");
 
         if (file_exists($file)) {
-            return $output->writeln("<error>$factory already exists</error>");
+            return $this->error("$factory already exists");
         }
 
         touch($file);
@@ -45,6 +42,6 @@ class GenerateFactoryCommand extends Command
         );
         file_put_contents($file, $fileContent);
 
-        $output->writeln("<comment>$factory generated successfully</comment>");
+        $this->comment("$factory generated successfully");
     }
 }

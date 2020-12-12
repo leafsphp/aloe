@@ -2,68 +2,84 @@
 
 namespace Aloe\Command;
 
-use InvalidArgumentException;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Aloe\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Support\Str;
-use Aloe\Command\BaseCommand;
 
 class GenerateControllerCommand extends Command
 {
-    protected static $defaultName = 'g:controller';
+    public $name = 'g:controller';
+    public $description = 'Create a new controller class';
+    public $help = 'Create a new controller class';
 
-    protected function configure()
+    public function config()
     {
         $this
-            ->setDescription("Create a new controller class")
-            ->setHelp("Create a new controller class")
             ->addArgument("controller", InputArgument::REQUIRED, 'controller name')
             ->addOption("all", "a", InputOption::VALUE_NONE, 'Create a model and migration for controller')
             ->addOption("model", "m", InputOption::VALUE_NONE, 'Create a model for controller')
             ->addOption("resource", "r", InputOption::VALUE_NONE, 'Create a resource controller')
-            ->addOption("web", "w", InputOption::VALUE_NONE, 'Create a web(ordinary) controller');
+            ->addOption("api-resource", "ar", InputOption::VALUE_NONE, 'Create an API resource controller')
+            ->addOption("web", "w", InputOption::VALUE_NONE, 'Create a web(ordinary) controller')
+            ->addOption("api", null, InputOption::VALUE_NONE, 'Create a web(ordinary) controller');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
-        list($dirname, $filename) = BaseCommand::dir_and_file($input);
+        $controller = Str::studly(Str::plural($this->argument("controller")));
 
-        if (file_exists($dirname . '/' . $filename)) {
-            return $output->writeln("<error>" . str_replace(".php", "", $filename) . " already exists</error>");
+        if (!strpos($controller, "Controller")) {
+            $controller .= "Controller";
         }
 
-        $file = $dirname . '/' . $filename;
-        $controller = str_replace(".php", "", $filename);
-        touch($file);
+        $controllerFile = Config::controllers_path("$controller.php");
+        $modelName = Str::singular(Str::studly(
+            str_replace("Controller", "", $this->argument("controller"))
+        ));
 
-        if (!$input->getOption('web')) {
-            if (!$input->getOption('resource')) {
-                $fileContent = file_get_contents(__DIR__ . '/stubs/apiController.stub');
-            } else {
-                $fileContent = file_get_contents(__DIR__ . '/stubs/resourceController.stub');
-                $fileContent = str_replace(["ModelName"], [Str::singular(Str::studly(str_replace("Controller", "", $controller)))], $fileContent);
-            }
-        } else {
-            $fileContent = file_get_contents(__DIR__ . '/stubs/controller.stub');
+        if (file_exists($controllerFile)) {
+            return $this->error("$controller already exists");
         }
 
-        if ($input->getOption('all')) {
-            $process = new Process("php leaf g:model " . Str::studly(str_replace("Controller", "", $controller)) . " -m");
-            $process->run();
-            $output->writeln(Str::singular(Str::studly(str_replace("Controller", "", $controller))) . " model generated successfully with migration");
-        } elseif ($input->getOption('model')) {
-            $process = new Process("php leaf g:model " . Str::studly(str_replace("Controller", "", $controller)));
-            $process->run();
-            $output->writeln(Str::singular(Str::studly(str_replace("Controller", "", $controller))) . " model generated successfully");
+        touch($controllerFile);
+
+        $stub = Config::$env === "WEB" ? "controller" : "apiController";
+
+        if ($this->option("resource")) {
+            $stub = "resourceController";
+        } else if ($this->option("api-resource")) {
+            $stub = "apiResourceController";
+        } else if ($this->option("web")) {
+            $stub = "controller";
+        } else if ($this->option("api")) {
+            $stub = "apiController";
         }
 
-        $fileContent = str_replace(["ClassName"], [$controller], $fileContent);
-        file_put_contents($file, $fileContent);
+        $fileContent = file_get_contents(__DIR__ . "/stubs/$stub.stub");
+        $fileContent = str_replace(
+            ["ClassName", "ModelName"],
+            [$controller, $modelName],
+            $fileContent
+        );
+        file_put_contents($controllerFile, $fileContent);
 
-        return $output->writeln("<comment>$controller created successfully<comment>");
+        $this->comment("$controller created successfully");
+
+        if ($this->option("all")) {
+            $process = $this->runProcess("php aloe g:model $modelName -m");
+            $this->comment(
+                $process === 0 ?
+                    "Model & Migration generated successfully!" :
+                    asError("Couldn't generate files")
+            );
+        } else if ($this->option("model")) {
+            $process = $this->runProcess("php aloe g:model $modelName");
+            $this->comment(
+                $process === 0 ?
+                    "Model generated successfully!" :
+                    asError("Couldn't generate model")
+            );
+        }
     }
 }

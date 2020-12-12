@@ -36,7 +36,7 @@ class DeleteModelCommand extends Command
 
     public function dir_and_file($input): array
     {
-        $modelPath = BaseCommand::models_path();
+        $modelPath = Config::models_path();
 
         $path_to_model = ($input->getArgument("model"));
         $path_info = pathinfo($path_to_model);

@@ -24,14 +24,14 @@ class GenerateConsoleCommand extends Command
     {
         list($commandName, $className) = $this->mapNames($input->getArgument("consoleCommand"));
 
-        $file = BaseCommand::commands_path("$className.php");
+        $file = Config::commands_path("$className.php");
 
         if (file_exists($file)) {
             return $output->writeln("<error>$className already exists!</error>");
         }
 
-        if (file_exists(BaseCommand::commands_path(".init"))) {
-            unlink(BaseCommand::commands_path(".init"));
+        if (file_exists(Config::commands_path(".init"))) {
+            unlink(Config::commands_path(".init"));
         }
 
         touch($file);

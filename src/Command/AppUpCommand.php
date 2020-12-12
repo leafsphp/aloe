@@ -10,7 +10,7 @@ class AppUpCommand extends \Aloe\Command
 
     public function handle()
     {
-        $env = BaseCommand::rootpath(".env");
+        $env = Config::rootpath(".env");
         $envContent = file_get_contents($env);
         $envContent = str_replace(
             'APP_DOWN=true',
@@ -19,7 +19,7 @@ class AppUpCommand extends \Aloe\Command
         );
         file_put_contents($env, $envContent);
 
-        $index = BaseCommand::rootpath("index.php");
+        $index = Config::rootpath("index.php");
         $indexContent = file_get_contents($index);
         $indexContent = str_replace(
             ['(["mode" => "down"])', '["mode" => "down"]'],
