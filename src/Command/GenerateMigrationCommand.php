@@ -2,28 +2,23 @@
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
+use Aloe\Command;
 use Illuminate\Support\Str;
 
 class GenerateMigrationCommand extends Command
 {
-    // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'g:migration';
+    public $name = "g:migration";
+    public $description = "Create a new migration file";
+    public $help = "Create a new migration file";
 
-    protected function configure()
+    public function config()
     {
-        $this 
-            ->setDescription("Create a new migration file")
-            ->setHelp("Create a new migration file")
-            ->addArgument("migration", InputArgument::REQUIRED, "migration file name");
+        $this->setArgument("migration", "required", "migration file name");
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
-        $userInput = strtolower(Str::snake(Str::plural($input->getArgument("migration"))));
+        $userInput = strtolower(Str::snake(Str::plural($this->argument("migration"))));
 
         if (strpos($userInput, "create") === false) {
             $userInput = Str::snake("create_$userInput");
@@ -41,6 +36,6 @@ class GenerateMigrationCommand extends Command
         
         file_put_contents($file, $fileContent);
 
-        $output->writeln("<info><comment>$actualFileName</comment> generated successfully</info>");
+        $this->info(asComment($actualFileName) . " generated successfully");
     }
 }

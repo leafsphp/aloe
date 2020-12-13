@@ -2,67 +2,50 @@
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
+use Aloe\Command;
 use Illuminate\Support\Str;
 
 class DeleteConsoleCommand extends Command
 {
+    public $name = "d:command";
+    public $description = "Delete a console command";
+    public $help = "Delete a console command";
 
-    protected static $defaultName = "d:command";
-
-    protected function configure()
+    public function config()
     {
-        $this
-            ->setDescription("Delete a console command")
-            ->setHelp("Delete a console command")
-            ->addArgument("file", InputArgument::REQUIRED, "The name of the console file");
+        $this->setArgument("file", "required", "The name of the console file");
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
-        list($dirname, $filename, $className) = $this->dir_and_file($input);
+        $command = Str::studly($this->argument("file"));
 
-        if (file_exists($dirname . $filename)) :
-            unlink($dirname . $filename);
-            $output->writeln("<comment>$filename deleted successfully</comment>");
-
-            $leafFile = dirname(dirname(__DIR__)) . "/leaf";
-            $leafFileContents = file_get_contents($leafFile);
-            $leafFileContents = str_replace(
-                [
-                    "\$console->registerCustom(\App\Console\\$className::class);",
-                    "\$console = new \Config\Console;
-
-"
-                ],
-                ["", "\$console = new \Config\Console;"],
-                $leafFileContents
-            );
-            \file_put_contents($leafFile, $leafFileContents);
-            
-            $output->writeln("<comment>$className command unregistered!</comment>");
-        else :
-            $output->writeln("<error>Command does not exist!</error>");
-        endif;
-    }
-
-    public function dir_and_file($input): array
-    {
-        $commandsPath = Config::commands_path();
-
-        $path_to_seed = ($input->getArgument("file"));
-        $path_info = pathinfo($path_to_seed);
-
-        $dirname = $path_info["dirname"] == "." ? $commandsPath : $commandsPath . $path_info["dirname"];
-        $filename = Str::studly($path_info['filename']);
-
-        if (!strpos($filename, "Command")) {
-            $filename .= "Command";
+        if (!strpos($command, "Command")) {
+            $command .= "Command";
         }
 
-        return [$dirname, "$filename.php", $filename];
+        $file = Config::commands_path("$command.php");
+
+        if (!file_exists($file)) {
+            return $this->error("$command doesn't exist!");
+        }
+
+        if (!unlink($file)) {
+            return $this->error("Couldn't delete $command, you might need to remove it manually.");
+        }
+
+        $this->comment("$command deleted successfully");
+
+        $aloe = Config::rootpath("aloe");
+        $aloeContents = file_get_contents($aloe);
+        $aloeContents = str_replace(
+            "\$console->register(\App\Console\\$command::class);
+",
+            "",
+            $aloeContents
+        );
+        \file_put_contents($aloe, $aloeContents);
+
+        $this->comment("$command command unregistered");
     }
 }

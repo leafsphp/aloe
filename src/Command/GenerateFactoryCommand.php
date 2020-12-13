@@ -3,7 +3,6 @@
 namespace Aloe\Command;
 
 use Aloe\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Support\Str;
 
 class GenerateFactoryCommand extends Command
@@ -14,17 +13,18 @@ class GenerateFactoryCommand extends Command
 
     public function config()
     {
-        $this->addArgument("factory", InputArgument::REQUIRED, "factory name");
+        $this->setArgument("factory", "required", "factory name");
     }
 
     public function handle()
     {
         $factory = Str::studly(Str::singular($this->argument("factory")));
-        $modelName = $factory;
         
         if (!strpos($factory, "Factory")) {
             $factory .= "Factory";
         }
+
+        $modelName = str_replace("Factory", "", $factory);
 
         $file = Config::factories_path("$factory.php");
 

@@ -3,8 +3,6 @@
 namespace Aloe\Command;
 
 use Aloe\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Support\Str;
 
 class GenerateControllerCommand extends Command
@@ -16,20 +14,21 @@ class GenerateControllerCommand extends Command
     public function config()
     {
         $this
-            ->addArgument("controller", InputArgument::REQUIRED, 'controller name')
-            ->addOption("all", "a", InputOption::VALUE_NONE, 'Create a model and migration for controller')
-            ->addOption("model", "m", InputOption::VALUE_NONE, 'Create a model for controller')
-            ->addOption("resource", "r", InputOption::VALUE_NONE, 'Create a resource controller')
-            ->addOption("api-resource", "ar", InputOption::VALUE_NONE, 'Create an API resource controller')
-            ->addOption("web", "w", InputOption::VALUE_NONE, 'Create a web(ordinary) controller')
-            ->addOption("api", null, InputOption::VALUE_NONE, 'Create a web(ordinary) controller');
+            ->setArgument("controller", "required", 'controller name')
+            ->setOption("all", "a", "none", 'Create a model and migration for controller')
+            ->setOption("model", "m", "none", 'Create a model for controller')
+            ->setOption("resource", "r", "none", 'Create a resource controller')
+            ->setOption("api-resource", "ar", "none", 'Create an API resource controller')
+            ->setOption("web", "w", "none", 'Create a web(ordinary) controller')
+            ->setOption("api", null, "none", 'Create a web(ordinary) controller');
     }
 
     public function handle()
     {
-        $controller = Str::studly(Str::plural($this->argument("controller")));
+        $controller = Str::studly($this->argument("controller"));
 
         if (!strpos($controller, "Controller")) {
+            $controller = str::plural($controller);
             $controller .= "Controller";
         }
 

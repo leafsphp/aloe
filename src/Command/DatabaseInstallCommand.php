@@ -1,7 +1,8 @@
 <?php
 namespace Aloe\Command;
 
-class DatabaseInstallCommand extends \Aloe\Command
+use \Aloe\Command;
+class DatabaseInstallCommand extends Command
 {
     public $name = "db:install";
     public $description = "Create new database from .env variables";

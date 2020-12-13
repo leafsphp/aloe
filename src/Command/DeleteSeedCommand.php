@@ -2,52 +2,39 @@
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
+use Aloe\Command;
 use Illuminate\Support\Str;
 
 class DeleteSeedCommand extends Command
 {
-    protected static $defaultName = "d:seed";
+    public $name = "d:seed";
+    public $description = "Delete a model seeder";
+    public $help = "Delete a model seeder";
 
-    protected function configure()
+    public function config()
     {
-        $this
-            ->setDescription("Delete a model seeder")
-            ->setHelp("Delete a model seeder")
-            ->addArgument("seed", InputArgument::REQUIRED, "seeder name");
+        $this->setArgument("seed", "required", "seeder name");
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
-        list($dirname, $filename) = $this->dir_and_file($input);
+        $seeder = Str::studly($this->argument("seed"));
 
-        if (file_exists($dirname . $filename)) :
-            unlink($dirname . $filename);
-            $output->writeln("<comment>$filename deleted successfully</comment>");
-        else :
-            $output->writeln("<error>Seeder does not exist!</error>");
-        endif;
-    }
-
-    public function dir_and_file($input): array
-    {
-        $seedsPath = Config::seeds_path();
-
-        $path_to_seed = ($input->getArgument("seed"));
-        $path_info = pathinfo($path_to_seed);
-
-        $dirname = $path_info["dirname"] == "." ? $seedsPath : $seedsPath . $path_info["dirname"];
-        $filename = Str::studly($path_info['filename']);
-
-        if (!strpos($filename, "Seeder")) {
-            $filename .= "Seeder";
+        if (!strpos($seeder, "Seeder")) {
+            $seeder = str::plural($seeder);
+            $seeder .= "Seeder";
         }
 
-        $filename .= ".php";
+        $seederFile = Config::seeds_path("$seeder.php");
 
-        return [$dirname, $filename];
+        if (!file_exists($seederFile)) {
+            return $this->error("$seeder doesn't exist!");
+        }
+
+        if (!unlink($seederFile)) {
+            return $this->error("Couldn't delete $seeder, you might need to remove it manually.");
+        }
+
+        $this->comment("$seeder deleted successfully");
     }
 }

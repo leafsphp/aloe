@@ -2,32 +2,28 @@
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
+use Aloe\Command;
 use Illuminate\Support\Str;
 
 class GenerateHelperCommand extends Command
 {
-    protected static $defaultName = 'g:helper';
+    public $name = "g:helper";
+    public $description = "Create a new helper class";
+    public $help = "Create a new helper class";
 
-    protected function configure()
+    public function config()
     {
-        $this 
-            ->setDescription("Create a new helper class")
-            ->setHelp("Create a new helper class")
-            ->addArgument("helper", InputArgument::REQUIRED, 'helper name');
+        $this->setArgument("helper", "required", 'helper name');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
-        list($helper, $modelName) = $this->mapNames($input->getArgument("helper"));
+        list($helper, $modelName) = $this->mapNames($this->argument("helper"));
 
         $file = Config::helpers_path("$helper.php");
 
         if (file_exists($file)) {
-            return $output->writeln("<error>$helper already exists!</error>");
+            return $this->error("$helper already exists!");
         }
 
         if (file_exists(Config::helpers_path(".init"))) {
@@ -40,10 +36,10 @@ class GenerateHelperCommand extends Command
         $fileContent = str_replace(['ClassName', 'ModelName'], [$helper, $modelName], $fileContent);
         \file_put_contents($file, $fileContent);
 
-        return $output->writeln("<comment>$helper generated successfully</comment>");
+        return $this->comment("$helper generated successfully");
     }
 
-    protected function mapNames($helperName)
+    public function mapNames($helperName)
     {
         $modelName = $helperName;
 

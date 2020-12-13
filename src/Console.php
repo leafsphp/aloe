@@ -11,7 +11,7 @@ class Console
 
     public function __construct($app = "Aloe CLI", $version = "v1.0")
     {
-        $this->app = new Application($app, $version);    
+        $this->app = new Application(asComment($app), $version);    
         $this->load();
     }
 

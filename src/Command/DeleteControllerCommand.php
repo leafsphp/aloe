@@ -4,23 +4,24 @@ namespace Aloe\Command;
 
 use Aloe\Command;
 use Leaf\Str;
-use Symfony\Component\Console\Input\InputArgument;
 
-class DeleteControllerCommand extends Command {
-
+class DeleteControllerCommand extends Command
+{
     public $name = "d:controller";
     public $description = 'Delete a controller';
     public $help = 'Delete a controller';
 
-    public function config() {
-        $this->addArgument("controller", InputArgument::REQUIRED, "controller name");
+    public function config()
+    {
+        $this->setArgument("controller", "required", "controller name");
     }
 
     public function handle()
     {
-        $controller = Str::studly(Str::plural($this->argument("controller")));
+        $controller = Str::studly($this->argument("controller"));
 
         if (!strpos($controller, "Controller")) {
+            $controller = str::plural($controller);
             $controller .= "Controller";
         }
 
@@ -30,7 +31,9 @@ class DeleteControllerCommand extends Command {
             return $this->error("$controller doesn't exist!");
         }
 
-        unlink($controllerFile);
+        if (!unlink($controllerFile)) {
+            return $this->error("Couldn't delete $controller, you might need to remove it manually.");
+        }
 
         $this->comment("$controller deleted successfully");
     }

@@ -2,46 +2,49 @@
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
+use Aloe\Command;
 use Illuminate\Support\Str;
 
 class GenerateModelCommand extends Command
 {
-    protected static $defaultName = 'g:model';
+    public $name = "g:model";
+    public $description = "Create a new model class";
+    public $help = "Create a new model class";
 
-    protected function configure()
+    public function config()
     {
         $this
-            ->setDescription("Create a new model class")
-            ->setHelp("Create a new model class")
-            ->addArgument('model', InputArgument::REQUIRED, 'model file name')
-            ->addOption("migration", "m", InputOption::VALUE_NONE, 'Create a migration for model');
+            ->addArgument('model', "required", 'model file name')
+            ->addOption("migration", "m", "none", 'Create a migration for model');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
-        $model = Config::models_path(Str::singular(Str::studly($input->getArgument("model"))) . '.php');
+        $model = Str::singular(Str::studly($this->argument("model")));
+        $file = Config::models_path("$model.php");
 
-        if (!file_exists($model)) :
-            $model = $this->_createModel($input);
-            $output->writeln("<info><comment>$model</comment> model generated</info>");
+        if (!file_exists($model)) {
+            return $this->error("Model already exists");
+        }
 
-            if ($input->getOption('migration')) :
-                $migration = $this->_createMigration($input);
-                $output->writeln("<info><comment>$migration</comment> migration generated</info>");
-            endif;
-        else :
-            $output->writeln("<error>Model already exists</error>");
-        endif;
+        $model = $this->createModel();
+        $this->info(asComment($model) . " model generated");
+
+        if ($this->option('migration')) {
+            $migration = Str::snake(Str::plural($model));
+            $process = $this->runProcess("php aloe g:model $migration");
+
+            $this->info(
+                $process === 0 ?
+                    asComment($migration) . " migration generated" :
+                    asError("Couldn't generate migration")
+            );
+        }
     }
 
-    public function _createModel($input): String
+    public function createModel(): String
     {
-        $model = Str::singular(Str::studly($input->getArgument("model")));
+        $model = Str::singular(Str::studly($this->argument("model")));
 
         $className = $model;
 
@@ -58,28 +61,5 @@ class GenerateModelCommand extends Command
         file_put_contents($filePath, $fileContent);
 
         return $model;
-    }
-
-    public function _createMigration($input)
-    {
-        $model = $input->getArgument("model");
-        $filename = Str::snake(Str::plural($model));
-        $file = Config::migrations_path(date("Y_m_d_His") . "_create_$filename.php");
-
-        touch($file);
-
-        $className = 'Create' . Str::studly($filename);
-        $tableName = \strtolower(Str::plural($model));
-
-        $fileContent = \file_get_contents(__DIR__ . '/stubs/migration.stub');
-
-        $fileContent = str_replace(
-            ["ClassName", "tableName"],
-            [$className, Str::snake(Str::plural($model))],
-            $fileContent
-        );
-        file_put_contents($file, $fileContent);
-
-        return str_replace([Config::migrations_path(), ".php"], "", $file);
     }
 }

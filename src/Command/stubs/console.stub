@@ -2,27 +2,26 @@
 
 namespace App\Console;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Aloe\Command;
 
 class ClassName extends Command
 {
-    protected static $defaultName = "CommandName";
+    public $name = "CommandName";
+    public $description = "CommandName command's description";
+    public $help = "CommandName command's help";
 
-    public function __construct(){
-        parent::__construct();
+    public function config()
+    {
+        // you can add arguments and options in the config method
+        $this
+            ->setArgument("argument", "required", "argument description")
+            ->setOption("option", "o", "required", "option description");
     }
 
-    protected function configure()
+    public function handle()
     {
-        $this 
-            ->setDescription("CommandName command")
-            ->setHelp("CommandName's help");
-    }
-
-    public function execute(InputInterface $input, OutputInterface $output)
-    {
-        $output->writeln("CommandName's output");
+        $this->comment(
+            "CommandName command's output {$this->argument('argument')} {$this->option('option')}"
+        );
     }
 }

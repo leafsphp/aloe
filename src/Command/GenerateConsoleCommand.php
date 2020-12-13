@@ -2,32 +2,28 @@
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
+use Aloe\Command;
 use Illuminate\Support\Str;
 
 class GenerateConsoleCommand extends Command
 {
-    protected static $defaultName = 'g:command';
+    public $name = "g:command";
+    public $description = "Create a new console command";
+    public $help = "Create a custom aloe cli command";
 
-    protected function configure()
+    public function config()
     {
-        $this 
-            ->setDescription("Create a new console command")
-            ->setHelp("Create a new leaf console command")
-            ->addArgument("consoleCommand", InputArgument::REQUIRED, 'command name');
+        $this->setArgument("consoleCommand", "required", 'command name');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
-        list($commandName, $className) = $this->mapNames($input->getArgument("consoleCommand"));
+        list($commandName, $className) = $this->mapNames($this->argument("consoleCommand"));
 
         $file = Config::commands_path("$className.php");
 
         if (file_exists($file)) {
-            return $output->writeln("<error>$className already exists!</error>");
+            return $this->error("$className already exists!");
         }
 
         if (file_exists(Config::commands_path(".init"))) {
@@ -40,21 +36,22 @@ class GenerateConsoleCommand extends Command
         $fileContent = str_replace(['ClassName', 'CommandName'], [$className, $commandName], $fileContent);
         \file_put_contents($file, $fileContent);
 
-        $leafFile = dirname(dirname(__DIR__)) . "/leaf";
-        $leafFileContents = file_get_contents($leafFile);
-        $leafFileContents = str_replace(
-            "\$console = new \Config\Console;",
-            "\$console = new \Config\Console;
+        $this->comment("$className generated successfully");
 
-\$console->registerCustom(\App\Console\\$className::class);",
-            $leafFileContents
+        $aloe = Config::rootpath("aloe");
+        $aloeContents = file_get_contents($aloe);
+        $aloeContents = str_replace(
+            "\$console->register(",
+            "\$console->register(\App\Console\\$className::class);
+\$console->register(",
+            $aloeContents
         );
-        \file_put_contents($leafFile, $leafFileContents);
+        \file_put_contents($aloe, $aloeContents);
 
-        $output->writeln("<comment>$className generated successfully</comment>");
+        $this->comment("$className registered successfully");
     }
 
-    protected function mapNames($command)
+    public function mapNames($command)
     {
         $className = $command;
 

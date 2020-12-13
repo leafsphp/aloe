@@ -1,4 +1,5 @@
 <?php
+
 if (!function_exists('asQuestion')) {
     /**
      * Apply CLI question styles to text

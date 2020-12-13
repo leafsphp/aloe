@@ -7,7 +7,8 @@ class Config
 
     public static function rootpath($file = null)
     {
-        return dirname(dirname(dirname(dirname(dirname(__DIR__))))) . "/$file";
+        $path = dirname(dirname(dirname(dirname(dirname(__DIR__))))) . "/$file";
+        return str_replace("//", "/", $path);
     }
 
     public static function controllers_path($file = null)

@@ -2,30 +2,25 @@
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
+use Aloe\Command;
 use Illuminate\Support\Str;
 
 class DatabaseMigrationCommand extends Command
 {
-    protected static $defaultName = "db:migrate";
+    public $name = "db:migrate";
+    public $description = "Run the database migrations";
+    public $help = "Run the migrations defined in the migrations directory\n";
 
-    protected function configure()
+    public function config()
     {
-        $this
-            ->setDescription("Run the database migrations")
-            ->setHelp("Run the migrations defined in the migrations directory\n")
-            ->addOption('file', 'f', InputOption::VALUE_OPTIONAL, 'Rollback a particular file')
-            ->addOption('seed', 's', InputOption::VALUE_NONE, 'Run seeds after migration');
+        $this->setOption('file', 'f', "optional", 'Rollback a particular file');
+        $this->setOption('seed', 's', "none", 'Run seeds after migration');
     }
 
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
-        $fileToRollback = $input->getOption('file');
-
+        $fileToRollback = $this->option('file');
         $migrations = glob(Config::migrations_path('*.php'));
 
         foreach ($migrations as $migration) {
@@ -38,9 +33,9 @@ class DatabaseMigrationCommand extends Command
                 if ($fileToRollback) {
                     if (strpos($migration, Str::snake("_create_$fileToRollback.php")) !== false) {
                         $this->migrate($className, $filename);
-                        $output->writeln("<info>db migration on <comment>" . str_replace(Config::migrations_path(), "", $migration) . "</comment></info>");
+                        $this->info("db migration on " . asComment(str_replace(Config::migrations_path(), "", $migration)));
 
-                        if ($input->getOption("seed")) {
+                        if ($this->option("seed")) {
                             $seederClass = $this->seedTable(str_replace(
                                 ["Create"],
                                 "",
@@ -48,19 +43,19 @@ class DatabaseMigrationCommand extends Command
                             ));
 
                             if ($seederClass) {
-                                $output->writeln("<comment>$seederClass</comment> seeded successfully!");
+                                $this->writeln(asComment($seederClass) . " seeded successfully!");
                             }
                         }
                         
-                        return $output->writeln("<info>Database migration completed!</info>\n");
+                        return $this->info("Database migration completed!\n");
                     }
 
                     continue;
                 } else {
                     $this->migrate($className, $filename);
-                    $output->writeln("> db migration on <comment>" . str_replace(Config::migrations_path(), "", $migration) . "</comment>");
+                    $this->writeln("> db migration on " . asComment(str_replace(Config::migrations_path(), "", $migration)));
 
-                    if ($input->getOption("seed")) {
+                    if ($this->option("seed")) {
                         $seederClass = $this->seedTable(str_replace(
                             "Create",
                             "",
@@ -68,14 +63,14 @@ class DatabaseMigrationCommand extends Command
                         ));
 
                         if ($seederClass) {
-                            $output->writeln("<comment>$seederClass</comment> seeded successfully!");
+                            $this->writeln(asComment($seederClass) . " seeded successfully!");
                         }
                     }
                 }
             endif;
         }
 
-        $output->writeln("<info>Database migration completed!</info>\n");
+        $this->info("Database migration completed!\n");
     }
 
     protected function migrate($className, $filename)

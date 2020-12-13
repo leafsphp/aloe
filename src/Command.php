@@ -4,6 +4,8 @@ namespace Aloe;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -111,6 +113,26 @@ abstract class Command extends SymfonyCommand
     }
 
     /**
+     * Add a new argument
+     */
+    public function setArgument($name, $mode =null, $description = "")
+    {
+        if (strtoupper($mode) === "OPTIONAL") {
+            $mode = InputArgument::OPTIONAL;
+        }
+
+        if (strtoupper($mode) === "REQUIRED") {
+            $mode = InputArgument::REQUIRED;
+        }
+
+        if (strtoupper($mode) === "IS_ARRAY") {
+            $mode = InputArgument::IS_ARRAY;
+        }
+
+        return $this->addArgument($name, $mode, $description);
+    }
+
+    /**
      * Get an input argument
      */
     public function argument(string $name)
@@ -124,6 +146,30 @@ abstract class Command extends SymfonyCommand
     public function arguments()
     {
         return $this->input->getArguments();
+    }
+
+    /**
+     * Add a new option
+     */
+    public function setOption($name, $shortcut = null, $mode = null, $description = "", $default = null)
+    {
+        if (strtoupper($mode) === "OPTIONAL") {
+            $mode = InputOption::VALUE_OPTIONAL;
+        }
+
+        if (strtoupper($mode) === "REQUIRED") {
+            $mode = InputOption::VALUE_REQUIRED;
+        }
+
+        if (strtoupper($mode) === "NONE") {
+            $mode = InputOption::VALUE_NONE;
+        }
+
+        if (strtoupper($mode) === "IS_ARRAY") {
+            $mode = InputOption::VALUE_IS_ARRAY;
+        }
+
+        return $this->addOption($name, $shortcut, $mode, $description, $default);
     }
 
     /**
@@ -174,7 +220,7 @@ abstract class Command extends SymfonyCommand
         $helper = $this->getHelper("question");
         $question = new Question("$question ");
 
-        $question->setMultiline(true);
+        // $question->setMultiline(true);
 
         return $helper->ask($this->input, $this->output, $question);
     }

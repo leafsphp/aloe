@@ -2,45 +2,36 @@
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Illuminate\Support\Str;
+use Aloe\Command;
 
-class DatabaseSeedCommand extends Command {
+class DatabaseSeedCommand extends Command
+{
+    public $name = "db:seed";
+    public $description = "Seed the database with records";
+    public $help = "Seed the database with records";
 
-    protected static $defaultName = "db:seed";
-
-    protected function configure()
-    {
-        $this
-            ->setDescription("Seed the database with records")
-            ->setHelp("Seed the database with records");
-    }
-
-
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
         if (!file_exists(Config::seeds_path("DatabaseSeeder.php"))) {
-            return $output->writeln("<error>DatabaseSeeder not found! Refer to the docs.</error>");
+            return $this->error("DatabaseSeeder not found! Refer to the docs.");
         }
 
         $seeder = new \App\Database\Seeds\DatabaseSeeder;
         $seeds = glob(Config::seeds_path("*.php"));
 
         if (count($seeds) === 1) {
-            return $output->writeln("<error>No seeds found! Create one with the g:seed command.</error>");
+            return $this->error("No seeds found! Create one with the g:seed command.");
         }
 
         if (count($seeder->run()) === 0) {
-            return $output->writeln("<error>No seeds registered. Add your seeds in DatabaseSeeder.php</error>");
+            return $this->error("No seeds registered. Add your seeds in DatabaseSeeder.php");
         }
 
         foreach ($seeder->run() as $seed) {
             $seeder->call($seed);
-            $output->writeln("> <comment>$seed</comment> seeded successfully");
+            $this->writeln("> " . asComment($seed) . " seeded successfully");
         }
 
-        $output->writeln("<info>Database seed complete</info>");
+        $this->info("Database seed complete");
     }
 }
