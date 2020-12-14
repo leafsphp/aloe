@@ -4,7 +4,7 @@ namespace App\Database\Factories;
 
 // model to be used in factory
 use App\Models\ModelName;
-use Illuminate\Support\Str;
+use Leaf\Str;
 
 class ClassName extends Factory
 {

@@ -23,5 +23,8 @@
         "psy/psysh": "^0.9.9",
         "symfony/console": "^4.3.4",
         "vlucas/phpdotenv": "^3.6"
+    },
+    "require-dev": {
+        "leafs/leaf": "^2.4.0-beta"
     }
 }

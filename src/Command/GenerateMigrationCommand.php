@@ -3,7 +3,7 @@
 namespace Aloe\Command;
 
 use Aloe\Command;
-use Illuminate\Support\Str;
+use Leaf\Str;
 
 class GenerateMigrationCommand extends Command
 {
