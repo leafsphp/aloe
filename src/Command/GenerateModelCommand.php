@@ -14,25 +14,37 @@ class GenerateModelCommand extends Command
     public function config()
     {
         $this
-            ->addArgument('model', "required", 'model file name')
-            ->addOption("migration", "m", "none", 'Create a migration for model');
+            ->setArgument('model', "required", 'model file name')
+            ->setOption("migration", "m", "none", 'Create a migration for model');
     }
 
     public function handle()
     {
         $model = Str::singular(Str::studly($this->argument("model")));
+        $className = $model;
+
+        if (strpos($model, "/") && strpos($model, "/") !== 0) {
+            list($dirname, $className) = explode("/", $model);
+        }
+
         $file = Config::models_path("$model.php");
 
-        if (!file_exists($model)) {
+        if (file_exists($file)) {
             return $this->error("Model already exists");
         }
 
-        $model = $this->createModel();
+        $fileContent = \file_get_contents(__DIR__ . '/stubs/model.stub');
+        $fileContent = str_replace("ClassName", $className, $fileContent);
+
+        if (!is_dir(dirname($file))) mkdir(dirname($file));
+
+        file_put_contents($file, $fileContent);
+
         $this->info(asComment($model) . " model generated");
 
         if ($this->option('migration')) {
             $migration = Str::snake(Str::plural($model));
-            $process = $this->runProcess("php aloe g:model $migration");
+            $process = $this->runProcess("php aloe g:migration $migration");
 
             $this->info(
                 $process === 0 ?
@@ -40,26 +52,5 @@ class GenerateModelCommand extends Command
                     asError("Couldn't generate migration")
             );
         }
-    }
-
-    public function createModel(): String
-    {
-        $model = Str::singular(Str::studly($this->argument("model")));
-
-        $className = $model;
-
-        if (strpos($model, "/") && strpos($model, "/") !== 0) {
-            list($dirname, $className) = explode("/", $model);
-        }
-
-        $fileContent = \file_get_contents(__DIR__ . '/stubs/model.stub');
-        $fileContent = str_replace("ClassName", $className, $fileContent);
-        $filePath = Config::models_path("$model.php");
-
-        if (!is_dir(dirname($filePath))) mkdir(dirname($filePath));
-
-        file_put_contents($filePath, $fileContent);
-
-        return $model;
     }
 }

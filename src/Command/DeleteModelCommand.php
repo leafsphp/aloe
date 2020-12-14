@@ -25,7 +25,20 @@ class DeleteModelCommand extends Command
             return $this->error("$model doesn't exist!");
         }
 
+        $dirname = dirname($file);
+
         unlink($file);
         $this->comment("$model deleted successfully");
+
+        $dir = glob("$dirname/*");
+
+        if ($dirname != Config::models_path() && count($dir) == 0) {
+            if ($this->confirm(asError("> " . explode("/", $model)[0] . " is empty. Delete folder?"))) {
+                if (rmdir($dirname)) {
+                    $this->comment(explode("/", $model)[0] . " deleted successfully!");
+                }
+            }
+        }
+
     }
 }

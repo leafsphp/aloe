@@ -6,6 +6,6 @@ class ClassName extends Controller
 {
     public function index()
     {
-        render("ClassName");
+        render("view");
     }
 }

@@ -40,6 +40,7 @@ class Console
             \Aloe\Command\DeleteFactoryCommand::class,
             \Aloe\Command\DeleteControllerCommand::class,
             \Aloe\Command\DeleteConsoleCommand::class,
+            \Aloe\Command\DeleteMigrationCommand::class,
             // Database Commands
             \Aloe\Command\DatabaseInstallCommand::class,
             \Aloe\Command\DatabaseMigrationCommand::class,

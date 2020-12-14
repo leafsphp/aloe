@@ -2,32 +2,28 @@
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
+use Aloe\Command;
 use Illuminate\Support\Str;
 
 class GenerateSeedCommand extends Command
 {
-	protected static $defaultName = 'g:seed';
+	public $name = "g:seed";
+	public $description = "Create a new seed file";
+	public $help = "Create a new seed file";
 
-	protected function configure()
+	public function config()
 	{
-		$this 
-			->setDescription("Create a new seed file")
-			->setHelp("Create a new seed file")
-			->addArgument('model', InputArgument::REQUIRED, "model name")
-			->addArgument("name", InputArgument::OPTIONAL, "seed name")
-			->addOption("factory", "f", InputOption::VALUE_NONE, "Create a factory for seeder");
+		$this
+			->setArgument('model', "required", "model name")
+			->setArgument("name", "optional", "seed name")
+			->setOption("factory", "f", "none", "Create a factory for seeder");
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
+	public function handle()
 	{
-		$modelName = Str::studly(Str::singular($input->getArgument("model")));
-		$seedName = $input->getArgument("name") ?? $modelName;
-		$factory = $input->getOption("factory");
+		$modelName = Str::studly(Str::singular($this->argument("model")));
+		$seedName = $this->argument("name") ?? $modelName;
+		$factory = $this->option("factory");
 		$className = Str::studly(Str::plural($seedName));
 
 		if (!strpos($seedName, "Seeder")) {
@@ -37,7 +33,7 @@ class GenerateSeedCommand extends Command
 		$file = Config::seeds_path("$className.php");
 
 		if (file_exists($file)) {
-			return $output->writeln("<error>$seedName already exists</error>");
+			return $this->writeln("<error>$seedName already exists</error>");
 		}
 
 		touch($file);
@@ -75,10 +71,10 @@ use App\Models\ModelName;",
 		
 		file_put_contents($file, $fileContent);
 		
-		$output->writeln("<comment>$className generated successfully</comment>");
+		$this->comment("$className generated successfully");
 
 		if ($factory && !file_exists(Config::factories_path("{$modelName}Factory.php"))) {
-			$output->writeln("<comment>" . shell_exec("php leaf g:factory $modelName") . "</comment>");
+			$this->comment(shell_exec("php leaf g:factory $modelName"));
 		}
 	}
 }

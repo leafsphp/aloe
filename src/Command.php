@@ -45,7 +45,7 @@ abstract class Command extends SymfonyCommand
     /**
      * Configure your command
      */
-    public function configure()
+    protected function configure()
     {
         if ($this->name) {
             $this->setName($this->name);
@@ -70,7 +70,7 @@ abstract class Command extends SymfonyCommand
         // 
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
         $this->output = $output;

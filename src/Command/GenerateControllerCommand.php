@@ -19,6 +19,7 @@ class GenerateControllerCommand extends Command
             ->setOption("model", "m", "none", 'Create a model for controller')
             ->setOption("resource", "r", "none", 'Create a resource controller')
             ->setOption("api-resource", "ar", "none", 'Create an API resource controller')
+            ->setOption("web-resource", "wr", "none", 'Create a web resource controller')
             ->setOption("web", "w", "none", 'Create a web(ordinary) controller')
             ->setOption("api", null, "none", 'Create a web(ordinary) controller');
     }
@@ -46,6 +47,8 @@ class GenerateControllerCommand extends Command
         $stub = Config::$env === "WEB" ? "controller" : "apiController";
 
         if ($this->option("resource")) {
+            $stub = Config::$env === "WEB" ? "resourceController" : "apiResourceController";
+        } else if ($this->option("web-resource")) {
             $stub = "resourceController";
         } else if ($this->option("api-resource")) {
             $stub = "apiResourceController";
@@ -57,8 +60,8 @@ class GenerateControllerCommand extends Command
 
         $fileContent = file_get_contents(__DIR__ . "/stubs/$stub.stub");
         $fileContent = str_replace(
-            ["ClassName", "ModelName"],
-            [$controller, $modelName],
+            ["ClassName", "ModelName", "view"],
+            [$controller, $modelName, strtolower(str_replace("Controller", "", $controller))],
             $fileContent
         );
         file_put_contents($controllerFile, $fileContent);
