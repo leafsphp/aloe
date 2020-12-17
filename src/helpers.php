@@ -39,3 +39,13 @@ if (!function_exists('asError')) {
         return "<error>$data</error>";
     }
 }
+
+if (!function_exists('asLink')) {
+    /**
+     * Output text as a link
+     */
+    function asLink($link, $display)
+    {
+        return "<href=$link>$display</>";
+    }
+}

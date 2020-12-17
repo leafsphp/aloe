@@ -1,0 +1,84 @@
+#!/usr/bin/env php
+<?php
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+|
+| Composer provides a convenient, automatically generated class loader
+| for our application. We just need to utilize it! We'll require it
+| into the script here so that we do not have to worry about the
+| loading of any our classes "manually". Feels great to relax.
+|
+*/
+require __DIR__.'/vendor/autoload.php';
+
+/*
+|--------------------------------------------------------------------------
+| Register The Leaf Command Auto Loader
+|--------------------------------------------------------------------------
+|
+| Require all the files containing the Leaf Commands
+|
+*/
+require __DIR__.'/Config/bootstrap.php';
+
+/*
+|--------------------------------------------------------------------------
+| Initialise App paths
+|--------------------------------------------------------------------------
+|
+| These is the Leaf MVC directory configuration.
+|
+*/
+require __DIR__ . "/Config/paths.php";
+
+/*
+|--------------------------------------------------------------------------
+| Bring in (env)
+|--------------------------------------------------------------------------
+|
+| Quickly use our environment variables
+|
+*/
+\Dotenv\Dotenv::create(__DIR__)->load();
+
+/*
+|--------------------------------------------------------------------------
+| Initialise Aloe
+|--------------------------------------------------------------------------
+|
+| Initialise aloe cli and register default commands.
+|
+*/
+$console = new \Aloe\Console("Leaf API", "v2.0");
+
+/*
+|--------------------------------------------------------------------------
+| Configure Aloe
+|--------------------------------------------------------------------------
+|
+| Set aloe environment to Leaf API
+|
+*/
+\Aloe\Command\Config::$env = "API";
+
+/*
+|--------------------------------------------------------------------------
+| Add custom command
+|--------------------------------------------------------------------------
+|
+| If you have a new command to add to Leaf
+|
+*/
+$console->register(\App\Console\ExampleCommand::class);
+
+/*
+|--------------------------------------------------------------------------
+| Run The console Application
+|--------------------------------------------------------------------------
+|
+| Transport water and dissolved substances to the rest of Leaf😂
+|
+*/
+$console->run();

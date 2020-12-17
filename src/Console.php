@@ -7,25 +7,54 @@ use Symfony\Component\Console\Application;
 
 class Console
 {
-    private $app;
+    /**
+     * Instance of symfony console app
+     */
+    private static $app;
 
-    public function __construct($app = "Aloe CLI", $version = "v1.0")
+    /**
+     * Load up aloe without calling the boot method
+     */
+    public function __construct($app = "ALoe CLI", $version = "v1.0")
     {
-        $this->app = new Application(asComment($app), $version);    
-        $this->load();
+        static::boot($app, $version);
+    }
+
+    /**
+     * Boot the aloe CLI
+     * 
+     * @param string $app The name of the app to display in terminal
+     * @param string $version The app version
+     * @param bool $load Load the default Aloe CLI commands?
+     */
+    public static function boot($app = "Aloe CLI", $version = "v1.0", $load = true)
+    {
+        static::$app = new Application(asComment($app), $version);    
+        if ($load) static::load();
     }
 
     /**
      * Load default console commands
      */
-    public function load()
+    public static function load()
     {
-        $commands = [
+        static::register(static::commands());
+    }
+
+    /**
+     * Return list of all default commands
+     */
+    public static function commands()
+    {
+        return [
             // Random Commands
             \Aloe\Command\ServerCommand::class,
             \Aloe\Command\ConsoleCommand::class,
             \Aloe\Command\AppDownCommand::class,
             \Aloe\Command\AppUpCommand::class,
+            // Aloe Commands
+            \Aloe\Command\AloeInstallCommand::class,
+            \Aloe\Command\AloeUninstallCommand::class,
             // Generate Commands
             \Aloe\Command\GenerateMigrationCommand::class,
             \Aloe\Command\GenerateModelCommand::class,
@@ -47,33 +76,31 @@ class Console
             \Aloe\Command\DatabaseRollbackCommand::class,
             \Aloe\Command\DatabaseSeedCommand::class
         ];
-
-        $this->register($commands);
     }
 
     /**
      * Register a custom command
      * 
-     * @param array|Symfony\Component\Console\Command\Command $command: Command to run
+     * @param array|Aloe\Command $command: Command(s) to run
      * 
      * @return void
      */
-    public function register($command)
+    public static function register($command)
     {
         if (is_array($command)) {
             foreach ($command as $item) {
-                $this->register($item);
+                static::register($item);
             }
         } else {
-            $this->app->add(new $command);
+            static::$app->add(new $command);
         }
     }
 
     /**
      * Run the console app
      */
-    public function run()
+    public static function run()
     {
-        $this->app->run();
+        static::$app->run();
     }
 }

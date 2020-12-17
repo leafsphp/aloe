@@ -33,7 +33,7 @@ class GenerateSeedCommand extends Command
 		$file = Config::seeds_path("$className.php");
 
 		if (file_exists($file)) {
-			return $this->writeln("<error>$seedName already exists</error>");
+			return $this->error("$seedName already exists");
 		}
 
 		touch($file);

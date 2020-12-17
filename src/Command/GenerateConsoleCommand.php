@@ -38,7 +38,7 @@ class GenerateConsoleCommand extends Command
 
         $this->comment("$className generated successfully");
 
-        $aloe = Config::rootpath("aloe");
+        $aloe = Config::rootpath("leaf");
         $aloeContents = file_get_contents($aloe);
         $aloeContents = str_replace(
             "\$console->register(",
