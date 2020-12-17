@@ -54,7 +54,7 @@ class Console
             \Aloe\Command\AppUpCommand::class,
             // Aloe Commands
             \Aloe\Command\AloeInstallCommand::class,
-            \Aloe\Command\AloeUninstallCommand::class,
+            // \Aloe\Command\AloeUninstallCommand::class,
             // Generate Commands
             \Aloe\Command\GenerateMigrationCommand::class,
             \Aloe\Command\GenerateModelCommand::class,
