@@ -13,18 +13,18 @@
 
 # Aloe CLI 1.0 (Harlana🍀)
 
-Aloe is CLI that comes with Leaf API and Leaf MVC v2 upwards. Aloe exists at the root of your application as the `aloe` script and provides a number of helpful commands that can assist you while you build your application. To view all available commands, you can use the `list` command or call `aloe`.
+Aloe is CLI that comes with Leaf API and Leaf MVC v2 upwards. It ties into the Leaf console tool and totally replaces all it's functionality. Aloe exists at the root of your application as the `leaf` script and provides a number of helpful commands that can assist you while you build your application. To view all available commands, you can use the `list` command or call `leaf`.
 
 ```bash
-php aloe list
+php leaf list
 # or
-php aloe
+php leaf
 ```
 
 Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, precede the name of the command with help:
 
 ```sh
-php artisan help migrate
+php leaf help migrate
 ```
 
 ## Interact (REPL)
@@ -32,7 +32,7 @@ php artisan help migrate
 Aloe comes with aloe-interact which is basically powerful REPL powered by [PSY Shell](https://github.com/bobthecow/psysh). Interact allows you to interact with your app, access variables and methods in your Leaf app, run and rollback migrations, perform database operations and so much more. You can access interact on aloe like this:
 
 ```sh
-php aloe interact
+php leaf interact
 ```
 
 ## Writing Commands
@@ -46,19 +46,19 @@ To create a new command, you may use the `g:command` aloe command. This command 
 The default directory for commands in Leaf API and Leaf MVC is `App\Console`, with skeleton, you're free to decide where to place your commands.
 
 ```sh
-php aloe g:command SendMail
+php leaf g:command SendMail
 ```
 
 Aloe can also generate namespaced commands directly for you. You don't have to manually set namespaces as done with other CLI tools.
 
 ```sh
-php aloe g:command mail:send
+php leaf g:command mail:send
 ```
 
 If you want to, you can even generate the command by it's name instead of it's class. Aloe is smart enough to differentiate them.
 
 ```sh
-php aloe g:command shutdown 
+php leaf g:command shutdown 
 ```
 
 ### Command Structure
@@ -92,7 +92,7 @@ We can add an argument to find the user to send the email to, and output a messa
 ```php
 public function config()
 {
-    $this->addArgument("user", InputArgument::REQUIRED);
+    $this->setArgument("user", "required");
 }
 
 public function handle()
@@ -101,7 +101,7 @@ public function handle()
 
     $this->comment("Sending email to $user");
 
-    $success = CustomEmailHandler::send($user);
+    $success = \CustomEmailHandler::send($user);
 
     if ($success) {
         $this->info("Email sent successfully");

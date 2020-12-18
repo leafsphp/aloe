@@ -2,20 +2,20 @@
 
 namespace App\Database\Factories;
 
-// model to be used in factory
 use App\Models\ModelName;
 use Leaf\Str;
 
 class ClassName extends Factory
 {
-	// If this model property isn't defined, Leaf will
-	// try to generate the model name from the factory name
 	public $model = ModelName::class;
 
+	/**
+	 * Create the blueprint for your factory
+	 * 
+	 * @return array
+	 */
 	public function definition()
 	{
-		// faker is already registered in the factory
-		// it can be accessed wit $this->faker
 		return [
 			'name' => $this->faker->name,
 			'email' => $this->faker->unique()->safeEmail,
