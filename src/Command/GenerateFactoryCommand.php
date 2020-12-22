@@ -19,7 +19,7 @@ class GenerateFactoryCommand extends Command
     public function handle()
     {
         $factory = Str::studly(Str::singular($this->argument("factory")));
-        
+
         if (!strpos($factory, "Factory")) {
             $factory .= "Factory";
         }

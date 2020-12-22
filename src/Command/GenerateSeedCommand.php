@@ -37,7 +37,7 @@ class GenerateSeedCommand extends Command
 		}
 
 		touch($file);
-		
+
 		$fileContent = \file_get_contents(__DIR__ . '/stubs/seed.stub');
 
 		if ($factory && !file_exists(Config::factories_path("{$modelName}Factory.php"))) {
@@ -68,9 +68,9 @@ use App\Models\ModelName;",
 			[$className, $modelName, Str::lower($modelName)],
 			$fileContent
 		);
-		
+
 		file_put_contents($file, $fileContent);
-		
+
 		$this->comment("$className generated successfully");
 
 		if ($factory && !file_exists(Config::factories_path("{$modelName}Factory.php"))) {

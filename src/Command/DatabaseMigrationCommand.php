@@ -75,7 +75,7 @@ class DatabaseMigrationCommand extends Command
 
     protected function migrate($className, $filename)
     {
-        require_once migrations_path("$filename.php", false);
+        require_once Config::migrations_path("$filename.php", false);
 
         $class = new $className;
         $class->up();

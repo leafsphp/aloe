@@ -10,7 +10,8 @@ class ConsoleCommand extends \Aloe\Command
     public $description = "Interact with your application";
     public $help = "Interact with your application";
 
-    public function handle() {
+    public function handle()
+    {
         $shell = new Shell();
         $this->writeln($shell->run());
     }

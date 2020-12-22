@@ -39,6 +39,5 @@ class DeleteModelCommand extends Command
                 }
             }
         }
-
     }
 }

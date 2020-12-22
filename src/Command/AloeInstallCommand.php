@@ -27,16 +27,16 @@ class AloeInstallCommand extends \Aloe\Command
         }
 
         $this->writeln(asComment(">") . " Generating Aloe config...");
-        
+
         if (file_exists($config)) {
             $overwrite = $this->confirm(asInfo("Aloe config already exists, overwrite file?"));
-            
+
             if (!$overwrite) {
                 $this->writeln(asComment(">") . " Skipping Aloe config...");
                 return $this->comment("Aloe CLI successfully installed!");;
             }
         }
-        
+
         copy(dirname(__DIR__) . "/Install/aloe.php", $config);
         $this->writeln(asComment(">") . " Aloe config added successfully");
 

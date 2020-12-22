@@ -2,6 +2,7 @@
 namespace App\Database\Migrations;
 
 use Leaf\Database;
+use Illuminate\Database\Schema\Blueprint;
 
 class ClassName extends Database {
     /**
@@ -11,7 +12,7 @@ class ClassName extends Database {
      */
     public function up()  {
         if(!$this->capsule::schema()->hasTable("tableName")):
-            $this->capsule::schema()->create("tableName", function ($table) {
+            $this->capsule::schema()->create("tableName", function (Blueprint $table) {
                 $table->increments('id');
                 $table->timestamps();
             });

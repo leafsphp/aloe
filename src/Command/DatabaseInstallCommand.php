@@ -1,7 +1,9 @@
 <?php
+
 namespace Aloe\Command;
 
 use \Aloe\Command;
+
 class DatabaseInstallCommand extends Command
 {
     public $name = "db:install";
@@ -10,18 +12,18 @@ class DatabaseInstallCommand extends Command
 
     public function handle()
     {
-		$host = getenv("DB_HOST");
-		$user = getenv("DB_USERNAME");
-		$password = getenv("DB_PASSWORD");
+        $host = getenv("DB_HOST");
+        $user = getenv("DB_USERNAME");
+        $password = getenv("DB_PASSWORD");
         $database = getenv("DB_DATABASE");
-        
+
         if (\mysqli_query(
             \mysqli_connect($host, $user, $password, ""),
             "CREATE DATABASE `$database`"
         )) {
             return $this->info("$database created successfully.");
         }
-        
+
         return $this->error("$database could not be created.");
     }
 }

@@ -10,6 +10,9 @@ class ClassName extends Command
     public $description = "CommandName command's description";
     public $help = "CommandName command's help";
 
+    /**
+     * Configure your command
+     */
     public function config()
     {
         // you can add arguments and options in the config method
@@ -18,6 +21,9 @@ class ClassName extends Command
             ->setOption("option", "o", "required", "option description");
     }
 
+    /**
+     * Main body for your command
+     */
     public function handle()
     {
         $this->comment(

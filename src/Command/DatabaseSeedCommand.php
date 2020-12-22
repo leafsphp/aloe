@@ -16,7 +16,7 @@ class DatabaseSeedCommand extends Command
             return $this->error("DatabaseSeeder not found! Refer to the docs.");
         }
 
-        $seeder = new \App\Database\Seeds\DatabaseSeeder;
+        $seeder = new Config::$seeder;
         $seeds = glob(Config::seeds_path("*.php"));
 
         if (count($seeds) === 1) {

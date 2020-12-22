@@ -1,4 +1,5 @@
 <?php
+
 namespace Aloe;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
@@ -115,7 +116,7 @@ abstract class Command extends SymfonyCommand
     /**
      * Add a new argument
      */
-    public function setArgument($name, $mode =null, $description = "")
+    public function setArgument($name, $mode = null, $description = "", $default = null)
     {
         if (strtoupper($mode) === "OPTIONAL") {
             $mode = InputArgument::OPTIONAL;
@@ -129,11 +130,11 @@ abstract class Command extends SymfonyCommand
             $mode = InputArgument::IS_ARRAY;
         }
 
-        return $this->addArgument($name, $mode, $description);
+        return $this->addArgument($name, $mode, $description, $default);
     }
 
     /**
-     * Get an input argument
+     * Returns the argument value for a given argument name.
      */
     public function argument(string $name)
     {
@@ -141,7 +142,7 @@ abstract class Command extends SymfonyCommand
     }
 
     /**
-     * Get all argumaents
+     * Returns all the given arguments merged with the default values.
      */
     public function arguments()
     {
@@ -289,7 +290,15 @@ abstract class Command extends SymfonyCommand
 
         return $helper->ask($this->input, $this->output, $question);
     }
-    
+
+    /**
+     * Output some data
+     */
+    public function write($messages, $options = 0)
+    {
+        return $this->output->write($messages, $options);
+    }
+
     /**
      * Output some data
      */
@@ -341,7 +350,7 @@ abstract class Command extends SymfonyCommand
     }
 
     // misc features
-    
+
     /**
      * Run a new cli process
      */

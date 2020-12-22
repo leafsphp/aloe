@@ -1,4 +1,5 @@
 <?php
+
 namespace Aloe;
 
 require __DIR__ . "/helpers.php";
@@ -29,7 +30,7 @@ class Console
      */
     public static function boot($app = "Aloe CLI", $version = "v1.0", $load = true)
     {
-        static::$app = new Application(asComment($app), $version);    
+        static::$app = new Application(asComment($app), $version);
         if ($load) static::load();
     }
 

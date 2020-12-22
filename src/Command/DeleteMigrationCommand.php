@@ -39,7 +39,7 @@ class DeleteMigrationCommand extends Command
         if (count($migrations) > 1) {
             $answers = $this->multiChoice(
                 count($migrations) . " '$fileToDelete' found. Select those to delete:" .
-                asInfo(" eg: 0,1"),
+                    asInfo(" eg: 0,1"),
                 $displayNames
             );
         }

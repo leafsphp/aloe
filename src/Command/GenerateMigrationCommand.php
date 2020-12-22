@@ -26,14 +26,14 @@ class GenerateMigrationCommand extends Command
 
         $actualFileName = Str::snake(date("Y_m_d_His") . "_$userInput.php");
         $file = Config::migrations_path($actualFileName);
-        
+
         touch($file);
-        
+
         $className = Str::studly($userInput);
 
         $fileContent = \file_get_contents(__DIR__ . '/stubs/migration.stub');
         $fileContent = str_replace(["ClassName", "tableName"], [$className, str_replace("create_", "", $userInput)], $fileContent);
-        
+
         file_put_contents($file, $fileContent);
 
         $this->info(asComment($actualFileName) . " generated successfully");
