@@ -49,13 +49,17 @@ class Console
     {
         return [
             // Random Commands
-            \Aloe\Command\ServerCommand::class,
+            \Aloe\Command\ServeCommand::class,
             \Aloe\Command\ConsoleCommand::class,
             \Aloe\Command\AppDownCommand::class,
             \Aloe\Command\AppUpCommand::class,
             // Aloe Commands
             \Aloe\Command\AloeInstallCommand::class,
-            // \Aloe\Command\AloeUninstallCommand::class,
+            // \Aloe\Command\InstallDebuggerCommand::class,
+            // Scaffold Commands
+            \Aloe\Command\ScaffoldAuthCommand::class,
+            // Env Commands
+            \Aloe\Command\EnvGenerateCommand::class,
             // Generate Commands
             \Aloe\Command\GenerateMigrationCommand::class,
             \Aloe\Command\GenerateModelCommand::class,
@@ -64,6 +68,7 @@ class Console
             \Aloe\Command\GenerateSeedCommand::class,
             \Aloe\Command\GenerateConsoleCommand::class,
             \Aloe\Command\GenerateFactoryCommand::class,
+            \Aloe\Command\GenerateTemplateCommand::class,
             // Delete Commands
             \Aloe\Command\DeleteModelCommand::class,
             \Aloe\Command\DeleteSeedCommand::class,

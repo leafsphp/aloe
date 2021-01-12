@@ -62,6 +62,11 @@ class Config
         return static::rootpath(static::paths("controllers_path") . "/$file");
     }
 
+    public static function views_path($file = null)
+    {
+        return static::rootpath(static::paths("views_path") . "/$file");
+    }
+
     public static function config_path($file = null)
     {
         return static::rootpath(static::paths("config_path") . "/$file");

@@ -4,7 +4,7 @@ namespace Aloe\Command;
 
 use Aloe\Command;
 
-class ServerCommand extends Command
+class ServeCommand extends Command
 {
     public $name = "serve";
     public $description = "Start the leaf development server";

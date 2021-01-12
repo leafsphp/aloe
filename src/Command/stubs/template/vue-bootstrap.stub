@@ -1,0 +1,12 @@
+<template>
+    <div>
+        <h2>pagename Page.</h2>
+        <p>This is the pagename page.</p>
+    </div>
+</template>
+
+<script>
+export default {
+    name: "pagenamePage",
+};
+</script>

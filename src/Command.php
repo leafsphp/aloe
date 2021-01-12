@@ -12,6 +12,11 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Process\Process;
 
+/**
+ * Command Utilities for Aloe Commands
+ * 
+ * @author Michael Darko <mickdd22@gmail.com>
+ */
 abstract class Command extends SymfonyCommand
 {
     /**
