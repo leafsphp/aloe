@@ -3,19 +3,20 @@
 namespace App\Controllers\Auth;
 
 use App\Models\User;
+use Leaf\Auth;
 
 class LoginController extends Controller
 {
     public function show()
     {
-        $this->auth->guard("guest");
+        Auth::guard("guest");
 
         render("pages.auth.login");
     }
 
     public function store()
     {
-        $this->auth->guard("guest");
+        Auth::guard("guest");
 
         list($username, $password) = requestData(["username", "password"], true, true);
 
@@ -23,7 +24,7 @@ class LoginController extends Controller
             "username" => "validUsername",
         ]);
 
-        $user = $this->auth->login("users", [
+        $user = Auth::login("users", [
             "username" => $username,
             "password" => $password
         ]);
@@ -31,7 +32,7 @@ class LoginController extends Controller
         if (!$user) {
             return render("pages.auth.login", [
                 "errors" => array_merge(
-                    $this->auth->errors(),
+                    Auth::errors(),
                     $this->form->errors()
                 ),
                 "username" => $username,
@@ -42,9 +43,9 @@ class LoginController extends Controller
 
     public function logout()
     {
-        $this->auth->guard("auth");
+        Auth::guard("auth");
 
-        $this->auth->endSession("GUARD_LOGIN");
+        Auth::endSession("GUARD_LOGIN");
     }
 }
 

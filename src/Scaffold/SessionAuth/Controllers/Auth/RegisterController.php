@@ -2,18 +2,20 @@
 
 namespace App\Controllers\Auth;
 
+use Leaf\Auth;
+
 class RegisterController extends Controller
 {
     public function show()
     {
-        $this->auth->guard("guest");
+        Auth::guard("guest");
 
         render("pages.auth.register");
     }
     
     public function store()
     {
-        $this->auth->guard("guest");
+        Auth::guard("guest");
 
         $credentials = requestData(["username", "email", "password"]);
 
@@ -23,15 +25,15 @@ class RegisterController extends Controller
             "password" => "required"
         ]);
 
-        $this->auth->config("SESSION_ON_REGISTER", true);
+        Auth::config("SESSION_ON_REGISTER", true);
 
-        $user = $this->auth->register("users", $credentials, [
+        $user = Auth::register("users", $credentials, [
             "username", "email"
         ]);
 
         if (!$user) {
             return render("pages.auth.register", array_merge([
-                "errors" => array_merge($this->auth->errors(), $this->form->errors()),
+                "errors" => array_merge(Auth::errors(), $this->form->errors()),
             ], request(["username", "email", "password"])));
         }
     }

@@ -2,16 +2,18 @@
 
 namespace App\Controllers\Auth;
 
+use Leaf\Auth;
+
 class AccountController extends Controller
 {
     public function user()
     {
-        $this->auth->guard("auth");
+        Auth::guard("auth");
 
-        $user = $this->auth->user("users", ["password"]);
+        $user = Auth::user("users", ["password"]);
 
         if (!$user) {
-            return $this->auth->endSession("GUARD_LOGIN");
+            return Auth::endSession("GUARD_LOGIN");
         }
 
         render("pages.auth.account", [
@@ -22,24 +24,25 @@ class AccountController extends Controller
 
     public function show_update()
     {
-        $this->auth->guard("auth");
+        Auth::guard("auth");
 
-        $user = $this->auth->user();
+        $user = Auth::user();
 
         render("pages.auth.update", [
-            "user" => $this->auth->id(),
+            "user" => Auth::id(),
             "username" => $user["username"] ?? null,
             "email" => $user["email"] ?? null,
+            "name" => $user["name"] ?? null,
         ]);
     }
 
     public function update()
     {
-        $this->auth->guard("auth");
+        Auth::guard("auth");
 
-        $userId = $this->auth->id();
+        $userId = Auth::id();
 
-        $data = request(["username", "email"]);
+        $data = request(["username", "email", "name"]);
         $dataKeys = array_keys($data);
 
         $where = ["id" => $userId];
@@ -63,13 +66,14 @@ class AccountController extends Controller
             }
         }
 
-        $user = $this->auth->update("users", $data, $where, $uniques);
+        $user = Auth::update("users", $data, $where, $uniques);
 
         if (!$user) {
             return render("pages.auth.update", [
-                "errors" => $this->auth->errors(),
-                "username" => $user["username"] ?? null,
-                "email" => $user["email"] ?? null,
+                "errors" => Auth::errors(),
+                "username" => $data["username"] ?? null,
+                "email" => $data["email"] ?? null,
+                "name" => $data["name"] ?? null,
             ]);
         }
 

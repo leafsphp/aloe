@@ -73,7 +73,7 @@ abstract class Command extends SymfonyCommand
      */
     public function config()
     {
-        // 
+        //
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -89,7 +89,7 @@ abstract class Command extends SymfonyCommand
      */
     public function handle()
     {
-        // 
+        //
     }
 
     // IO Features
