@@ -7,16 +7,16 @@ use Leaf\Str;
 
 class DeleteMigrationCommand extends Command
 {
-    public $name = "d:migration";
-    public $description = "Delete a migration";
-    public $help = "Delete a particular migration file";
+    protected static $defaultName = "d:migration";
+    private $description = "Delete a migration";
+    private $help = "Delete a particular migration file";
 
-    public function config()
+    protected function configure()
     {
         $this->setArgument('file', "required", 'File to delete');
     }
 
-    public function handle()
+    protected function handle()
     {
         $fileToDelete = strtolower(Str::snake(Str::plural($this->argument('file'))));
         $migrations = glob(Config::migrations_path("*_$fileToDelete.php"));

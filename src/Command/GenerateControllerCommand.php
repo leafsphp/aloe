@@ -7,11 +7,11 @@ use Leaf\Str;
 
 class GenerateControllerCommand extends Command
 {
-    public $name = 'g:controller';
-    public $description = 'Create a new controller class';
-    public $help = 'Create a new controller class';
+    protected static $defaultName = 'g:controller';
+    private $description = 'Create a new controller class';
+    private $help = 'Create a new controller class';
 
-    public function config()
+    protected function configure()
     {
         $this
             ->setArgument("controller", "required", 'controller name')
@@ -25,7 +25,7 @@ class GenerateControllerCommand extends Command
             ->setOption("api", null, "none", 'Create an API controller');
     }
 
-    public function handle()
+    protected function handle()
     {
         $controller = Str::studly($this->argument("controller"));
 

@@ -7,16 +7,16 @@ use Leaf\Str;
 
 class DeleteControllerCommand extends Command
 {
-    public $name = "d:controller";
-    public $description = 'Delete a controller';
-    public $help = 'Delete a controller';
+    protected static $defaultName = "d:controller";
+    private $description = 'Delete a controller';
+    private $help = 'Delete a controller';
 
-    public function config()
+    protected function configure()
     {
         $this->setArgument("controller", "required", "controller name");
     }
 
-    public function handle()
+    protected function handle()
     {
         $controller = Str::studly($this->argument("controller"));
 

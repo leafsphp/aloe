@@ -4,11 +4,11 @@ namespace Aloe\Command;
 
 class AloeInstallCommand extends \Aloe\Command
 {
-    public $name = "aloe:config";
-    public $description = "Install aloe config";
-    public $help = "Set up aloe CLI files in project";
+    protected static $defaultName = "aloe:config";
+    private $description = "Install aloe config";
+    private $help = "Set up aloe CLI files in project";
 
-    public function handle()
+    protected function handle()
     {
         $this->writeln("Installing aloe config");
         $aloe = Config::rootpath("leaf");

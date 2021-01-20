@@ -7,11 +7,11 @@ use Leaf\Str;
 
 class GenerateSeedCommand extends Command
 {
-	public $name = "g:seed";
-	public $description = "Create a new seed file";
-	public $help = "Create a new seed file";
+	protected static $defaultName = "g:seed";
+	private $description = "Create a new seed file";
+	private $help = "Create a new seed file";
 
-	public function config()
+	protected function configure()
 	{
 		$this
 			->setArgument('model', "required", "model name")
@@ -19,7 +19,7 @@ class GenerateSeedCommand extends Command
 			->setOption("factory", "f", "none", "Create a factory for seeder");
 	}
 
-	public function handle()
+	protected function handle()
 	{
 		$modelName = Str::studly(Str::singular($this->argument("model")));
 		$seedName = $this->argument("name") ?? $modelName;

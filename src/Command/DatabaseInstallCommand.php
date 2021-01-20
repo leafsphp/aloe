@@ -6,11 +6,11 @@ use \Aloe\Command;
 
 class DatabaseInstallCommand extends Command
 {
-    public $name = "db:install";
-    public $description = "Create new database from .env variables";
-    public $help = "Create new database from .env variables";
+    protected static $defaultName = "db:install";
+    private $description = "Create new database from .env variables";
+    private $help = "Create new database from .env variables";
 
-    public function handle()
+    protected function handle()
     {
         $host = getenv("DB_HOST");
         $user = getenv("DB_USERNAME");

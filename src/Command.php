@@ -2,7 +2,13 @@
 
 namespace Aloe;
 
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command as BaseCommand;
+use Symfony\Component\Console\Exception\ExceptionInterface;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\LogicException;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -13,65 +19,65 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Process\Process;
 
 /**
- * Command Utilities for Aloe Commands
+ * Base class for Aloe Commands.
  * 
  * @author Michael Darko <mickdd22@gmail.com>
  */
-abstract class Command extends SymfonyCommand
+class Command extends BaseCommand
 {
+    /**
+     * @var string|null The default command name
+     */
+    protected static $defaultName;
+
     /**
      * The name of command to run in console
      */
-    public $name;
+    private $name;
 
     /**
      * Description for command
      */
-    public $description;
+    private $description;
 
     /**
      * Help for command
      */
-    public $help;
+    private $help;
 
     /**
      * The input object
      * 
      * @var InputInterface
      */
-    public $input;
+    protected $input;
 
     /**
      * The output object
      * 
      * @var OutputInterface
      */
-    public $output;
+    protected $output;
+
+    private $application;
+    private $processTitle;
+    private $aliases = [];
+    private $definition;
+    private $hidden = false;
+    private $fullDefinition;
+    private $ignoreValidationErrors = false;
+    private $code;
+    private $synopsis = [];
+    private $usages = [];
+    private $helperSet;
+
+    public const SUCCESS = 0;
+    public const FAILURE = 1;
 
     /**
-     * Configure your command
+     * Configures the current command.
      */
     protected function configure()
-    {
-        if ($this->name) {
-            $this->setName($this->name);
-        }
-
-        if ($this->description) {
-            $this->setDescription($this->description);
-        }
-
-        if ($this->help) {
-            $this->setHelp($this->help);
-        }
-
-        $this->config();
-    }
-
-    /**
-     * Configure command
-     */
-    public function config()
     {
         //
     }
@@ -81,15 +87,98 @@ abstract class Command extends SymfonyCommand
         $this->input = $input;
         $this->output = $output;
 
-        $this->handle($input, $output);
+        $this->handle();
     }
 
     /**
-     * Scripts to run when command is used
+     * Executes the current command.
+     *
+     * This method is not abstract because you can use this class
+     * as a concrete class. In this case, instead of defining the
+     * execute() method, you set the code to execute by passing
+     * a Closure to the setCode() method.
+     *
+     * @return int 0 if everything went fine, or an exit code
+     *
+     * @throws LogicException When this abstract method is not implemented
+     *
+     * @see setCode()
      */
-    public function handle()
+    protected function handle()
     {
-        //
+        throw new LogicException('You must override the handle() method in the concrete command class.');
+    }
+
+    /**
+     * Runs the command.
+     *
+     * The code to execute is either defined directly with the
+     * setCode() method or by overriding the execute() method
+     * in a sub-class.
+     *
+     * @return int The command exit code
+     *
+     * @throws \Exception When binding input fails. Bypass this by calling {@link ignoreValidationErrors()}.
+     *
+     * @see setCode()
+     * @see execute()
+     */
+    public function run(InputInterface $input, OutputInterface $output)
+    {
+        // add the application arguments and options
+        $this->mergeApplicationDefinition();
+
+        // bind the input against the command specific arguments/options
+        try {
+            $input->bind($this->getDefinition());
+        } catch (ExceptionInterface $e) {
+            if (!$this->ignoreValidationErrors) {
+                throw $e;
+            }
+        }
+
+        $this->initialize($input, $output);
+
+        if (null !== $this->processTitle) {
+            if (\function_exists('cli_set_process_title')) {
+                if (!@cli_set_process_title($this->processTitle)) {
+                    if ('Darwin' === \PHP_OS) {
+                        $this->comment('Running "cli_set_process_title" as an unprivileged user is not supported on MacOS.', OutputInterface::VERBOSITY_VERY_VERBOSE);
+                    } else {
+                        cli_set_process_title($this->processTitle);
+                    }
+                }
+            } elseif (\function_exists('setproctitle')) {
+                setproctitle($this->processTitle);
+            } elseif (OutputInterface::VERBOSITY_VERY_VERBOSE === $output->getVerbosity()) {
+                $this->comment('Install the proctitle PECL to be able to change the process title.');
+            }
+        }
+
+        if ($input->isInteractive()) {
+            $this->interact($input, $output);
+        }
+
+        // The command name argument is often omitted when a command is executed directly with its run() method.
+        // It would fail the validation if we didn't make sure the command argument is present,
+        // since it's required by the application.
+        if ($input->hasArgument('command') && null === $input->getArgument('command')) {
+            $input->setArgument('command', $this->getName());
+        }
+
+        $input->validate();
+
+        if ($this->code) {
+            $statusCode = ($this->code)($input, $output);
+        } else {
+            $statusCode = $this->execute($input, $output);
+
+            // if (!\is_int($statusCode)) {
+            //     throw new \TypeError(sprintf('Return value of "%s::execute()" must be of the type int, "%s" returned.', static::class, get_debug_type($statusCode)));
+            // }
+        }
+
+        return is_numeric($statusCode) ? (int) $statusCode : 0;
     }
 
     // IO Features

@@ -7,16 +7,16 @@ use Leaf\Str;
 
 class GenerateConsoleCommand extends Command
 {
-    public $name = "g:command";
-    public $description = "Create a new console command";
-    public $help = "Create a custom aloe cli command";
+    protected static $defaultName = "g:command";
+    private $description = "Create a new console command";
+    private $help = "Create a custom aloe cli command";
 
-    public function config()
+    protected function configure()
     {
         $this->setArgument("consoleCommand", "required", 'command name');
     }
 
-    public function handle()
+    protected function handle()
     {
         list($commandName, $className) = $this->mapNames($this->argument("consoleCommand"));
 

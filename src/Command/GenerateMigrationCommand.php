@@ -7,16 +7,16 @@ use Leaf\Str;
 
 class GenerateMigrationCommand extends Command
 {
-    public $name = "g:migration";
-    public $description = "Create a new migration file";
-    public $help = "Create a new migration file";
+    protected static $defaultName = "g:migration";
+    private $description = "Create a new migration file";
+    private $help = "Create a new migration file";
 
-    public function config()
+    protected function configure()
     {
         $this->setArgument("migration", "required", "migration file name");
     }
 
-    public function handle()
+    protected function handle()
     {
         $userInput = strtolower(Str::snake(Str::plural($this->argument("migration"))));
 

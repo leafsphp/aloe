@@ -6,17 +6,17 @@ use Aloe\Command;
 
 class ServeCommand extends Command
 {
-    public $name = "serve";
-    public $description = "Start the leaf development server";
-    public $help = "Run your Leaf app on PHP's local development server";
+    protected static $defaultName = "serve";
+    private $description = "Start the leaf development server";
+    private $help = "Run your Leaf app on PHP's local development server";
 
-    public function config()
+    public function configure()
     {
         $this->setOption("port", "p", "optional", "Port to run Leaf app on", 5500);
         $this->setArgument("path", "optional", "Path to your app (in case you changed it)");
     }
 
-    public function handle()
+    protected function handle()
     {
         $port = $this->option("port");
         $path = $this->argument("path");

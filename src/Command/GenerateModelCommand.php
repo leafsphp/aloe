@@ -7,18 +7,18 @@ use Leaf\Str;
 
 class GenerateModelCommand extends Command
 {
-    public $name = "g:model";
-    public $description = "Create a new model class";
-    public $help = "Create a new model class";
+    protected static $defaultName = "g:model";
+    private $description = "Create a new model class";
+    private $help = "Create a new model class";
 
-    public function config()
+    protected function configure()
     {
         $this
             ->setArgument('model', "required", 'model file name')
             ->setOption("migration", "m", "none", 'Create a migration for model');
     }
 
-    public function handle()
+    protected function handle()
     {
         $model = Str::singular(Str::studly($this->argument("model")));
         $className = $model;

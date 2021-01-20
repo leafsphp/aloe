@@ -6,11 +6,11 @@ use Aloe\Command;
 
 class DatabaseSeedCommand extends Command
 {
-    public $name = "db:seed";
-    public $description = "Seed the database with records";
-    public $help = "Seed the database with records";
+    protected static $defaultName = "db:seed";
+    private $description = "Seed the database with records";
+    private $help = "Seed the database with records";
 
-    public function handle()
+    protected function handle()
     {
         if (!file_exists(Config::seeds_path("DatabaseSeeder.php"))) {
             return $this->error("DatabaseSeeder not found! Refer to the docs.");

@@ -7,16 +7,16 @@ use Leaf\Str;
 
 class DeleteConsoleCommand extends Command
 {
-    public $name = "d:command";
-    public $description = "Delete a console command";
-    public $help = "Delete a console command";
+    protected static $defaultName = "d:command";
+    private $description = "Delete a console command";
+    private $help = "Delete a console command";
 
-    public function config()
+    protected function configure()
     {
         $this->setArgument("file", "required", "The name of the console file");
     }
 
-    public function handle()
+    protected function handle()
     {
         $command = Str::studly($this->argument("file"));
 

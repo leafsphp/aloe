@@ -7,16 +7,16 @@ use Leaf\Str;
 
 class GenerateHelperCommand extends Command
 {
-    public $name = "g:helper";
-    public $description = "Create a new helper class";
-    public $help = "Create a new helper class";
+    protected static $defaultName = "g:helper";
+    private $description = "Create a new helper class";
+    private $help = "Create a new helper class";
 
-    public function config()
+    protected function configure()
     {
         $this->setArgument("helper", "required", 'helper name');
     }
 
-    public function handle()
+    protected function handle()
     {
         list($helper, $modelName) = $this->mapNames($this->argument("helper"));
 

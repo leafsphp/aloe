@@ -6,14 +6,14 @@ use Aloe\Command;
 
 class ClassName extends Command
 {
-    public $name = "CommandName";
-    public $description = "CommandName command's description";
-    public $help = "CommandName command's help";
+    protected static $defaultName = "CommandName";
+    private $description = "CommandName command's description";
+    private $help = "CommandName command's help";
 
     /**
      * Configure your command
      */
-    public function config()
+    protected function configure()
     {
         // you can add arguments and options in the config method
         $this
@@ -24,7 +24,7 @@ class ClassName extends Command
     /**
      * Main body for your command
      */
-    public function handle()
+    protected function handle()
     {
         $this->comment(
             "CommandName command's output {$this->argument('argument')} {$this->option('option')}"

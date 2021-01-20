@@ -7,16 +7,16 @@ use Leaf\Str;
 
 class DeleteModelCommand extends Command
 {
-    public $name = "d:model";
-    public $description = "Delete a model";
-    public $help = "Delete a model file";
+    protected static $defaultName = "d:model";
+    private $description = "Delete a model";
+    private $help = "Delete a model file";
 
-    public function config()
+    protected function configure()
     {
         $this->setArgument("model", "required", "model name");
     }
 
-    public function handle()
+    protected function handle()
     {
         $model = Str::studly($this->argument("model"));
         $file = Config::models_path("$model.php");

@@ -7,11 +7,11 @@ use Leaf\FS;
 
 class InstallDebuggerCommand extends \Aloe\Command
 {
-    public $name = "install:debugger";
-    public $description = "Install the leaf app debugger";
-    public $help = "Install the leaf debug tool";
+    protected static $defaultName = "install:debugger";
+    private $description = "Install the leaf app debugger";
+    private $help = "Install the leaf debug tool";
 
-    public function handle()
+    protected function handle()
     {
         $installablesDir = dirname(__DIR__) . "/Scaffold/Debugger";
 

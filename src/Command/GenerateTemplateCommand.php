@@ -4,11 +4,11 @@ namespace Aloe\Command;
 
 class GenerateTemplateCommand extends \Aloe\Command
 {
-    public $name = "g:template";
-    public $description = "Create a new view file";
-    public $help = "Create a new basic view file";
+    protected static $defaultName = "g:template";
+    private $description = "Create a new view file";
+    private $help = "Create a new basic view file";
 
-    public function config()
+    protected function configure()
     {
         $this
             ->setArgument("name", "REQUIRED", "The name of the template to create")
@@ -16,7 +16,7 @@ class GenerateTemplateCommand extends \Aloe\Command
             ->setOption("style", "s", "OPTIONAL", "The style framework to apply: bootstrap", "bootstrap");
     }
 
-    public function handle()
+    protected function handle()
     {
         $templateName = strtolower($this->argument("name"));
         $templateName = $this->getTemplateName($templateName);

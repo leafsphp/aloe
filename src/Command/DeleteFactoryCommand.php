@@ -7,16 +7,16 @@ use Leaf\Str;
 
 class DeleteFactoryCommand extends Command
 {
-    public $name = "d:factory";
-    public $description = "Delete a model factory";
-    public $help = "Delete a model factory";
+    protected static $defaultName = "d:factory";
+    private $description = "Delete a model factory";
+    private $help = "Delete a model factory";
 
-    public function config()
+    protected function configure()
     {
         $this->setArgument("factory", "required", "factory name");
     }
 
-    public function handle()
+    protected function handle()
     {
         $factory = Str::studly(Str::singular($this->argument("factory")));
 

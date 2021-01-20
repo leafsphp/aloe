@@ -7,16 +7,16 @@ use Leaf\Str;
 
 class DeleteSeedCommand extends Command
 {
-    public $name = "d:seed";
-    public $description = "Delete a model seeder";
-    public $help = "Delete a model seeder";
+    protected static $defaultName = "d:seed";
+    private $description = "Delete a model seeder";
+    private $help = "Delete a model seeder";
 
-    public function config()
+    protected function configure()
     {
         $this->setArgument("seed", "required", "seeder name");
     }
 
-    public function handle()
+    protected function handle()
     {
         $seeder = Str::studly($this->argument("seed"));
 

@@ -7,18 +7,18 @@ use Leaf\Str;
 
 class DatabaseMigrationCommand extends Command
 {
-    public $name = "db:migrate";
-    public $description = "Run the database migrations";
-    public $help = "Run the migrations defined in the migrations directory\n";
+    protected static $defaultName = "db:migrate";
+    private $description = "Run the database migrations";
+    private $help = "Run the migrations defined in the migrations directory\n";
 
-    public function config()
+    protected function configure()
     {
         $this->setOption('file', 'f', "optional", 'Rollback a particular file');
         $this->setOption('seed', 's', "none", 'Run seeds after migration');
     }
 
 
-    public function handle()
+    protected function handle()
     {
         $fileToRollback = $this->option('file');
         $migrations = glob(Config::migrations_path('*.php'));

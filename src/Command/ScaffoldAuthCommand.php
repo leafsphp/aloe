@@ -8,18 +8,18 @@ use Leaf\Str;
 
 class ScaffoldAuthCommand extends \Aloe\Command
 {
-    public $name = "scaffold:auth";
-    public $description = "Scaffold basic app authentication";
-    public $help = "Create basic views, routes and controllers for authentication";
+    protected static $defaultName = "scaffold:auth";
+    private $description = "Scaffold basic app authentication";
+    private $help = "Create basic views, routes and controllers for authentication";
 
-    public function config()
+    protected function configure()
     {
         $this
             ->setOption("session", "s", "NONE", "Use session/session + JWT instead of just JWT")
             ->setOption("api", "a", "NONE", "Use JWT for authentication");
     }
 
-    public function handle()
+    protected function handle()
     {
         $driver = "session";
 

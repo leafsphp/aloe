@@ -7,16 +7,16 @@ use Leaf\Str;
 
 class GenerateFactoryCommand extends Command
 {
-    public $name = 'g:factory';
-    public $description = 'Create a new model factory';
-    public $help = 'Create a new model factory';
+    protected static $defaultName = 'g:factory';
+    private $description = 'Create a new model factory';
+    private $help = 'Create a new model factory';
 
-    public function config()
+    protected function configure()
     {
         $this->setArgument("factory", "required", "factory name");
     }
 
-    public function handle()
+    protected function handle()
     {
         $factory = Str::studly(Str::singular($this->argument("factory")));
 
