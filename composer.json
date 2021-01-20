@@ -9,7 +9,7 @@
         {
             "name": "Michael Darko",
             "email": "mickdd22@gmail.com",
-            "homepage": "https://mychi.netlify.com",
+            "homepage": "https://mychi.netlify.app",
             "role": "Developer"
         }
     ],
@@ -21,7 +21,7 @@
     "minimum-stability": "stable",
     "require": {
         "psy/psysh": "^0.9.9",
-        "symfony/console": "^4.3.4",
+        "symfony/console": "^4.3|^5.1",
         "vlucas/phpdotenv": "^3.6"
     },
     "require-dev": {
