@@ -8,10 +8,10 @@ use Leaf\Str;
 class DeleteConsoleCommand extends Command
 {
     protected static $defaultName = "d:command";
-    private $description = "Delete a console command";
-    private $help = "Delete a console command";
+    public $description = "Delete a console command";
+    public $help = "Delete a console command";
 
-    protected function configure()
+    protected function config()
     {
         $this->setArgument("file", "required", "The name of the console file");
     }

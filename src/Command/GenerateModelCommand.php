@@ -8,10 +8,10 @@ use Leaf\Str;
 class GenerateModelCommand extends Command
 {
     protected static $defaultName = "g:model";
-    private $description = "Create a new model class";
-    private $help = "Create a new model class";
+    public $description = "Create a new model class";
+    public $help = "Create a new model class";
 
-    protected function configure()
+    protected function config()
     {
         $this
             ->setArgument('model', "required", 'model file name')

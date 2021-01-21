@@ -8,10 +8,10 @@ use Leaf\Str;
 class GenerateControllerCommand extends Command
 {
     protected static $defaultName = 'g:controller';
-    private $description = 'Create a new controller class';
-    private $help = 'Create a new controller class';
+    public $description = 'Create a new controller class';
+    public $help = 'Create a new controller class';
 
-    protected function configure()
+    protected function config()
     {
         $this
             ->setArgument("controller", "required", 'controller name')

@@ -5,8 +5,8 @@ namespace Aloe\Command;
 class AppDownCommand extends \Aloe\Command
 {
     protected static $defaultName = "app:down";
-    private $description = "Place app in maintainance mode";
-    private $help = "Set app in maintainance mode";
+    public $description = "Place app in maintainance mode";
+    public $help = "Set app in maintainance mode";
 
     protected function handle()
     {

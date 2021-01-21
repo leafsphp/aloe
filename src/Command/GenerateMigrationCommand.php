@@ -8,10 +8,10 @@ use Leaf\Str;
 class GenerateMigrationCommand extends Command
 {
     protected static $defaultName = "g:migration";
-    private $description = "Create a new migration file";
-    private $help = "Create a new migration file";
+    public $description = "Create a new migration file";
+    public $help = "Create a new migration file";
 
-    protected function configure()
+    protected function config()
     {
         $this->setArgument("migration", "required", "migration file name");
     }

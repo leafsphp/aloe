@@ -8,10 +8,10 @@ use Leaf\Str;
 class GenerateConsoleCommand extends Command
 {
     protected static $defaultName = "g:command";
-    private $description = "Create a new console command";
-    private $help = "Create a custom aloe cli command";
+    public $description = "Create a new console command";
+    public $help = "Create a custom aloe cli command";
 
-    protected function configure()
+    protected function config()
     {
         $this->setArgument("consoleCommand", "required", 'command name');
     }

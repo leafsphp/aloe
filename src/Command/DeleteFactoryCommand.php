@@ -8,10 +8,10 @@ use Leaf\Str;
 class DeleteFactoryCommand extends Command
 {
     protected static $defaultName = "d:factory";
-    private $description = "Delete a model factory";
-    private $help = "Delete a model factory";
+    public $description = "Delete a model factory";
+    public $help = "Delete a model factory";
 
-    protected function configure()
+    protected function config()
     {
         $this->setArgument("factory", "required", "factory name");
     }

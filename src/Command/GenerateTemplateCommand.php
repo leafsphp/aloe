@@ -5,10 +5,10 @@ namespace Aloe\Command;
 class GenerateTemplateCommand extends \Aloe\Command
 {
     protected static $defaultName = "g:template";
-    private $description = "Create a new view file";
-    private $help = "Create a new basic view file";
+    public $description = "Create a new view file";
+    public $help = "Create a new basic view file";
 
-    protected function configure()
+    protected function config()
     {
         $this
             ->setArgument("name", "REQUIRED", "The name of the template to create")

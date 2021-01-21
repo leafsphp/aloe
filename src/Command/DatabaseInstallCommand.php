@@ -7,8 +7,8 @@ use \Aloe\Command;
 class DatabaseInstallCommand extends Command
 {
     protected static $defaultName = "db:install";
-    private $description = "Create new database from .env variables";
-    private $help = "Create new database from .env variables";
+    public $description = "Create new database from .env variables";
+    public $help = "Create new database from .env variables";
 
     protected function handle()
     {

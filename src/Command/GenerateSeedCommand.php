@@ -8,10 +8,10 @@ use Leaf\Str;
 class GenerateSeedCommand extends Command
 {
 	protected static $defaultName = "g:seed";
-	private $description = "Create a new seed file";
-	private $help = "Create a new seed file";
+	public $description = "Create a new seed file";
+	public $help = "Create a new seed file";
 
-	protected function configure()
+	protected function config()
 	{
 		$this
 			->setArgument('model', "required", "model name")

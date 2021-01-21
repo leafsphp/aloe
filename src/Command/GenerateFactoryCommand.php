@@ -8,10 +8,10 @@ use Leaf\Str;
 class GenerateFactoryCommand extends Command
 {
     protected static $defaultName = 'g:factory';
-    private $description = 'Create a new model factory';
-    private $help = 'Create a new model factory';
+    public $description = 'Create a new model factory';
+    public $help = 'Create a new model factory';
 
-    protected function configure()
+    protected function config()
     {
         $this->setArgument("factory", "required", "factory name");
     }

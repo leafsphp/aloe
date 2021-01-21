@@ -5,8 +5,8 @@ namespace Aloe\Command;
 class AloeInstallCommand extends \Aloe\Command
 {
     protected static $defaultName = "aloe:config";
-    private $description = "Install aloe config";
-    private $help = "Set up aloe CLI files in project";
+    public $description = "Install aloe config";
+    public $help = "Set up aloe CLI files in project";
 
     protected function handle()
     {

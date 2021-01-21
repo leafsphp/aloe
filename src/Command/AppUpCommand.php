@@ -5,8 +5,8 @@ namespace Aloe\Command;
 class AppUpCommand extends \Aloe\Command
 {
     protected static $defaultName = "app:up";
-    private $description = "Remove app from maintainance mode";
-    private $help = "Set app in normal mode";
+    public $description = "Remove app from maintainance mode";
+    public $help = "Set app in normal mode";
 
     protected function handle()
     {

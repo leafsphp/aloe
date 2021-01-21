@@ -1,7 +1,7 @@
 <!-- markdownlint-disable no-duplicate-header -->
 # Changelog
 
-## v1.1.0 [BETA] - Sunset Aloe (BETA) - 20th January, 2020
+## v1.1.0 [BETA] - Sunset Aloe (BETA) - 21st January, 2021
 
 This version brings in a ton of new features after a month of extensive usage and better integration with Leaf MVC 3 (BETA).
 
@@ -26,7 +26,7 @@ This version brings in a ton of new features after a month of extensive usage an
 
 ### Removed
 
-- Removed `Command::config` method, command configuration is now done in `Command::configure`
+- Nothing was removed
 
 ## v1.0.0 - Harlana - 15th November, 2020
 

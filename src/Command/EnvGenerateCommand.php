@@ -7,8 +7,8 @@ use Aloe\Command;
 class EnvGenerateCommand extends Command
 {
     protected static $defaultName = "env:generate";
-    private $description = "Generate .env file";
-    private $help = "Generate .env file";
+    public $description = "Generate .env file";
+    public $help = "Generate .env file";
 
     protected function handle()
     {

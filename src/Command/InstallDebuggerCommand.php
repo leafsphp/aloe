@@ -8,8 +8,8 @@ use Leaf\FS;
 class InstallDebuggerCommand extends \Aloe\Command
 {
     protected static $defaultName = "install:debugger";
-    private $description = "Install the leaf app debugger";
-    private $help = "Install the leaf debug tool";
+    public $description = "Install the leaf app debugger";
+    public $help = "Install the leaf debug tool";
 
     protected function handle()
     {

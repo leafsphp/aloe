@@ -33,17 +33,17 @@ class Command extends BaseCommand
     /**
      * The name of command to run in console
      */
-    private $name;
+    public $name;
 
     /**
      * Description for command
      */
-    private $description;
+    public $description;
 
     /**
      * Help for command
      */
-    private $help;
+    public $help;
 
     /**
      * The input object
@@ -52,25 +52,6 @@ class Command extends BaseCommand
      */
     protected $input;
 
-    /**
-     * The output object
-     * 
-     * @var OutputInterface
-     */
-    protected $output;
-
-    private $application;
-    private $processTitle;
-    private $aliases = [];
-    private $definition;
-    private $hidden = false;
-    private $fullDefinition;
-    private $ignoreValidationErrors = false;
-    private $code;
-    private $synopsis = [];
-    private $usages = [];
-    private $helperSet;
-
     public const SUCCESS = 0;
     public const FAILURE = 1;
 
@@ -78,6 +59,26 @@ class Command extends BaseCommand
      * Configures the current command.
      */
     protected function configure()
+    {
+        if ($this->name) {
+            $this->setName($this->name);
+        }
+
+        if ($this->description) {
+            $this->setDescription($this->description);
+        }
+
+        if ($this->help) {
+            $this->setHelp($this->help);
+        }
+
+        $this->config();
+    }
+
+    /**
+     * Configures the current command
+     */
+    protected function config()
     {
         //
     }

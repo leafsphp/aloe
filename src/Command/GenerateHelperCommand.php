@@ -8,10 +8,10 @@ use Leaf\Str;
 class GenerateHelperCommand extends Command
 {
     protected static $defaultName = "g:helper";
-    private $description = "Create a new helper class";
-    private $help = "Create a new helper class";
+    public $description = "Create a new helper class";
+    public $help = "Create a new helper class";
 
-    protected function configure()
+    protected function config()
     {
         $this->setArgument("helper", "required", 'helper name');
     }

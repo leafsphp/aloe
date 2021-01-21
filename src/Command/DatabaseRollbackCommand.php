@@ -8,10 +8,10 @@ use Leaf\Str;
 class DatabaseRollbackCommand extends Command
 {
     protected static $defaultName = "db:rollback";
-    private $description = "Rollback all database migrations";
-    private $help = "Rollback database migrations, add -f to rollback a specific file. Don't use -s and -f together\n";
+    public $description = "Rollback all database migrations";
+    public $help = "Rollback database migrations, add -f to rollback a specific file. Don't use -s and -f together\n";
 
-    protected function configure()
+    protected function config()
     {
         $this
             ->setOption('step', 's', "optional", 'The batch to rollback', 'all')

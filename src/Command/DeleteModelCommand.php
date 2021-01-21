@@ -8,10 +8,10 @@ use Leaf\Str;
 class DeleteModelCommand extends Command
 {
     protected static $defaultName = "d:model";
-    private $description = "Delete a model";
-    private $help = "Delete a model file";
+    public $description = "Delete a model";
+    public $help = "Delete a model file";
 
-    protected function configure()
+    protected function config()
     {
         $this->setArgument("model", "required", "model name");
     }

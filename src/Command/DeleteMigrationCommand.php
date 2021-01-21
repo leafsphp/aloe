@@ -8,10 +8,10 @@ use Leaf\Str;
 class DeleteMigrationCommand extends Command
 {
     protected static $defaultName = "d:migration";
-    private $description = "Delete a migration";
-    private $help = "Delete a particular migration file";
+    public $description = "Delete a migration";
+    public $help = "Delete a particular migration file";
 
-    protected function configure()
+    protected function config()
     {
         $this->setArgument('file', "required", 'File to delete');
     }

@@ -7,8 +7,8 @@ use Aloe\Command;
 class DatabaseSeedCommand extends Command
 {
     protected static $defaultName = "db:seed";
-    private $description = "Seed the database with records";
-    private $help = "Seed the database with records";
+    public $description = "Seed the database with records";
+    public $help = "Seed the database with records";
 
     protected function handle()
     {

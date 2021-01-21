@@ -8,10 +8,10 @@ use Leaf\Str;
 class DatabaseMigrationCommand extends Command
 {
     protected static $defaultName = "db:migrate";
-    private $description = "Run the database migrations";
-    private $help = "Run the migrations defined in the migrations directory\n";
+    public $description = "Run the database migrations";
+    public $help = "Run the migrations defined in the migrations directory\n";
 
-    protected function configure()
+    protected function config()
     {
         $this->setOption('file', 'f', "optional", 'Rollback a particular file');
         $this->setOption('seed', 's', "none", 'Run seeds after migration');

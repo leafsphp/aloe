@@ -8,10 +8,10 @@ use Leaf\Str;
 class DeleteControllerCommand extends Command
 {
     protected static $defaultName = "d:controller";
-    private $description = 'Delete a controller';
-    private $help = 'Delete a controller';
+    public $description = 'Delete a controller';
+    public $help = 'Delete a controller';
 
-    protected function configure()
+    protected function config()
     {
         $this->setArgument("controller", "required", "controller name");
     }

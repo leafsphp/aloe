@@ -9,10 +9,10 @@ use Leaf\Str;
 class ScaffoldAuthCommand extends \Aloe\Command
 {
     protected static $defaultName = "scaffold:auth";
-    private $description = "Scaffold basic app authentication";
-    private $help = "Create basic views, routes and controllers for authentication";
+    public $description = "Scaffold basic app authentication";
+    public $help = "Create basic views, routes and controllers for authentication";
 
-    protected function configure()
+    protected function config()
     {
         $this
             ->setOption("session", "s", "NONE", "Use session/session + JWT instead of just JWT")

@@ -8,10 +8,10 @@ use Leaf\Str;
 class DeleteSeedCommand extends Command
 {
     protected static $defaultName = "d:seed";
-    private $description = "Delete a model seeder";
-    private $help = "Delete a model seeder";
+    public $description = "Delete a model seeder";
+    public $help = "Delete a model seeder";
 
-    protected function configure()
+    protected function config()
     {
         $this->setArgument("seed", "required", "seeder name");
     }
