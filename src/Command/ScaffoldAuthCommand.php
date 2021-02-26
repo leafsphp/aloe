@@ -27,6 +27,10 @@ class ScaffoldAuthCommand extends \Aloe\Command
             $driver = "api";
         }
 
+        if (Config::$env === "API" && !$this->option("session")) {
+            $driver = "api";
+        }
+
         $installablesDir = $this->installable($driver);
         
         Installer::magicCopy($installablesDir);
