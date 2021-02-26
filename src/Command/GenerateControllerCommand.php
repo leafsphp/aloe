@@ -80,7 +80,7 @@ class GenerateControllerCommand extends Command
     protected function generateExtraFiles($modelName)
     {
         if ($this->option("all")) {
-            $process = $this->runProcess("php leaf g:model $modelName -m");
+            $process = $this->runProcess(["php", "leaf", "g:model", $modelName, "-m"]);
             $this->comment(
                 $process === 0 ?
                     "Model & Migration generated successfully!" :
@@ -88,7 +88,7 @@ class GenerateControllerCommand extends Command
             );
 
             if (Config::$env === "WEB") {
-                $process = $this->runProcess("php leaf g:template $modelName");
+                $process = $this->runProcess(["php", "leaf", "g:template", $modelName]);
                 $this->comment(
                     $process === 0 ?
                         "Template generated successfully!" :
@@ -97,7 +97,7 @@ class GenerateControllerCommand extends Command
             }
         } else {
             if ($this->option("model")) {
-                $process = $this->runProcess("php leaf g:model $modelName");
+                $process = $this->runProcess(["php", "leaf", "g:model", $modelName]);
                 $this->comment(
                     $process === 0 ?
                         "Model generated successfully!" :
@@ -106,7 +106,7 @@ class GenerateControllerCommand extends Command
             }
 
             if ($this->option("template")) {
-                $process = $this->runProcess("php leaf g:template $modelName");
+                $process = $this->runProcess(["php", "leaf", "g:template", $modelName]);
                 $this->comment(
                     $process === 0 ?
                         "Template generated successfully!" :

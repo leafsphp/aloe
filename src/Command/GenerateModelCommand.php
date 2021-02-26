@@ -44,7 +44,7 @@ class GenerateModelCommand extends Command
 
         if ($this->option('migration')) {
             $migration = Str::snake(Str::plural($model));
-            $process = $this->runProcess("php aloe g:migration $migration");
+            $process = $this->runProcess(["php", "leaf", "g:migration", $migration]);
 
             $this->info(
                 $process === 0 ?
