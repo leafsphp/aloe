@@ -9,6 +9,5 @@ $app->group("/auth", function () use ($app) {
 
 $app->group("/user", function () use ($app) {
     $app->get("/", "Auth\AccountController@user");
-    $app->get("/update", "Auth\AccountController@show_update");
     $app->post("/update", "Auth\AccountController@update");
 });

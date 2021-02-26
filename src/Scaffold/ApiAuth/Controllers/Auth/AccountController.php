@@ -8,38 +8,15 @@ class AccountController extends Controller
 {
     public function user()
     {
-        Auth::guard("auth");
-
         $user = Auth::user("users", ["password"]);
 
-        if (!$user) {
-            return Auth::endSession("GUARD_LOGIN");
-        }
+        if (!$user) throwErr(Auth::errors());
 
-        render("pages.auth.account", [
-            "user" => $user,
-            "keys" => array_keys($user),
-        ]);
-    }
-
-    public function show_update()
-    {
-        Auth::guard("auth");
-
-        $user = Auth::user();
-
-        render("pages.auth.update", [
-            "user" => Auth::id(),
-            "username" => $user["username"] ?? null,
-            "email" => $user["email"] ?? null,
-            "name" => $user["name"] ?? null,
-        ]);
+        json($user);
     }
 
     public function update()
     {
-        Auth::guard("auth");
-
         $userId = Auth::id();
 
         $data = request(["username", "email", "name"]);
@@ -68,15 +45,8 @@ class AccountController extends Controller
 
         $user = Auth::update("users", $data, $where, $uniques);
 
-        if (!$user) {
-            return render("pages.auth.update", [
-                "errors" => Auth::errors(),
-                "username" => $data["username"] ?? null,
-                "email" => $data["email"] ?? null,
-                "name" => $data["name"] ?? null,
-            ]);
-        }
+        if (!$user) throwErr(Auth::errors());
 
-        response()->redirect("/user");
+        json($user);
     }
 }
