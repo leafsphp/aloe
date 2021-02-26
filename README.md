@@ -11,9 +11,9 @@
 [![Total Downloads](https://poser.pugx.org/leafs/leaf/downloads)](https://packagist.org/packages/leafs/leaf)
 [![License](https://poser.pugx.org/leafs/leaf/license)](https://packagist.org/packages/leafs/leaf) -->
 
-# Aloe CLI 1.0 (Harlana🍀)
+# Aloe CLI
 
-Aloe is CLI that comes with Leaf API and Leaf MVC v2 upwards. It ties into the Leaf console tool and totally replaces all it's functionality. Aloe exists at the root of your application as the `leaf` script and provides a number of helpful commands that can assist you while you build your application. To view all available commands, you can use the `list` command or call `leaf`.
+Aloe is a CLI tool that comes with Leaf API and Leaf MVC v2 upwards. It ties into the Leaf console tool and totally replaces all it's functionality. Aloe exists at the root of your application in the `leaf` script and provides a number of helpful commands that can assist you while you build your application. To view all available commands, you can use the `list` command or call `leaf`.
 
 ```bash
 php leaf list
@@ -24,7 +24,7 @@ php leaf
 Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, precede the name of the command with help:
 
 ```sh
-php leaf help migrate
+php leaf help db:migrate
 ```
 
 ## Interact (REPL)
@@ -75,9 +75,9 @@ use Aloe\Command;
 
 class ExampleCommand extends Command
 {
-    protected $command = "mail:send";
-    protected $description = "mail:send command's description";
-    protected $help = "mail:send command's help";
+    protected static $defaultName = "mail:send";
+    public $description = "mail:send command's description";
+    public $help = "mail:send command's help";
 
     public function handle()
     {
@@ -111,10 +111,6 @@ public function handle()
 }
 ```
 
-### IO
-
-Stuff about input and output
-
 ### Registering Commands
 
 By default, aloe cli registers all commands generated, however, if you have a command you want to register manually, or commands from a package which need to use Aloe, you can also add them pretty easily.
@@ -142,6 +138,6 @@ $aloe->register([
 ]);
 ```
 
-**This file is still being edited...**
+**Read the [full documentation](https://leafphp.netlify.app/#/aloe-cli/) for all of Aloe's features.**
 
 Built with ❤ by [**Mychi Darko**](//mychi.netlify.app)
