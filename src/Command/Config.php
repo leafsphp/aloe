@@ -42,7 +42,8 @@ class Config
         $paths = !$path ? $paths : $paths[$path] ?? null;
 
         if (empty($paths) || !$paths) {
-            return require static::rootpath(static::$pathsConfig);
+            $paths = require static::rootpath(static::$pathsConfig);
+            $paths = !$path ? $paths : $paths[$path];
         }
 
         return $paths;
