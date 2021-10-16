@@ -9,9 +9,9 @@ class LoginController extends Controller
 {
     public function index()
     {
-        list($username, $password) = requestData(["username", "password"], true, true);
+        list($username, $password) = request()->get(["username", "password"], true, true);
 
-        Form::rule("max", function($field, $value, $params) {
+        Form::rule("max", function ($field, $value, $params) {
             if (strlen($value) > $params) {
                 Form::addError($field, "$field can't be more than $params characters");
                 return false;
@@ -23,22 +23,20 @@ class LoginController extends Controller
             "password" => "min:8",
         ]);
 
-        if (!$validation) throwErr(Form::errors());
+        if (!$validation) response()->throwErr(Form::errors());
 
         $user = Auth::login("users", [
             "username" => $username,
             "password" => $password
         ]);
 
-        if (!$user) throwErr(Auth::errors());
+        if (!$user) response()->throwErr(Auth::errors());
 
-        json($user);
+        response()->json($user);
     }
 
     public function logout()
     {
-        // If you use session with your tokens, you
-        // might want to remove all the saved data here
-        json("Logged out successfully!");
+        response()->json("Logged out successfully!");
     }
 }

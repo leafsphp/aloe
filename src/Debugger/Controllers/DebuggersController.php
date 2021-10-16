@@ -9,7 +9,7 @@ class DebuggersController extends \App\Controllers\Controller
         $blade = new \Leaf\Blade;
         $blade->configure("vendor/leafs/aloe/src/Debugger/Views/", "storage/framework/views/");
 
-        markup($blade->render("debugger", [
+        response()->markup($blade->render("debugger", [
             "routes" => app()->routes(),
         ]));
     }

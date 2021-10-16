@@ -10,9 +10,9 @@ class AccountController extends Controller
     {
         $user = Auth::user("users", ["password"]);
 
-        if (!$user) throwErr(Auth::errors());
+        if (!$user) response()->throwErr(Auth::errors());
 
-        json($user);
+        response()->json($user);
     }
 
     public function update()
@@ -23,7 +23,6 @@ class AccountController extends Controller
         $dataKeys = array_keys($data);
 
         $where = ["id" => $userId];
-
         $uniques = ["username", "email"];
 
         foreach ($dataKeys as $key) {
@@ -45,8 +44,8 @@ class AccountController extends Controller
 
         $user = Auth::update("users", $data, $where, $uniques);
 
-        if (!$user) throwErr(Auth::errors());
+        if (!$user) response()->throwErr(Auth::errors());
 
-        json($user);
+        response()->json($user);
     }
 }

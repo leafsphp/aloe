@@ -18,7 +18,7 @@ class LoginController extends Controller
     {
         Auth::guard("guest");
 
-        list($username, $password) = requestData(["username", "password"], true, true);
+        list($username, $password) = request()->get(["username", "password"], true, true);
 
         $this->form->validate([
             "username" => "validUsername",

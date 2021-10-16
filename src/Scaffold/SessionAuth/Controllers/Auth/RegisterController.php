@@ -17,7 +17,7 @@ class RegisterController extends Controller
     {
         Auth::guard("guest");
 
-        $credentials = requestData(["username", "email", "password"]);
+        $credentials = request(["username", "email", "password"]);
 
         $this->form->validate([
             "username" => "validUsername",
