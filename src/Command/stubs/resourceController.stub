@@ -19,7 +19,7 @@ class ClassName extends Controller
         | example
         |
         */
-        // respond(ModelName::all());
+        // response(ModelName::all());
     }
 
     /**
