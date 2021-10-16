@@ -24,7 +24,7 @@ class GenerateTemplateCommand extends \Aloe\Command
 
         $fileContents = str_replace(
             "pagename",
-            \Leaf\Str::studly($this->argument("name")),
+            \Illuminate\Support\Str::studly($this->argument("name")),
             $this->generateTemplateData()
         );
 
@@ -38,9 +38,9 @@ class GenerateTemplateCommand extends \Aloe\Command
         if ($this->option("type") === "html") {
             $templateName .= ".html";
         } else if ($this->option("type") === "jsx") {
-            $templateName = \Leaf\Str::studly($templateName) . ".jsx";
+            $templateName = \Illuminate\Support\Str::studly($templateName) . ".jsx";
         } else if ($this->option("type") === "vue") {
-            $templateName = \Leaf\Str::studly($templateName) . ".vue";
+            $templateName = \Illuminate\Support\Str::studly($templateName) . ".vue";
         } else {
             $templateName .= ".blade.php";
         }

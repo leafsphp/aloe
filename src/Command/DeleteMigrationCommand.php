@@ -3,7 +3,7 @@
 namespace Aloe\Command;
 
 use Aloe\Command;
-use Leaf\Str;
+use Illuminate\Support\Str;
 
 class DeleteMigrationCommand extends Command
 {

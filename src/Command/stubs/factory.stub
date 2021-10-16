@@ -3,7 +3,7 @@
 namespace App\Database\Factories;
 
 use App\Models\ModelName;
-use Leaf\Str;
+use Illuminate\Support\Str;
 
 class ClassName extends Factory
 {
