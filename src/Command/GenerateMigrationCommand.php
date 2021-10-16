@@ -25,7 +25,7 @@ class GenerateMigrationCommand extends Command
         }
 
         $actualFileName = Str::snake(date("Y_m_d_His") . "_$userInput.php");
-        $file = Config::migrations_path($actualFileName);
+        $file = Config::migrationsPath($actualFileName);
 
         touch($file);
 

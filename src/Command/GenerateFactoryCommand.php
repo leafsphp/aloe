@@ -26,7 +26,7 @@ class GenerateFactoryCommand extends Command
 
         $modelName = str_replace("Factory", "", $factory);
 
-        $file = Config::factories_path("$factory.php");
+        $file = Config::factoriesPath("$factory.php");
 
         if (file_exists($file)) {
             return $this->error("$factory already exists");

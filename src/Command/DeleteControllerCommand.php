@@ -25,7 +25,7 @@ class DeleteControllerCommand extends Command
             $controller .= "Controller";
         }
 
-        $controllerFile = Config::controllers_path("$controller.php");
+        $controllerFile = Config::controllersPath("$controller.php");
 
         if (!file_exists($controllerFile)) {
             return $this->error("$controller doesn't exist!");

@@ -12,12 +12,12 @@ class DatabaseSeedCommand extends Command
 
     protected function handle()
     {
-        if (!file_exists(Config::seeds_path("DatabaseSeeder.php"))) {
+        if (!file_exists(Config::seedsPath("DatabaseSeeder.php"))) {
             return $this->error("DatabaseSeeder not found! Refer to the docs.");
         }
 
         $seeder = new Config::$seeder;
-        $seeds = glob(Config::seeds_path("*.php"));
+        $seeds = glob(Config::seedsPath("*.php"));
 
         if (count($seeds) === 1) {
             return $this->error("No seeds found! Create one with the g:seed command.");

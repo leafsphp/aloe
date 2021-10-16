@@ -24,7 +24,7 @@ class DeleteConsoleCommand extends Command
             $command .= "Command";
         }
 
-        $file = Config::commands_path("$command.php");
+        $file = Config::commandsPath("$command.php");
 
         if (!file_exists($file)) {
             return $this->error("$command doesn't exist!");

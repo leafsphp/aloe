@@ -20,7 +20,7 @@ class GenerateTemplateCommand extends \Aloe\Command
     {
         $templateName = strtolower($this->argument("name"));
         $templateName = $this->getTemplateName($templateName);
-        $template = Config::views_path($templateName);
+        $template = Config::viewsPath($templateName);
 
         $fileContents = str_replace(
             "pagename",

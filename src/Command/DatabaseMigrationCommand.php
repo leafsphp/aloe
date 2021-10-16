@@ -21,7 +21,7 @@ class DatabaseMigrationCommand extends Command
     protected function handle()
     {
         $fileToRollback = $this->option('file');
-        $migrations = glob(Config::migrations_path('*.php'));
+        $migrations = glob(Config::migrationsPath('*.php'));
 
         foreach ($migrations as $migration) {
             $file = pathinfo($migration);
@@ -33,7 +33,7 @@ class DatabaseMigrationCommand extends Command
                 if ($fileToRollback) {
                     if (strpos($migration, Str::snake("_create_$fileToRollback.php")) !== false) {
                         $this->migrate($className, $filename);
-                        $this->info("db migration on " . asComment(str_replace(Config::migrations_path(), "", $migration)));
+                        $this->info("db migration on " . asComment(str_replace(Config::migrationsPath(), "", $migration)));
 
                         if ($this->option("seed")) {
                             $seederClass = $this->seedTable(str_replace(
@@ -53,7 +53,7 @@ class DatabaseMigrationCommand extends Command
                     continue;
                 } else {
                     $this->migrate($className, $filename);
-                    $this->writeln("> db migration on " . asComment(str_replace(Config::migrations_path(), "", $migration)));
+                    $this->writeln("> db migration on " . asComment(str_replace(Config::migrationsPath(), "", $migration)));
 
                     if ($this->option("seed")) {
                         $seederClass = $this->seedTable(str_replace(
@@ -75,7 +75,7 @@ class DatabaseMigrationCommand extends Command
 
     protected function migrate($className, $filename)
     {
-        require_once Config::migrations_path("$filename.php", false);
+        require_once Config::migrationsPath("$filename.php", false);
 
         $class = new $className;
         $class->up();

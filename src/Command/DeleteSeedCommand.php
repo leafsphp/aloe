@@ -25,7 +25,7 @@ class DeleteSeedCommand extends Command
             $seeder .= "Seeder";
         }
 
-        $seederFile = Config::seeds_path("$seeder.php");
+        $seederFile = Config::seedsPath("$seeder.php");
 
         if (!file_exists($seederFile)) {
             return $this->error("$seeder doesn't exist!");

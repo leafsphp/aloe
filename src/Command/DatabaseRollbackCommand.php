@@ -20,7 +20,7 @@ class DatabaseRollbackCommand extends Command
 
     protected function handle()
     {
-        $migrations = glob(Config::migrations_path("*.php"));
+        $migrations = glob(Config::migrationsPath("*.php"));
 
         $step = $this->option('step');
         $fileToRollback = $this->option('file');
@@ -53,7 +53,7 @@ class DatabaseRollbackCommand extends Command
         require_once $migration;
         $className = 'App\Database\Migrations\\' . Str::studly(\substr($file['filename'], 17));
 
-        $migrationName = str_replace([Config::migrations_path(), ".php"], "", $migration);
+        $migrationName = str_replace([Config::migrationsPath(), ".php"], "", $migration);
 
         $class = new $className;
         $class->down();

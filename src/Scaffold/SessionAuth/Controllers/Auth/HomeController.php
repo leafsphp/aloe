@@ -10,6 +10,6 @@ class HomeController extends Controller
     {
         Auth::guard("auth");
 
-        render("pages.auth.home");
+        echo view("pages.auth.home");
     }
 }

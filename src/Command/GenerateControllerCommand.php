@@ -34,7 +34,7 @@ class GenerateControllerCommand extends Command
             $controller .= "Controller";
         }
 
-        $controllerFile = Config::controllers_path("$controller.php");
+        $controllerFile = Config::controllersPath("$controller.php");
         $modelName = Str::singular(Str::studly(
             str_replace("Controller", "", $this->argument("controller"))
         ));

@@ -11,7 +11,7 @@ class LoginController extends Controller
     {
         Auth::guard("guest");
 
-        render("pages.auth.login");
+        echo view("pages.auth.login");
     }
 
     public function store()
@@ -30,7 +30,7 @@ class LoginController extends Controller
         ]);
 
         if (!$user) {
-            return render("pages.auth.login", [
+            return view("pages.auth.login", [
                 "errors" => array_merge(
                     Auth::errors(),
                     $this->form->errors()

@@ -10,7 +10,7 @@ class RegisterController extends Controller
     {
         Auth::guard("guest");
 
-        render("pages.auth.register");
+        echo view("pages.auth.register");
     }
     
     public function store()
@@ -32,7 +32,7 @@ class RegisterController extends Controller
         ]);
 
         if (!$user) {
-            return render("pages.auth.register", array_merge([
+            return view("pages.auth.register", array_merge([
                 "errors" => array_merge(Auth::errors(), $this->form->errors()),
             ], request(["username", "email", "password"])));
         }

@@ -30,7 +30,7 @@ class GenerateSeedCommand extends Command
 			$className .= "Seeder";
 		}
 
-		$file = Config::seeds_path("$className.php");
+		$file = Config::seedsPath("$className.php");
 
 		if (file_exists($file)) {
 			return $this->error("$seedName already exists");
@@ -40,7 +40,7 @@ class GenerateSeedCommand extends Command
 
 		$fileContent = \file_get_contents(__DIR__ . '/stubs/seed.stub');
 
-		if ($factory && !file_exists(Config::factories_path("{$modelName}Factory.php"))) {
+		if ($factory && !file_exists(Config::factoriesPath("{$modelName}Factory.php"))) {
 			$fileContent = str_replace(
 				[
 					"// You can directly create db records",
@@ -73,7 +73,7 @@ use App\Models\ModelName;",
 
 		$this->comment("$className generated successfully");
 
-		if ($factory && !file_exists(Config::factories_path("{$modelName}Factory.php"))) {
+		if ($factory && !file_exists(Config::factoriesPath("{$modelName}Factory.php"))) {
 			$this->comment(shell_exec("php leaf g:factory $modelName"));
 		}
 	}

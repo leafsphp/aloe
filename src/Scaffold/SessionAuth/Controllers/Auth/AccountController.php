@@ -16,7 +16,7 @@ class AccountController extends Controller
             return Auth::endSession("GUARD_LOGIN");
         }
 
-        render("pages.auth.account", [
+        echo view("pages.auth.account", [
             "user" => $user,
             "keys" => array_keys($user),
         ]);
@@ -28,7 +28,7 @@ class AccountController extends Controller
 
         $user = Auth::user();
 
-        render("pages.auth.update", [
+        echo view("pages.auth.update", [
             "user" => Auth::id(),
             "username" => $user["username"] ?? null,
             "email" => $user["email"] ?? null,
@@ -69,7 +69,7 @@ class AccountController extends Controller
         $user = Auth::update("users", $data, $where, $uniques);
 
         if (!$user) {
-            return render("pages.auth.update", [
+            return view("pages.auth.update", [
                 "errors" => Auth::errors(),
                 "username" => $data["username"] ?? null,
                 "email" => $data["email"] ?? null,

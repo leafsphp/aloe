@@ -57,48 +57,48 @@ class Config
         return str_replace("//", "/", $path);
     }
 
-    public static function controllers_path($file = null)
+    public static function controllersPath($file = null)
     {
-        return static::rootpath(static::paths("controllers_path") . "/$file");
+        return static::rootpath(static::paths("controllersPath") . "/$file");
     }
 
-    public static function views_path($file = null)
+    public static function viewsPath($file = null)
     {
-        return static::rootpath(static::paths("views_path") . "/$file");
+        return static::rootpath(static::paths("viewsPath") . "/$file");
     }
 
-    public static function config_path($file = null)
+    public static function configPath($file = null)
     {
-        return static::rootpath(static::paths("config_path") . "/$file");
+        return static::rootpath(static::paths("configPath") . "/$file");
     }
 
-    public static function models_path($file = null)
+    public static function modelsPath($file = null)
     {
-        return static::rootpath(static::paths("models_path") . "/$file");
+        return static::rootpath(static::paths("modelsPath") . "/$file");
     }
 
-    public static function migrations_path($file = null)
+    public static function migrationsPath($file = null)
     {
-        return static::rootpath(static::paths("migrations_path") . "/$file");
+        return static::rootpath(static::paths("migrationsPath") . "/$file");
     }
 
-    public static function seeds_path($file = null)
+    public static function seedsPath($file = null)
     {
-        return static::rootpath(static::paths("seeds_path") . "/$file");
+        return static::rootpath(static::paths("seedsPath") . "/$file");
     }
 
-    public static function commands_path($file = null)
+    public static function commandsPath($file = null)
     {
-        return static::rootpath(static::paths("commands_path") . "/$file");
+        return static::rootpath(static::paths("commandsPath") . "/$file");
     }
 
-    public static function helpers_path($file = null)
+    public static function helpersPath($file = null)
     {
-        return static::rootpath(static::paths("helpers_path") . "/$file");
+        return static::rootpath(static::paths("helpersPath") . "/$file");
     }
 
-    public static function factories_path($file = null)
+    public static function factoriesPath($file = null)
     {
-        return static::rootpath(static::paths("factories_path") . "/$file");
+        return static::rootpath(static::paths("factoriesPath") . "/$file");
     }
 }

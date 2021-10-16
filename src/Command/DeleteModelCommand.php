@@ -19,7 +19,7 @@ class DeleteModelCommand extends Command
     protected function handle()
     {
         $model = Str::studly($this->argument("model"));
-        $file = Config::models_path("$model.php");
+        $file = Config::modelsPath("$model.php");
 
         if (!file_exists($file)) {
             return $this->error("$model doesn't exist!");
@@ -32,7 +32,7 @@ class DeleteModelCommand extends Command
 
         $dir = glob("$dirname/*");
 
-        if ($dirname != Config::models_path() && count($dir) == 0) {
+        if ($dirname != Config::modelsPath() && count($dir) == 0) {
             if ($this->confirm(asError("> " . explode("/", $model)[0] . " is empty. Delete folder?"))) {
                 if (rmdir($dirname)) {
                     $this->comment(explode("/", $model)[0] . " deleted successfully!");

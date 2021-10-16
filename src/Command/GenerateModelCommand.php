@@ -27,7 +27,7 @@ class GenerateModelCommand extends Command
             list($dirname, $className) = explode("/", $model);
         }
 
-        $file = Config::models_path("$model.php");
+        $file = Config::modelsPath("$model.php");
 
         if (file_exists($file)) {
             return $this->error("Model already exists");
