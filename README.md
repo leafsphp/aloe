@@ -3,8 +3,8 @@
     <br><br>
     <img src="https://leaf-docs.netlify.app/images/logo.png" height="100"/>
     <h1 align="center">Aloe CLI</h1>
+    <br><br>
     <br>
-    <br><br><br>
 </p>
 
 <!-- [![Latest Stable Version](https://poser.pugx.org/leafs/leaf/v/stable)](https://packagist.org/packages/leafs/leaf)
@@ -15,7 +15,7 @@
 
 Aloe is a CLI tool that comes with Leaf API and Leaf MVC v2 upwards. It ties into the Leaf console tool and totally replaces all it's functionality. Aloe exists at the root of your application in the `leaf` script and provides a number of helpful commands that can assist you while you build your application. To view all available commands, you can use the `list` command or call `leaf`.
 
-```bash
+```sh
 php leaf list
 # or
 php leaf
