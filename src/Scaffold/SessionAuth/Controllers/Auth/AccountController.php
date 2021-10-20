@@ -42,23 +42,12 @@ class AccountController extends Controller
 
         $userId = Auth::id();
 
-        $data = request(["username", "email", "name"]);
+        $data = request()->try(["username", "email", "name"]);
         $dataKeys = array_keys($data);
 
         $where = ["id" => $userId];
 
         $uniques = ["username", "email"];
-
-        foreach ($dataKeys as $key) {
-            if (!$data[$key]) {
-                unset($data[$key]);
-                continue;
-            }
-
-            if (!strlen($data[$key])) {
-                unset($data[$key]);
-            }
-        }
 
         foreach ($uniques as $key => $unique) {
             if (!isset($data[$unique])) {

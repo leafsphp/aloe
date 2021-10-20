@@ -4,7 +4,7 @@
   <section>
     <h1>Login</h1>
     <p>
-      Sign into {{ getenv('APP_NAME') ?? "Leaf MVC" }}
+      Sign into {{ _env("APP_NAME", "Leaf MVC")  }}
     </p>
   </section>
   <form action="/auth/login" method="post">
@@ -19,6 +19,6 @@
     <button class="btn btn-primary">Login</button>
   </form>
   <div class="mt-4">
-    <a href="{{ authConfig('GUARD_REGISTER') }}">Create an account</a>
+    <a href="{{ AuthConfig('GUARD_REGISTER') }}">Create an account</a>
   </div>
 @endsection

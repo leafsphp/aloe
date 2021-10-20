@@ -13,7 +13,7 @@
         <section>
             <h1>Update User</h1>
             <p>
-                Edit your {{ getenv('APP_NAME') ?? "Leaf MVC" }} account.
+                Edit your {{ _env("APP_NAME", "Leaf MVC") }} account.
             </p>
         </section>
         <form action="/user/update" method="post">

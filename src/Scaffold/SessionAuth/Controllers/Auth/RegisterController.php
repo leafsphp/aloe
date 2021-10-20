@@ -32,9 +32,10 @@ class RegisterController extends Controller
         ]);
 
         if (!$user) {
-            return view("pages.auth.register", array_merge([
-                "errors" => array_merge(Auth::errors(), $this->form->errors()),
-            ], request(["username", "email", "password"])));
+            return view("pages.auth.register", array_merge(
+                ["errors" => array_merge(Auth::errors(), $this->form->errors())],
+                $credentials
+            ));
         }
     }
 }
