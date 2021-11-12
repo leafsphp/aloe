@@ -19,7 +19,8 @@
             "Aloe\\": "src"
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+	"prefer-stable": true,
     "require": {
         "psy/psysh": "^0.9.9",
         "symfony/console": "^5.0",
