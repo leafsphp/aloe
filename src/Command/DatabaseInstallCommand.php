@@ -19,7 +19,7 @@ class DatabaseInstallCommand extends Command
         $port = empty(getenv("DB_PORT")) ? 3306 : getenv("DB_DATABASE");
 
         if (\mysqli_query(
-            \mysqli_connect($host, $user, $password, "", $port),
+            \mysqli_connect($host, $user, $password, "", (int)$port),
             "CREATE DATABASE `$database`"
         )) {
             return $this->info("$database created successfully.");
