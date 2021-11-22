@@ -11,10 +11,10 @@ class Config
     public static $configBlueprint = ["paths" => []];
 
     /**Aloe config file path */
-    public static $aloeConfig = "Config/aloe.php";
+    public static $aloeConfig = "config/aloe.php";
 
     /**Aloe paths config file */
-    public static $pathsConfig = "Config/paths.php";
+    public static $pathsConfig = "config/paths.php";
 
     /**Seeder to run when db:seed is called */
     public static $seeder = \App\Database\Seeds\DatabaseSeeder::class;
@@ -54,7 +54,7 @@ class Config
      */
     public static function rootpath($file = null)
     {
-        $path = dirname(dirname(dirname(dirname(dirname(__DIR__))))) . "/$file";
+        $path = dirname(__DIR__, 5) . "/$file";
         return str_replace("//", "/", $path);
     }
 
