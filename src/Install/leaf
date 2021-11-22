@@ -15,23 +15,14 @@ require __DIR__ . '/vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
-| Register The Leaf Command Auto Loader
+| Load MVC Core
 |--------------------------------------------------------------------------
 |
-| Require all the files containing the Leaf Commands
+| MVC core provides Leaf's auto loading, configuration and shortcut
+| functions right off the bat.
 |
 */
-require __DIR__ . '/Config/bootstrap.php';
-
-/*
-|--------------------------------------------------------------------------
-| Initialise App paths
-|--------------------------------------------------------------------------
-|
-| These is the Leaf MVC directory configuration.
-|
-*/
-require __DIR__ . "/Config/paths.php";
+Leaf\Core::paths(PathsConfig());
 
 /*
 |--------------------------------------------------------------------------
@@ -41,34 +32,39 @@ require __DIR__ . "/Config/paths.php";
 | Quickly use our environment variables
 |
 */
-\Dotenv\Dotenv::create(__DIR__)->load();
+try {
+    \Dotenv\Dotenv::create(__DIR__)->load();
+} catch (\Throwable $th) {
+    trigger_error($th);
+}
 
 /*
 |--------------------------------------------------------------------------
-| Initialise Aloe
+| Additional Leaf Database Config
 |--------------------------------------------------------------------------
 |
-| Initialise aloe cli and register default commands.
+| Load leaf database configuration
 |
 */
-$console = new \Aloe\Console("Leaf API", "v2.0");
+Leaf\Database::config(DatabaseConfig());
+Leaf\Database::connect();
 
 /*
 |--------------------------------------------------------------------------
-| Configure Aloe
+| Initialise Leaf CMD
 |--------------------------------------------------------------------------
 |
-| Set aloe environment to Leaf API
+| Initialise aloe CLI
 |
 */
-\Aloe\Command\Config::$env = "API";
+$console = new \Aloe\Console("Leaf MVC", "v3.0");
 
 /*
 |--------------------------------------------------------------------------
-| Add custom command
+| Add commands
 |--------------------------------------------------------------------------
 |
-| If you have a new command to add to Leaf
+| Add custom commands
 |
 */
 $console->register(\App\Console\ExampleCommand::class);
