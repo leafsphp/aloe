@@ -1,6 +1,8 @@
 <?php
+
 namespace App\Models;
 
-class ClassName extends Model {
-
+class ClassName extends Model
+{
+    // 
 }

@@ -3,7 +3,6 @@
 namespace Aloe\Command;
 
 use Aloe\Installer;
-use Leaf\FS;
 
 class InstallDebuggerCommand extends \Aloe\Command
 {
