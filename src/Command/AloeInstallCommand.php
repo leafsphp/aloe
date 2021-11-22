@@ -12,7 +12,7 @@ class AloeInstallCommand extends \Aloe\Command
     {
         $this->writeln("Installing aloe config");
         $aloe = Config::rootpath("leaf");
-        $config = Config::rootpath("Config/aloe.php");
+        $config = Config::configPath("aloe.php");
         $aloeContent = file_get_contents($aloe);
 
         if (file_exists($aloe) && ($this->check($aloeContent, "new \Aloe\Console") && $this->check($aloeContent, "Aloe\Console::boot()"))) {
