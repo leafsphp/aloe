@@ -68,7 +68,7 @@ class GenerateControllerCommand extends Command
 
         $fileContent = file_get_contents(__DIR__ . "/stubs/$stub.stub");
         $fileContent = str_replace(
-            ["ClassName", "ModelName", "view"],
+            ["ClassName", "ModelName", "viewFile"],
             [$controller, $modelName, Str::singular(strtolower(str_replace("Controller", "", $controller)))],
             $fileContent
         );
