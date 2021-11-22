@@ -1,17 +1,18 @@
-<?php 
-namespace App\Database\Migrations;
+<?php
 
 use Leaf\Database;
 use Illuminate\Database\Schema\Blueprint;
 
-class ClassName extends Database {
+class ClassName extends Database
+{
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()  {
-        if(!static::$capsule::schema()->hasTable("tableName")):
+    public function up()
+    {
+        if (!static::$capsule::schema()->hasTable("tableName")) :
             static::$capsule::schema()->create("tableName", function (Blueprint $table) {
                 $table->increments("id");
                 $table->timestamps();
@@ -27,7 +28,8 @@ class ClassName extends Database {
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         static::$capsule::schema()->dropIfExists("tableName");
     }
 }

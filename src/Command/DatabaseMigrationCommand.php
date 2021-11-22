@@ -17,7 +17,6 @@ class DatabaseMigrationCommand extends Command
         $this->setOption('seed', 's', "none", 'Run seeds after migration');
     }
 
-
     protected function handle()
     {
         $fileToRollback = $this->option('file');
@@ -28,7 +27,7 @@ class DatabaseMigrationCommand extends Command
             $filename = $file['filename'];
 
             if ($filename !== "Schema") :
-                $className = '\App\Database\Migrations\\' . Str::studly(\substr($filename, 17));
+                $className = Str::studly(\substr($filename, 17));
 
                 if ($fileToRollback) {
                     if (strpos($migration, Str::snake("_create_$fileToRollback.php")) !== false) {
@@ -46,7 +45,7 @@ class DatabaseMigrationCommand extends Command
                                 $this->writeln(asComment($seederClass) . " seeded successfully!");
                             }
                         }
-                        
+
                         return $this->info("Database migration completed!\n");
                     }
 

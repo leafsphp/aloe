@@ -51,7 +51,7 @@ class DatabaseRollbackCommand extends Command
     protected function down($file, $migration)
     {
         require_once $migration;
-        $className = 'App\Database\Migrations\\' . Str::studly(\substr($file['filename'], 17));
+        $className = Str::studly(\substr($file['filename'], 17));
 
         $migrationName = str_replace([Config::migrationsPath(), ".php"], "", $migration);
 
