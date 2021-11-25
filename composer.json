@@ -24,7 +24,6 @@
     "require": {
         "psy/psysh": "^0.10.9",
         "symfony/console": "^5.3",
-        "vlucas/phpdotenv": "^5.4",
         "illuminate/support": "^8.73",
         "leafs/fs": "^1.0"
     },
