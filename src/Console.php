@@ -79,6 +79,7 @@ class Console
             // Database Commands
             \Aloe\Command\DatabaseInstallCommand::class,
             \Aloe\Command\DatabaseMigrationCommand::class,
+            \Aloe\Command\DatabaseResetCommand::class,
             \Aloe\Command\DatabaseRollbackCommand::class,
             \Aloe\Command\DatabaseSeedCommand::class
         ];
