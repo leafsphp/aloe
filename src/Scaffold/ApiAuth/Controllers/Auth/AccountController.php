@@ -10,7 +10,9 @@ class AccountController extends Controller
     {
         $user = Auth::user("users", ["password"]);
 
-        if (!$user) response()->throwErr(Auth::errors());
+        if (!$user) {
+            response()->throwErr(Auth::errors());
+        }
 
         response()->json($user);
     }
@@ -44,7 +46,9 @@ class AccountController extends Controller
 
         $user = Auth::update("users", $data, $where, $uniques);
 
-        if (!$user) response()->throwErr(Auth::errors());
+        if (!$user) {
+            response()->throwErr(Auth::errors());
+        }
 
         response()->json($user);
     }

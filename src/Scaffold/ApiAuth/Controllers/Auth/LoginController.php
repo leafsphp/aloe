@@ -23,14 +23,18 @@ class LoginController extends Controller
             "password" => "min:8",
         ]);
 
-        if (!$validation) response()->throwErr(Form::errors());
+        if (!$validation) {
+            response()->throwErr(Form::errors());
+        }
 
         $user = Auth::login("users", [
             "username" => $username,
             "password" => $password
         ]);
 
-        if (!$user) response()->throwErr(Auth::errors());
+        if (!$user) {
+            response()->throwErr(Auth::errors());
+        }
 
         response()->json($user);
     }
