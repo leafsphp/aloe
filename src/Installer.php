@@ -30,7 +30,7 @@ class Installer
             foreach ($dir as $installable) {
                 FS::superCopy(
                     "$installableDir/$installable",
-                    Config::rootpath("App/$trueDir/$installable")
+                    Config::rootpath("app/$trueDir/$installable")
                 );
             }
         }
@@ -39,9 +39,9 @@ class Installer
     /**
      * Install routes from routes folder into leaf workspace
      */
-    public static function installRoutes($routesDir, $routeHome = "App/Routes/index.php")
+    public static function installRoutes($routesDir, $routeHome = "app/routes/index.php")
     {
-        $routeHome = Config::rootpath("App/Routes/index.php");
+        $routeHome = Config::rootpath("app/routes/index.php");
         $routeData = FS::readFile($routeHome);
         $routes = FS::listDir($routesDir);
 
