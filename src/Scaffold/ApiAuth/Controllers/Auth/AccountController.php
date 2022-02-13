@@ -8,7 +8,7 @@ class AccountController extends Controller
 {
     public function user()
     {
-        $user = Auth::user("users", ["password"]);
+        $user = Auth::user('users', ['password']);
 
         if (!$user) {
             response()->throwErr(Auth::errors());
@@ -21,11 +21,11 @@ class AccountController extends Controller
     {
         $userId = Auth::id();
 
-        $data = request(["username", "email", "name"]);
+        $data = request(['username', 'email', 'name']);
         $dataKeys = array_keys($data);
 
-        $where = ["id" => $userId];
-        $uniques = ["username", "email"];
+        $where = ['id' => $userId];
+        $uniques = ['username', 'email'];
 
         foreach ($dataKeys as $key) {
             if (!$data[$key]) {
@@ -44,7 +44,7 @@ class AccountController extends Controller
             }
         }
 
-        $user = Auth::update("users", $data, $where, $uniques);
+        $user = Auth::update('users', $data, $where, $uniques);
 
         if (!$user) {
             response()->throwErr(Auth::errors());

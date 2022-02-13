@@ -9,9 +9,9 @@ class LoginController extends Controller
 {
     public function index()
     {
-        list($username, $password) = request()->get(["username", "password"], true, true);
+        list($username, $password) = request()->get(['username', 'password'], true, true);
 
-        Form::rule("max", function ($field, $value, $params) {
+        Form::rule('max', function ($field, $value, $params) {
             if (strlen($value) > $params) {
                 Form::addError($field, "$field can't be more than $params characters");
                 return false;
@@ -19,17 +19,17 @@ class LoginController extends Controller
         });
 
         $validation = Form::validate([
-            "username" => "max:15",
-            "password" => "min:8",
+            'username' => 'max:15',
+            'password' => 'min:8',
         ]);
 
         if (!$validation) {
             response()->throwErr(Form::errors());
         }
 
-        $user = Auth::login("users", [
-            "username" => $username,
-            "password" => $password
+        $user = Auth::login('users', [
+            'username' => $username,
+            'password' => $password
         ]);
 
         if (!$user) {
@@ -41,6 +41,6 @@ class LoginController extends Controller
 
     public function logout()
     {
-        response()->json("Logged out successfully!");
+        response()->json('Logged out successfully!');
     }
 }
