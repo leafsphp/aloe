@@ -9,14 +9,14 @@ class LoginController extends Controller
 {
     public function show()
     {
-        Auth::guard('guest');
+        auth()->guard('guest');
 
         echo view('pages.auth.login');
     }
 
     public function store()
     {
-        Auth::guard('guest');
+        auth()->guard('guest');
 
         list($username, $password) = request()->get(['username', 'password'], true, true);
 
@@ -24,7 +24,7 @@ class LoginController extends Controller
             'username' => 'validUsername',
         ]);
 
-        $user = Auth::login('users', [
+        $user = auth()->login([
             'username' => $username,
             'password' => $password
         ]);
@@ -32,7 +32,7 @@ class LoginController extends Controller
         if (!$user) {
             return view('pages.auth.login', [
                 'errors' => array_merge(
-                    Auth::errors(),
+                    auth()->errors(),
                     $this->form->errors()
                 ),
                 'username' => $username,
@@ -43,8 +43,8 @@ class LoginController extends Controller
 
     public function logout()
     {
-        Auth::guard('auth');
+        auth()->guard('auth');
 
-        Auth::endSession('GUARD_LOGIN');
+        auth()->logout('GUARD_LOGIN');
     }
 }

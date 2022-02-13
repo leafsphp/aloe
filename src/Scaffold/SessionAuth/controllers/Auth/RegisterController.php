@@ -8,16 +8,16 @@ class RegisterController extends Controller
 {
     public function show()
     {
-        Auth::guard('guest');
+        auth()->guard('guest');
 
         echo view('pages.auth.register');
     }
     
     public function store()
     {
-        Auth::guard('guest');
+        auth()->guard('guest');
 
-        $credentials = request(['username', 'email', 'password']);
+        $credentials = request()->get(['username', 'email', 'password']);
 
         $this->form->validate([
             'username' => 'validUsername',
@@ -25,15 +25,15 @@ class RegisterController extends Controller
             'password' => 'required'
         ]);
 
-        Auth::config('SESSION_ON_REGISTER', true);
+        auth()->config('SESSION_ON_REGISTER', true);
 
-        $user = Auth::register('users', $credentials, [
+        $user = auth()->register($credentials, [
             'username', 'email'
         ]);
 
         if (!$user) {
             return view('pages.auth.register', array_merge(
-                ['errors' => array_merge(Auth::errors(), $this->form->errors())],
+                ['errors' => array_merge(auth()->errors(), $this->form->errors())],
                 $credentials
             ));
         }

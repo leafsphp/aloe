@@ -2,18 +2,16 @@
 
 namespace App\Controllers\Auth;
 
-use Leaf\Auth;
-
 class AccountController extends Controller
 {
     public function user()
     {
-        Auth::guard('auth');
+        auth()->guard('auth');
 
-        $user = Auth::user('users', ['password']);
+        $user = auth()->user(['password']);
 
         if (!$user) {
-            return Auth::endSession('GUARD_LOGIN');
+            return auth()->logout('GUARD_LOGIN');
         }
 
         echo view('pages.auth.account', [
@@ -24,12 +22,12 @@ class AccountController extends Controller
 
     public function show_update()
     {
-        Auth::guard('auth');
+        auth()->guard('auth');
 
-        $user = Auth::user();
+        $user = auth()->user();
 
         echo view('pages.auth.update', [
-            'user' => Auth::id(),
+            'user' => auth()->id(),
             'username' => $user['username'] ?? null,
             'email' => $user['email'] ?? null,
             'name' => $user['name'] ?? null,
@@ -38,15 +36,9 @@ class AccountController extends Controller
 
     public function update()
     {
-        Auth::guard('auth');
-
-        $userId = Auth::id();
+        auth()->guard('auth');
 
         $data = request()->try(['username', 'email', 'name']);
-        $dataKeys = array_keys($data);
-
-        $where = ['id' => $userId];
-
         $uniques = ['username', 'email'];
 
         foreach ($uniques as $key => $unique) {
@@ -55,11 +47,11 @@ class AccountController extends Controller
             }
         }
 
-        $user = Auth::update('users', $data, $where, $uniques);
+        $user = auth()->update($data, $uniques);
 
         if (!$user) {
             return view('pages.auth.update', [
-                'errors' => Auth::errors(),
+                'errors' => auth()->errors(),
                 'username' => $data['username'] ?? null,
                 'email' => $data['email'] ?? null,
                 'name' => $data['name'] ?? null,
