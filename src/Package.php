@@ -15,7 +15,7 @@ class Package
 	public static function info()
 	{
 		return json_decode(file_get_contents(
-			dirname(__DIR__) . "/composer.json"
+			dirname(__DIR__) . '/composer.json'
 		));
 	}
 
@@ -35,10 +35,10 @@ class Package
 	public static function ltsInfo()
 	{
 		$package = json_decode(
-			file_get_contents("https://repo.packagist.org/p2/leafs/aloe.json")
+			file_get_contents('https://repo.packagist.org/p2/leafs/aloe.json')
 		);
 
-		return $package->packages->{"leafs/aloe"}[0];
+		return $package->packages->{'leafs/aloe'}[0];
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Package
 		$latestVersion = static::ltsVersion();
 
 		if ($currentVersion !== $latestVersion) {
-			echo "Aloe CLI update available ($latestVersion). Run composer require leafs/aloe to update.\n\n";
+			echo "Aloe CLI update available ($latestVersion). Run `leaf install aloe` or `composer require leafs/aloe` to update.\n\n";
 		}
 	}
 }
