@@ -2,16 +2,14 @@
 
 namespace App\Controllers\Auth;
 
-use Leaf\Auth;
-
 class AccountController extends Controller
 {
     public function user()
     {
-        $user = Auth::user('users', ['password']);
+        $user = auth()->user(['password']);
 
         if (!$user) {
-            response()->throwErr(Auth::errors());
+            response()->throwErr(auth()->errors());
         }
 
         response()->json($user);
@@ -19,24 +17,8 @@ class AccountController extends Controller
 
     public function update()
     {
-        $userId = Auth::id();
-
-        $data = request(['username', 'email', 'name']);
-        $dataKeys = array_keys($data);
-
-        $where = ['id' => $userId];
+        $data = request()->try(['username', 'email', 'name'], true, true);
         $uniques = ['username', 'email'];
-
-        foreach ($dataKeys as $key) {
-            if (!$data[$key]) {
-                unset($data[$key]);
-                continue;
-            }
-
-            if (!strlen($data[$key])) {
-                unset($data[$key]);
-            }
-        }
 
         foreach ($uniques as $key => $unique) {
             if (!isset($data[$unique])) {
@@ -44,10 +26,10 @@ class AccountController extends Controller
             }
         }
 
-        $user = Auth::update('users', $data, $where, $uniques);
+        $user = auth()->update($data, $uniques);
 
         if (!$user) {
-            response()->throwErr(Auth::errors());
+            response()->throwErr(auth()->errors());
         }
 
         response()->json($user);

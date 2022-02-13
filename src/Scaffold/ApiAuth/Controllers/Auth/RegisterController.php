@@ -19,11 +19,11 @@ class RegisterController extends Controller
 
         if (!$validation) response()->throwErr(Form::errors());
 
-        $user = Auth::register('users', $credentials, [
+        $user = auth()->register($credentials, [
             'username', 'email'
         ]);
 
-        if (!$user) response()->throwErr(Auth::errors());
+        if (!$user) response()->throwErr(auth()->errors());
 
         response()->json($user);
     }

@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Auth;
 
-use Leaf\Auth;
 use Leaf\Form;
 
 class LoginController extends Controller
@@ -27,13 +26,13 @@ class LoginController extends Controller
             response()->throwErr(Form::errors());
         }
 
-        $user = Auth::login('users', [
+        $user = auth()->login([
             'username' => $username,
             'password' => $password
         ]);
 
         if (!$user) {
-            response()->throwErr(Auth::errors());
+            response()->throwErr(auth()->errors());
         }
 
         response()->json($user);
