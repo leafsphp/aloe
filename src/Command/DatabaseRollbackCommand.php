@@ -7,20 +7,20 @@ use Illuminate\Support\Str;
 
 class DatabaseRollbackCommand extends Command
 {
-    protected static $defaultName = "db:rollback";
-    public $description = "Rollback all database migrations";
-    public $help = "Rollback database migrations, add -f to rollback a specific file. Don't use -s and -f together\n";
+    protected static $defaultName = 'db:rollback';
+    public $description = 'Rollback all database migrations';
+    public $help = "Rollback database migrations, add -f to rollback a specific file. Don\'t use -s and -f together\n";
 
     protected function config()
     {
         $this
-            ->setOption('step', 's', "optional", 'The batch to rollback', 'all')
-            ->setOption('file', 'f', "optional", 'Rollback a particular file');
+            ->setOption('step', 's', 'optional', 'The batch to rollback', 'all')
+            ->setOption('file', 'f', 'optional', 'Rollback a particular file');
     }
 
     protected function handle()
     {
-        $migrations = glob(Config::migrationsPath("*.php"));
+        $migrations = glob(Config::migrationsPath('*.php'));
 
         $step = $this->option('step');
         $fileToRollback = $this->option('file');
@@ -53,11 +53,11 @@ class DatabaseRollbackCommand extends Command
         require_once $migration;
         $className = Str::studly(\substr($file['filename'], 17));
 
-        $migrationName = str_replace([Config::migrationsPath(), ".php"], "", $migration);
+        $migrationName = str_replace([Config::migrationsPath(), '.php'], '', $migration);
 
         $class = new $className;
         $class->down();
 
-        $this->writeln("> db rollback on " . asComment($migrationName));
+        $this->writeln('> db rollback on ' . asComment($migrationName));
     }
 }

@@ -22,7 +22,7 @@ class ServeCommand extends Command
         $path = $this->argument('path');
 
         $this->writeln('Server started on ' . asComment("http://localhost:$port"));
-        $this->info('Happy gardening!!\n');
+        $this->info("Happy gardening!!\n");
         $this->writeln(shell_exec("php -S localhost:$port $path"));
     }
 }

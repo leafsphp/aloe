@@ -7,13 +7,13 @@ use Illuminate\Support\Str;
 
 class DatabaseResetCommand extends Command
 {
-    protected static $defaultName = "db:reset";
-    public $description = "Rollback, migrate and seed database";
+    protected static $defaultName = 'db:reset';
+    public $description = 'Rollback, migrate and seed database';
     public $help = "To prevent seeding, add -s\n";
 
     protected function config()
     {
-        $this->setOption('noSeed', 's', "none", 'Prevent seeding of database');
+        $this->setOption('noSeed', 's', 'none', 'Prevent seeding of database');
     }
 
     protected function handle()
@@ -24,7 +24,7 @@ class DatabaseResetCommand extends Command
     }
 
     protected function rollback() {
-        $migrations = glob(Config::migrationsPath("*.php"));
+        $migrations = glob(Config::migrationsPath('*.php'));
 
         foreach ($migrations as $migration) {
             $file = pathinfo($migration);
@@ -39,12 +39,12 @@ class DatabaseResetCommand extends Command
         require_once $migration;
         $className = Str::studly(\substr($file['filename'], 17));
 
-        $migrationName = str_replace([Config::migrationsPath(), ".php"], "", $migration);
+        $migrationName = str_replace([Config::migrationsPath(), '.php'], '', $migration);
 
         $class = new $className;
         $class->down();
 
-        $this->writeln("> db rollback on " . asComment($migrationName));
+        $this->writeln('> db rollback on ' . asComment($migrationName));
     }
 
     protected function startMigration()
@@ -55,21 +55,21 @@ class DatabaseResetCommand extends Command
             $file = pathinfo($migration);
             $filename = $file['filename'];
 
-            if ($filename !== "Schema") :
+            if ($filename !== 'Schema') :
                 $className = Str::studly(\substr($filename, 17));
 
                 $this->migrate($className, $filename);
-                $this->writeln("> db migration on " . asComment(str_replace(Config::migrationsPath(), "", $migration)));
+                $this->writeln('> db migration on ' . asComment(str_replace(Config::migrationsPath(), '', $migration)));
 
-                if (!$this->option("noSeed")) {
+                if (!$this->option('noSeed')) {
                     $seederClass = $this->seedTable(str_replace(
-                        "Create",
-                        "",
+                        'Create',
+                        '',
                         Str::studly(\substr($filename, 17))
                     ));
 
                     if ($seederClass) {
-                        $this->writeln(asComment($seederClass) . " seeded successfully!");
+                        $this->writeln(asComment($seederClass) . ' seeded successfully!');
                     }
                 }
             endif;
@@ -88,7 +88,7 @@ class DatabaseResetCommand extends Command
 
     protected function seedTable($table)
     {
-        $className = "\App\Database\Seeds\\" . Str::plural($table) . "Seeder";
+        $className = '\App\Database\Seeds\\' . Str::plural($table) . 'Seeder';
 
         if (!class_exists($className)) return false;
 

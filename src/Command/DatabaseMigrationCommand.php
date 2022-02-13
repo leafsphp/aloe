@@ -7,14 +7,14 @@ use Illuminate\Support\Str;
 
 class DatabaseMigrationCommand extends Command
 {
-    protected static $defaultName = "db:migrate";
-    public $description = "Run the database migrations";
+    protected static $defaultName = 'db:migrate';
+    public $description = 'Run the database migrations';
     public $help = "Run the migrations defined in the migrations directory\n";
 
     protected function config()
     {
-        $this->setOption('file', 'f', "optional", 'Rollback a particular file');
-        $this->setOption('seed', 's', "none", 'Run seeds after migration');
+        $this->setOption('file', 'f', 'optional', 'Rollback a particular file');
+        $this->setOption('seed', 's', 'none', 'Run seeds after migration');
     }
 
     protected function handle()
@@ -26,23 +26,23 @@ class DatabaseMigrationCommand extends Command
             $file = pathinfo($migration);
             $filename = $file['filename'];
 
-            if ($filename !== "Schema") :
+            if ($filename !== 'Schema') :
                 $className = Str::studly(\substr($filename, 17));
 
                 if ($fileToRollback) {
                     if (strpos($migration, Str::snake("_create_$fileToRollback.php")) !== false) {
                         $this->migrate($className, $filename);
-                        $this->info("db migration on " . asComment(str_replace(Config::migrationsPath(), "", $migration)));
+                        $this->info('db migration on ' . asComment(str_replace(Config::migrationsPath(), '', $migration)));
 
-                        if ($this->option("seed")) {
+                        if ($this->option('seed')) {
                             $seederClass = $this->seedTable(str_replace(
-                                ["Create"],
-                                "",
+                                ['Create'],
+                                '',
                                 Str::studly(\substr($filename, 17))
                             ));
 
                             if ($seederClass) {
-                                $this->writeln(asComment($seederClass) . " seeded successfully!");
+                                $this->writeln(asComment($seederClass) . ' seeded successfully!');
                             }
                         }
 
@@ -52,17 +52,17 @@ class DatabaseMigrationCommand extends Command
                     continue;
                 } else {
                     $this->migrate($className, $filename);
-                    $this->writeln("> db migration on " . asComment(str_replace(Config::migrationsPath(), "", $migration)));
+                    $this->writeln('> db migration on ' . asComment(str_replace(Config::migrationsPath(), '', $migration)));
 
-                    if ($this->option("seed")) {
+                    if ($this->option('seed')) {
                         $seederClass = $this->seedTable(str_replace(
-                            "Create",
-                            "",
+                            'Create',
+                            '',
                             Str::studly(\substr($filename, 17))
                         ));
 
                         if ($seederClass) {
-                            $this->writeln(asComment($seederClass) . " seeded successfully!");
+                            $this->writeln(asComment($seederClass) . ' seeded successfully!');
                         }
                     }
                 }
