@@ -6,9 +6,9 @@ use Aloe\Command;
 
 class ClassName extends Command
 {
-    protected static $defaultName = "CommandName";
-    public $description = "CommandName command's description";
-    public $help = "CommandName command's help";
+    protected static $defaultName = 'CommandName';
+    public $description = 'CommandName command\'s description';
+    public $help = 'CommandName command\'s help';
 
     /**
      * Configure your command
@@ -17,8 +17,8 @@ class ClassName extends Command
     {
         // you can add arguments and options in the config method
         $this
-            ->setArgument("argument", "required", "argument description")
-            ->setOption("option", "o", "required", "option description");
+            ->setArgument('argument', 'required', 'argument description')
+            ->setOption('option', 'o', 'required', 'option description');
     }
 
     /**

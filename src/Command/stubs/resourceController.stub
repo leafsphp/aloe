@@ -43,7 +43,7 @@ class ClassName extends Controller
         |
         */
         // $row = new ModelName;
-        // $row->column = requestData("column");
+        // $row->column = requestData('column');
         // $row->delete();
     }
 
@@ -76,7 +76,7 @@ class ClassName extends Controller
         |
         */
         // $row = ModelName::find($id);
-        // $row->column = requestData("column");
+        // $row->column = requestData('column');
         // $row->save();
     }
 

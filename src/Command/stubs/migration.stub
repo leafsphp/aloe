@@ -12,15 +12,15 @@ class ClassName extends Database
      */
     public function up()
     {
-        if (!static::$capsule::schema()->hasTable("tableName")) :
-            static::$capsule::schema()->create("tableName", function (Blueprint $table) {
-                $table->increments("id");
+        if (!static::$capsule::schema()->hasTable('tableName')) :
+            static::$capsule::schema()->create('tableName', function (Blueprint $table) {
+                $table->increments('id');
                 $table->timestamps();
             });
         endif;
 
         // you can now build your migrations with schemas
-        // Schema::build(static::$capsule, dirname(__DIR__) . "/Schema/tableName.json");
+        // Schema::build(static::$capsule, dirname(__DIR__) . '/Schema/tableName.json');
     }
 
     /**
@@ -30,6 +30,6 @@ class ClassName extends Database
      */
     public function down()
     {
-        static::$capsule::schema()->dropIfExists("tableName");
+        static::$capsule::schema()->dropIfExists('tableName');
     }
 }

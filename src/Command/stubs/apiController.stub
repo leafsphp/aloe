@@ -7,7 +7,7 @@ class ClassName extends Controller
     public function index()
     {
         response([
-            "message" => "ClassName@index output"
+            'message' => 'ClassName@index output'
         ]);
     }
 }

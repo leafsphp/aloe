@@ -6,9 +6,9 @@ use Psy\Shell;
 
 class ConsoleCommand extends \Aloe\Command
 {
-    protected static $defaultName = "interact";
-    public $description = "Interact with your application";
-    public $help = "Interact with your application";
+    protected static $defaultName = 'interact';
+    public $description = 'Interact with your application';
+    public $help = 'Interact with your application';
 
     protected function handle()
     {

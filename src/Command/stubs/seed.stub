@@ -23,7 +23,7 @@ class ClassName extends Seeder
         // or
 
         // ModelName::create([
-        //    "field" => "value"
+        //    'field' => 'value'
         // ]);
     }
 }

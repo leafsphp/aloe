@@ -6,6 +6,6 @@ class ClassName extends Controller
 {
     public function index()
     {
-        echo view("viewFile");
+        echo view('viewFile');
     }
 }
