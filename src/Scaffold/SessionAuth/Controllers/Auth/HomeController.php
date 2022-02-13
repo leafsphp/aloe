@@ -8,8 +8,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        Auth::guard("auth");
+        Auth::guard('auth');
 
-        echo view("pages.auth.home");
+        echo view('pages.auth.home');
     }
 }
