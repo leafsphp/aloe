@@ -215,15 +215,15 @@ class Command extends BaseCommand
      */
     public function setArgument($name, $mode = null, $description = "", $default = null)
     {
-        if (strtoupper($mode) === "OPTIONAL") {
+        if (strtoupper($mode) === 'OPTIONAL') {
             $mode = InputArgument::OPTIONAL;
         }
 
-        if (strtoupper($mode) === "REQUIRED") {
+        if (strtoupper($mode) === 'REQUIRED') {
             $mode = InputArgument::REQUIRED;
         }
 
-        if (strtoupper($mode) === "IS_ARRAY") {
+        if (strtoupper($mode) === 'IS_ARRAY') {
             $mode = InputArgument::IS_ARRAY;
         }
 
@@ -249,21 +249,21 @@ class Command extends BaseCommand
     /**
      * Add a new option
      */
-    public function setOption($name, $shortcut = null, $mode = null, $description = "", $default = null)
+    public function setOption($name, $shortcut = null, $mode = null, $description = '', $default = null)
     {
-        if (strtoupper($mode) === "OPTIONAL") {
+        if (strtoupper($mode) === 'OPTIONAL') {
             $mode = InputOption::VALUE_OPTIONAL;
         }
 
-        if (strtoupper($mode) === "REQUIRED") {
+        if (strtoupper($mode) === 'REQUIRED') {
             $mode = InputOption::VALUE_REQUIRED;
         }
 
-        if (strtoupper($mode) === "NONE") {
+        if (strtoupper($mode) === 'NONE') {
             $mode = InputOption::VALUE_NONE;
         }
 
-        if (strtoupper($mode) === "IS_ARRAY") {
+        if (strtoupper($mode) === 'IS_ARRAY') {
             $mode = InputOption::VALUE_IS_ARRAY;
         }
 
@@ -291,7 +291,7 @@ class Command extends BaseCommand
      */
     public function ask(string $question, $default = null)
     {
-        $helper = $this->getHelper("question");
+        $helper = $this->getHelper('question');
         $question = new Question("$question ", $default);
 
         return $helper->ask($this->input, $this->output, $question);
@@ -302,7 +302,7 @@ class Command extends BaseCommand
      */
     public function askRaw(string $question, $default = null)
     {
-        $helper = $this->getHelper("question");
+        $helper = $this->getHelper('question');
         $question = new Question("$question ", $default);
 
         $question->setTrimmable(false);
@@ -315,7 +315,7 @@ class Command extends BaseCommand
      */
     public function askMultiline(string $question)
     {
-        $helper = $this->getHelper("question");
+        $helper = $this->getHelper('question');
         $question = new Question("$question ");
 
         // $question->setMultiline(true);
@@ -328,7 +328,7 @@ class Command extends BaseCommand
      */
     public function autoComplete(string $question, array $potentialAnswers, $default = null)
     {
-        $helper = $this->getHelper("question");
+        $helper = $this->getHelper('question');
         $question = new Question("$question ", $default);
 
         $question->setAutocompleterValues($potentialAnswers);
@@ -341,7 +341,7 @@ class Command extends BaseCommand
      */
     public function choice(string $question, array $choices, string $errorMessage = "Invalid choice", $default = 0)
     {
-        $helper = $this->getHelper("question");
+        $helper = $this->getHelper('question');
         $question = new ChoiceQuestion("$question ", $choices, $default);
 
         $question->setErrorMessage($errorMessage);
@@ -354,7 +354,7 @@ class Command extends BaseCommand
      */
     public function multiChoice(string $question, array $choices, string $errorMessage = "Invalid choice", $default = 0)
     {
-        $helper = $this->getHelper("question");
+        $helper = $this->getHelper('question');
         $question = new ChoiceQuestion("$question ", $choices, $default);
 
         $question->setMultiselect(true);
@@ -368,7 +368,7 @@ class Command extends BaseCommand
      */
     public function secret(string $question, bool $useFallback = false)
     {
-        $helper = $this->getHelper("question");
+        $helper = $this->getHelper('question');
         $question = new Question("$question ");
 
         $question->setHidden(true);
@@ -382,7 +382,7 @@ class Command extends BaseCommand
      */
     public function confirm($question, $param = false, $regex = "/^y/i")
     {
-        $helper = $this->getHelper("question");
+        $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion("$question ", $param, $regex);
 
         return $helper->ask($this->input, $this->output, $question);

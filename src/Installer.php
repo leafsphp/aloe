@@ -10,6 +10,8 @@ use Aloe\Command\Config;
  * -----------------
  * Quickly install directories and files in
  * a leaf workspace
+ * 
+ * @since 1.1.0-beta
  */
 class Installer
 {
@@ -25,7 +27,7 @@ class Installer
 
         foreach ($installables as $installableDir) {
             $dir = FS::listDir($installableDir);
-            $trueDir = str_replace($installablesDir, "", $installableDir);
+            $trueDir = str_replace($installablesDir, '', $installableDir);
 
             foreach ($dir as $installable) {
                 FS::superCopy(
@@ -39,20 +41,20 @@ class Installer
     /**
      * Install routes from routes folder into leaf workspace
      */
-    public static function installRoutes($routesDir, $routeHome = "app/routes/index.php")
+    public static function installRoutes($routesDir, $routeHome = 'app/routes/index.php')
     {
-        $routeHome = Config::rootpath("app/routes/index.php");
+        $routeHome = Config::rootpath('app/routes/index.php');
         $routeData = FS::readFile($routeHome);
         $routes = FS::listDir($routesDir);
 
         foreach ($routes as $route) {
             $data = str_replace(
-                "require __DIR__ . \"/$route\";",
+                "require __DIR__ . '/$route';",
                 "",
                 $routeData
             );
             FS::writeFile($routeHome, $data);
-            FS::append($routeHome, "require __DIR__ . \"/$route\";");
+            FS::append($routeHome, "require __DIR__ . '/$route';");
         }
     }
 }

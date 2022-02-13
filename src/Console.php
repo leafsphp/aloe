@@ -2,10 +2,21 @@
 
 namespace Aloe;
 
-require __DIR__ . "/helpers.php";
+require __DIR__ . '/helpers.php';
 
 use Symfony\Component\Console\Application;
 
+/**
+ * Aloe CLI
+ * -----
+ * Smart and interactive console/generator
+ * for your leaf MVC applications
+ * 
+ * @author Michael Darko <mychi.darko@gmail.com>
+ * @copyright 2019-2022 Michael Darko
+ * @link https://leafphp.dev/aloe-cli/
+ * @license MIT
+ */
 class Console
 {
     /**
@@ -16,7 +27,7 @@ class Console
     /**
      * Load up aloe without calling the boot method
      */
-    public function __construct($app = "ALoe CLI", $version = "v1.0")
+    public function __construct($app = 'ALoe CLI', $version = 'v1.0')
     {
         static::boot($app, $version);
     }
@@ -28,7 +39,7 @@ class Console
      * @param string $version The app version
      * @param bool $load Load the default Aloe CLI commands?
      */
-    public static function boot($app = "Aloe CLI", $version = "v1.0", $load = true)
+    public static function boot($app = 'Aloe CLI', $version = 'v1.0', $load = true)
     {
         static::$app = new Application(asComment($app), $version);
         if ($load) static::load();
