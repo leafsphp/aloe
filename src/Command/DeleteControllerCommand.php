@@ -7,22 +7,22 @@ use Illuminate\Support\Str;
 
 class DeleteControllerCommand extends Command
 {
-    protected static $defaultName = "d:controller";
+    protected static $defaultName = 'd:controller';
     public $description = 'Delete a controller';
     public $help = 'Delete a controller';
 
     protected function config()
     {
-        $this->setArgument("controller", "required", "controller name");
+        $this->setArgument('controller', 'required', 'controller name');
     }
 
     protected function handle()
     {
-        $controller = Str::studly($this->argument("controller"));
+        $controller = Str::studly($this->argument('controller'));
 
-        if (!strpos($controller, "Controller")) {
+        if (!strpos($controller, 'Controller')) {
             $controller = str::plural($controller);
-            $controller .= "Controller";
+            $controller .= 'Controller';
         }
 
         $controllerFile = Config::controllersPath("$controller.php");

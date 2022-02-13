@@ -7,21 +7,21 @@ use Illuminate\Support\Str;
 
 class DeleteConsoleCommand extends Command
 {
-    protected static $defaultName = "d:command";
-    public $description = "Delete a console command";
-    public $help = "Delete a console command";
+    protected static $defaultName = 'd:command';
+    public $description = 'Delete a console command';
+    public $help = 'Delete a console command';
 
     protected function config()
     {
-        $this->setArgument("file", "required", "The name of the console file");
+        $this->setArgument('file', 'required', 'The name of the console file');
     }
 
     protected function handle()
     {
-        $command = Str::studly($this->argument("file"));
+        $command = Str::studly($this->argument('file'));
 
-        if (!strpos($command, "Command")) {
-            $command .= "Command";
+        if (!strpos($command, 'Command')) {
+            $command .= 'Command';
         }
 
         $file = Config::commandsPath("$command.php");
@@ -36,12 +36,12 @@ class DeleteConsoleCommand extends Command
 
         $this->comment("$command deleted successfully");
 
-        $aloe = Config::rootpath("leaf");
+        $aloe = Config::rootpath('leaf');
         $aloeContents = file_get_contents($aloe);
         $aloeContents = str_replace(
             "\$console->register(\App\Console\\$command::class);
 ",
-            "",
+            '',
             $aloeContents
         );
         \file_put_contents($aloe, $aloeContents);

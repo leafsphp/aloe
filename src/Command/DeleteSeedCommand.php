@@ -7,22 +7,22 @@ use Illuminate\Support\Str;
 
 class DeleteSeedCommand extends Command
 {
-    protected static $defaultName = "d:seed";
-    public $description = "Delete a model seeder";
-    public $help = "Delete a model seeder";
+    protected static $defaultName = 'd:seed';
+    public $description = 'Delete a model seeder';
+    public $help = 'Delete a model seeder';
 
     protected function config()
     {
-        $this->setArgument("seed", "required", "seeder name");
+        $this->setArgument('seed', 'required', 'seeder name');
     }
 
     protected function handle()
     {
-        $seeder = Str::studly($this->argument("seed"));
+        $seeder = Str::studly($this->argument('seed'));
 
-        if (!strpos($seeder, "Seeder")) {
+        if (!strpos($seeder, 'Seeder')) {
             $seeder = str::plural($seeder);
-            $seeder .= "Seeder";
+            $seeder .= 'Seeder';
         }
 
         $seederFile = Config::seedsPath("$seeder.php");
