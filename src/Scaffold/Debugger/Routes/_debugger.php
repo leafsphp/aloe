@@ -1,5 +1,5 @@
 <?php
 
-app()->setNamespace("\Aloe\Debugger\Controllers");
-
-app()->get("/debugger", "DebuggersController@index");
+app()->group('/debugger', ['namespace' => '\Aloe\Debugger\Controllers', function () {
+    app()->get('/', 'DebuggersController@index');
+}]);
