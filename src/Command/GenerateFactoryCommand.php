@@ -13,18 +13,18 @@ class GenerateFactoryCommand extends Command
 
     protected function config()
     {
-        $this->setArgument("factory", "required", "factory name");
+        $this->setArgument('factory', 'required', 'factory name');
     }
 
     protected function handle()
     {
-        $factory = Str::studly(Str::singular($this->argument("factory")));
+        $factory = Str::studly(Str::singular($this->argument('factory')));
 
-        if (!strpos($factory, "Factory")) {
-            $factory .= "Factory";
+        if (!strpos($factory, 'Factory')) {
+            $factory .= 'Factory';
         }
 
-        $modelName = str_replace("Factory", "", $factory);
+        $modelName = str_replace('Factory', '', $factory);
 
         $file = Config::factoriesPath("$factory.php");
 
@@ -34,9 +34,9 @@ class GenerateFactoryCommand extends Command
 
         touch($file);
 
-        $fileContent = \file_get_contents(__DIR__ . "/stubs/factory.stub");
+        $fileContent = \file_get_contents(__DIR__ . '/stubs/factory.stub');
         $fileContent = str_replace(
-            ["ClassName", "ModelName"],
+            ['ClassName', 'ModelName'],
             [$factory, $modelName],
             $fileContent
         );

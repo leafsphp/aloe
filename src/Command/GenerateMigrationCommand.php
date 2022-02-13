@@ -19,7 +19,7 @@ class GenerateMigrationCommand extends Command
 
     protected function handle()
     {
-        $userInput = strtolower(Str::snake(Str::plural($this->argument("migration"))));
+        $userInput = strtolower(Str::snake(Str::plural($this->argument('migration'))));
         $fileContent = \file_get_contents(__DIR__ . '/stubs/migration.stub');
         $table = $this->option('table') ?? $userInput;
 
@@ -35,20 +35,20 @@ class GenerateMigrationCommand extends Command
             $userInput = Str::snake("create_$userInput");
         }
 
-        $actualFileName = Str::snake(date("Y_m_d_His") . "_$userInput.php");
+        $actualFileName = Str::snake(date('Y_m_d_His') . "_$userInput.php");
         $file = Config::migrationsPath($actualFileName);
 
         touch($file);
 
         $className = Str::studly($userInput);
         $fileContent = str_replace(
-            ["ClassName", "tableName"],
-            [$className, str_replace("create_", "", $table)],
+            ['ClassName', 'tableName'],
+            [$className, str_replace("create_", '', $table)],
             $fileContent
         );
 
         file_put_contents($file, $fileContent);
 
-        $this->info(asComment($actualFileName) . " generated successfully");
+        $this->info(asComment($actualFileName) . ' generated successfully');
     }
 }

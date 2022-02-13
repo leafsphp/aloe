@@ -7,18 +7,18 @@ use Illuminate\Support\Str;
 
 class GenerateConsoleCommand extends Command
 {
-    protected static $defaultName = "g:command";
-    public $description = "Create a new console command";
-    public $help = "Create a custom aloe cli command";
+    protected static $defaultName = 'g:command';
+    public $description = 'Create a new console command';
+    public $help = 'Create a custom aloe cli command';
 
     protected function config()
     {
-        $this->setArgument("consoleCommand", "required", 'command name');
+        $this->setArgument('consoleCommand', 'required', 'command name');
     }
 
     protected function handle()
     {
-        list($commandName, $className) = $this->mapNames($this->argument("consoleCommand"));
+        list($commandName, $className) = $this->mapNames($this->argument('consoleCommand'));
 
         $file = Config::commandsPath("$className.php");
 
@@ -26,8 +26,8 @@ class GenerateConsoleCommand extends Command
             return $this->error("$className already exists!");
         }
 
-        if (file_exists(Config::commandsPath(".init"))) {
-            unlink(Config::commandsPath(".init"));
+        if (file_exists(Config::commandsPath('.init'))) {
+            unlink(Config::commandsPath('.init'));
         }
 
         touch($file);
@@ -38,10 +38,10 @@ class GenerateConsoleCommand extends Command
 
         $this->comment("$className generated successfully");
 
-        $aloe = Config::rootpath("leaf");
+        $aloe = Config::rootpath('leaf');
         $aloeContents = file_get_contents($aloe);
         $aloeContents = str_replace(
-            "\$console->register(",
+            '\$console->register(',
             "\$console->register(\App\Console\\$className::class);
 \$console->register(",
             $aloeContents
@@ -55,21 +55,21 @@ class GenerateConsoleCommand extends Command
     {
         $className = $command;
 
-        if (strpos($command, ":")) {
-            $commandItems = explode(":", $command);
+        if (strpos($command, ':')) {
+            $commandItems = explode(':', $command);
             $items = [];
 
             foreach ($commandItems as $item) {
                 $items[] = Str::studly($item);
             }
 
-            $className = implode("", $items);
+            $className = implode('', $items);
         }
 
-        if (!strpos($className, "Command")) {
-            $className .= "Command";
+        if (!strpos($className, 'Command')) {
+            $className .= 'Command';
         } else {
-            $command = str_replace("Command", "", $command);
+            $command = str_replace('Command', '', $command);
         }
 
         return [Str::lower($command), Str::studly($className)];

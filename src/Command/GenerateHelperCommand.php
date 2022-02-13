@@ -7,18 +7,18 @@ use Illuminate\Support\Str;
 
 class GenerateHelperCommand extends Command
 {
-    protected static $defaultName = "g:helper";
-    public $description = "Create a new helper class";
-    public $help = "Create a new helper class";
+    protected static $defaultName = 'g:helper';
+    public $description = 'Create a new helper class';
+    public $help = 'Create a new helper class';
 
     protected function config()
     {
-        $this->setArgument("helper", "required", 'helper name');
+        $this->setArgument('helper', 'required', 'helper name');
     }
 
     protected function handle()
     {
-        list($helper, $modelName) = $this->mapNames($this->argument("helper"));
+        list($helper, $modelName) = $this->mapNames($this->argument('helper'));
 
         $file = Config::helpersPath("$helper.php");
 
@@ -26,8 +26,8 @@ class GenerateHelperCommand extends Command
             return $this->error("$helper already exists!");
         }
 
-        if (file_exists(Config::helpersPath(".init"))) {
-            unlink(Config::helpersPath(".init"));
+        if (file_exists(Config::helpersPath('.init'))) {
+            unlink(Config::helpersPath('.init'));
         }
 
         touch($file);
@@ -43,10 +43,10 @@ class GenerateHelperCommand extends Command
     {
         $modelName = $helperName;
 
-        if (!strpos($helperName, "Helper")) {
-            $helperName .= "Helper";
+        if (!strpos($helperName, 'Helper')) {
+            $helperName .= 'Helper';
         } else {
-            $modelName = str_replace("Helper", "", $modelName);
+            $modelName = str_replace('Helper', '', $modelName);
         }
 
         return [$helperName, Str::singular($modelName)];

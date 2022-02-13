@@ -7,27 +7,27 @@ use Illuminate\Support\Str;
 
 class GenerateSeedCommand extends Command
 {
-	protected static $defaultName = "g:seed";
-	public $description = "Create a new seed file";
-	public $help = "Create a new seed file";
+	protected static $defaultName = 'g:seed';
+	public $description = 'Create a new seed file';
+	public $help = 'Create a new seed file';
 
 	protected function config()
 	{
 		$this
-			->setArgument('model', "required", "model name")
-			->setArgument("name", "optional", "seed name")
-			->setOption("factory", "f", "none", "Create a factory for seeder");
+			->setArgument('model', 'required', 'model name')
+			->setArgument('name', 'optional', 'seed name')
+			->setOption('factory', 'f', 'none', 'Create a factory for seeder');
 	}
 
 	protected function handle()
 	{
-		$modelName = Str::studly(Str::singular($this->argument("model")));
-		$seedName = $this->argument("name") ?? $modelName;
-		$factory = $this->option("factory");
+		$modelName = Str::studly(Str::singular($this->argument('model')));
+		$seedName = $this->argument('name') ?? $modelName;
+		$factory = $this->option('factory');
 		$className = Str::studly(Str::plural($seedName));
 
-		if (!strpos($seedName, "Seeder")) {
-			$className .= "Seeder";
+		if (!strpos($seedName, 'Seeder')) {
+			$className .= 'Seeder';
 		}
 
 		$file = Config::seedsPath("$className.php");
@@ -43,9 +43,9 @@ class GenerateSeedCommand extends Command
 		if ($factory && !file_exists(Config::factoriesPath("{$modelName}Factory.php"))) {
 			$fileContent = str_replace(
 				[
-					"// You can directly create db records",
-					"
-use App\Models\ModelName;",
+					'// You can directly create db records',
+					'
+use App\Models\ModelName;',
 					'
 
         // $entity = new ModelName();
@@ -55,16 +55,16 @@ use App\Models\ModelName;",
         // or
 
         // ModelName::create([
-        //    "field" => "value"
+        //    \'field\' => \'value\'
         // ]);'
 				],
-				["(new ModelNameFactory)->create(5)->save();", "", ""],
+				['(new ModelNameFactory)->create(5)->save();', '', ''],
 				$fileContent
 			);
 		}
 
 		$fileContent = str_replace(
-			["ClassName", "ModelName", "entity"],
+			['ClassName', 'ModelName', 'entity'],
 			[$className, $modelName, Str::lower($modelName)],
 			$fileContent
 		);
