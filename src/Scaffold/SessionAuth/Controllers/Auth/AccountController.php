@@ -16,7 +16,6 @@ class AccountController extends Controller
 
         echo view('pages.auth.account', [
             'user' => $user,
-            'keys' => array_keys($user),
         ]);
     }
 

@@ -12,14 +12,15 @@ class RegisterController extends Controller
 
         echo view('pages.auth.register');
     }
-    
+
     public function store()
     {
         auth()->guard('guest');
 
-        $credentials = request()->get(['username', 'email', 'password']);
+        $credentials = request()->get(['name', 'username', 'email', 'password']);
 
         $this->form->validate([
+            'name' => 'required',
             'username' => 'validUsername',
             'email' => 'email',
             'password' => 'required'
@@ -32,7 +33,7 @@ class RegisterController extends Controller
         ]);
 
         if (!$user) {
-            return view('pages.auth.register', array_merge(
+            echo view('pages.auth.register', array_merge(
                 ['errors' => array_merge(auth()->errors(), $this->form->errors())],
                 $credentials
             ));

@@ -3,7 +3,6 @@
 namespace App\Controllers\Auth;
 
 use App\Models\User;
-use Leaf\Auth;
 
 class LoginController extends Controller
 {
@@ -18,26 +17,21 @@ class LoginController extends Controller
     {
         auth()->guard('guest');
 
-        list($username, $password) = request()->get(['username', 'password'], true, true);
+        $data = request()->get(['username', 'password']);
 
         $this->form->validate([
             'username' => 'validUsername',
         ]);
 
-        $user = auth()->login([
-            'username' => $username,
-            'password' => $password
-        ]);
+        $user = auth()->login($data);
 
         if (!$user) {
-            return view('pages.auth.login', [
+            echo view('pages.auth.login', array_merge($data, [
                 'errors' => array_merge(
                     auth()->errors(),
                     $this->form->errors()
                 ),
-                'username' => $username,
-                'password' => $password,
-            ]);
+            ]));
         }
     }
 
