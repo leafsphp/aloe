@@ -43,7 +43,7 @@ class GenerateMigrationCommand extends Command
         $className = Str::studly($userInput);
         $fileContent = str_replace(
             ['ClassName', 'tableName'],
-            [$className, str_replace("create_", '', $table)],
+            [$className, str_replace('create_', '', $table)],
             $fileContent
         );
 
