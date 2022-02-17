@@ -8,7 +8,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        list($username, $password) = request()->get(['username', 'password'], true, true);
+        $credentials = request()->get(['username', 'password']);
 
         Form::rule('max', function ($field, $value, $params) {
             if (strlen($value) > $params) {
@@ -26,10 +26,7 @@ class LoginController extends Controller
             response()->throwErr(Form::errors());
         }
 
-        $user = auth()->login([
-            'username' => $username,
-            'password' => $password
-        ]);
+        $user = auth()->login($credentials);
 
         if (!$user) {
             response()->throwErr(auth()->errors());

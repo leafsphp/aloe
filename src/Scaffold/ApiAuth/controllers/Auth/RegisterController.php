@@ -9,9 +9,10 @@ class RegisterController extends Controller
 {
     public function store()
     {
-        $credentials = request()->get(['username', 'email', 'password']);
+        $credentials = request()->get(['username', 'name', 'email', 'password']);
 
         $validation = Form::validate([
+            'name' => 'required',
             'username' => ['username', 'max:15'],
             'email' => 'email',
             'password' => 'min:8'
