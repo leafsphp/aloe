@@ -11,7 +11,7 @@
 <body class="container">
     <header>
         <div class="d-flex align-items-center py-5">
-            <img src="https://leafphp.netlify.app/img/logo.png" alt="" style="margin-right: 20px; width: 100px; height: 100px;">
+            <img src="https://leafphp.dev/logo-circle.png" alt="" style="margin-right: 20px; width: 100px; height: 100px;">
             <div>
                 <h2>Leaf Debugger</h2>
                 <p>Leaf debug is a simple tool included in aloe that gives you an overview of all that's going on in your Leaf App.</p>
