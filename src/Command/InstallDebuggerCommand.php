@@ -15,7 +15,7 @@ class InstallDebuggerCommand extends \Aloe\Command
         $installablesDir = dirname(__DIR__) . '/Scaffold/Debugger';
 
         Installer::magicCopy($installablesDir);
-        Installer::installRoutes("$installablesDir/Routes/");
+        Installer::installRoutes("$installablesDir/routes/");
 
         $this->info('Debugger installed successfully.');
     }
