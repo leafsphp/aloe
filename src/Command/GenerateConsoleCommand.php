@@ -40,12 +40,8 @@ class GenerateConsoleCommand extends Command
 
         $aloe = Config::rootpath('leaf');
         $aloeContents = file_get_contents($aloe);
-        $aloeContents = str_replace(
-            '\$console->register(',
-            "\$console->register(\App\Console\\$className::class);
-\$console->register(",
-            $aloeContents
-        );
+        $replace = "\$console->register(\App\Console\\$className::class);\n\$console->register(";
+        $aloeContents = preg_replace('/\$console->register\(/m', $replace, $aloeContents, 1);
         \file_put_contents($aloe, $aloeContents);
 
         $this->comment("$className registered successfully");
