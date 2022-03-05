@@ -38,12 +38,8 @@ class DeleteConsoleCommand extends Command
 
         $aloe = Config::rootpath('leaf');
         $aloeContents = file_get_contents($aloe);
-        $aloeContents = str_replace(
-            "\$console->register(\App\Console\\$command::class);
-",
-            '',
-            $aloeContents
-        );
+        $search = "\$console->register(\App\Console\\$command::class);";
+        $aloeContents = str_replace(["$search\n", $search], '', $aloeContents);
         \file_put_contents($aloe, $aloeContents);
 
         $this->comment("$command command unregistered");
