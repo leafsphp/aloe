@@ -9,7 +9,7 @@ class AccountController extends Controller
         $user = auth()->user(['password']);
 
         if (!$user) {
-            response()->throwErr(auth()->errors());
+            response()->exit(auth()->errors());
         }
 
         response()->json($user);
@@ -29,7 +29,7 @@ class AccountController extends Controller
         $user = auth()->update($data, $uniques);
 
         if (!$user) {
-            response()->throwErr(auth()->errors());
+            response()->exit(auth()->errors());
         }
 
         response()->json($user);

@@ -23,13 +23,13 @@ class LoginController extends Controller
         ]);
 
         if (!$validation) {
-            response()->throwErr(Form::errors());
+            response()->exit(Form::errors());
         }
 
         $user = auth()->login($credentials);
 
         if (!$user) {
-            response()->throwErr(auth()->errors());
+            response()->exit(auth()->errors());
         }
 
         response()->json($user);

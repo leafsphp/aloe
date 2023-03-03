@@ -18,13 +18,13 @@ class RegisterController extends Controller
             'password' => 'min:8'
         ]);
 
-        if (!$validation) response()->throwErr(Form::errors());
+        if (!$validation) response()->exit(Form::errors());
 
         $user = auth()->register($credentials, [
             'username', 'email'
         ]);
 
-        if (!$user) response()->throwErr(auth()->errors());
+        if (!$user) response()->exit(auth()->errors());
 
         response()->json($user);
     }
