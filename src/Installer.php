@@ -10,7 +10,7 @@ use Aloe\Command\Config;
  * -----------------
  * Quickly install directories and files in
  * a leaf workspace
- * 
+ *
  * @since 1.1.0-beta
  */
 class Installer
@@ -18,7 +18,7 @@ class Installer
     /**
      * Auto-magically copy all files and folders from
      * specified folder into Leaf workspace
-     * 
+     *
      * @param string $installablesDir The folder holding items to install
      */
     public static function magicCopy($installablesDir)
@@ -56,5 +56,31 @@ class Installer
             FS::writeFile($routeHome, $data);
             FS::append($routeHome, "require __DIR__ . '/$route';");
         }
+    }
+
+    /**
+     * Install package from composer
+     *
+     * @param string $packages The packages to install
+     */
+    public static function installPackages(string $packages)
+    {
+        $parsedPackages = '';
+
+        foreach (explode(" ", $packages) as $package) {
+            $package = str_replace(
+                ["composer require ", "@"],
+                ["", ":"],
+                $package
+            );
+
+            if (strpos($package, "/") === false) {
+                $package = "leafs/$package";
+            }
+
+            $parsedPackages .= "$package ";
+        }
+
+        return shell_exec("composer require $parsedPackages");
     }
 }
