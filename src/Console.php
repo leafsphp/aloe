@@ -66,11 +66,14 @@ class Console
             \Aloe\Command\AppUpCommand::class,
             // Aloe Commands
             \Aloe\Command\AloeInstallCommand::class,
-            // \Aloe\Command\InstallDebuggerCommand::class,
+
             // Scaffold Commands
             \Aloe\Command\ScaffoldAuthCommand::class,
+            \Aloe\Command\DevToolsCommand::class,
+
             // Env Commands
             \Aloe\Command\EnvGenerateCommand::class,
+
             // Generate Commands
             \Aloe\Command\GenerateMigrationCommand::class,
             \Aloe\Command\GenerateModelCommand::class,
@@ -80,6 +83,7 @@ class Console
             \Aloe\Command\GenerateConsoleCommand::class,
             \Aloe\Command\GenerateFactoryCommand::class,
             \Aloe\Command\GenerateTemplateCommand::class,
+
             // Delete Commands
             \Aloe\Command\DeleteModelCommand::class,
             \Aloe\Command\DeleteSeedCommand::class,
@@ -87,6 +91,7 @@ class Console
             \Aloe\Command\DeleteControllerCommand::class,
             \Aloe\Command\DeleteConsoleCommand::class,
             \Aloe\Command\DeleteMigrationCommand::class,
+
             // Database Commands
             \Aloe\Command\DatabaseInstallCommand::class,
             \Aloe\Command\DatabaseMigrationCommand::class,
