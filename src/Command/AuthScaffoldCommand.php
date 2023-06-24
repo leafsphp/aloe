@@ -6,9 +6,9 @@ use Aloe\Installer;
 use Leaf\FS;
 use Illuminate\Support\Str;
 
-class ScaffoldAuthCommand extends \Aloe\Command
+class AuthScaffoldCommand extends \Aloe\Command
 {
-    protected static $defaultName = 'scaffold:auth';
+    protected static $defaultName = 'auth:scaffold';
     public $description = 'Scaffold basic app authentication';
     public $help = 'Create basic views, routes and controllers for authentication';
 
@@ -32,11 +32,13 @@ class ScaffoldAuthCommand extends \Aloe\Command
         }
 
         $installablesDir = $this->installable($driver);
-        
+
         Installer::magicCopy($installablesDir);
         Installer::installRoutes("$installablesDir/routes/");
 
         $this->info('Authentication generated successfully.');
+
+        return 0;
     }
 
     protected function installable($driver)

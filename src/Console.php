@@ -64,11 +64,14 @@ class Console
             \Aloe\Command\ConsoleCommand::class,
             \Aloe\Command\AppDownCommand::class,
             \Aloe\Command\AppUpCommand::class,
+
             // Aloe Commands
             \Aloe\Command\AloeInstallCommand::class,
 
-            // Scaffold Commands
-            \Aloe\Command\ScaffoldAuthCommand::class,
+            // auth Commands
+            \Aloe\Command\AuthScaffoldCommand::class,
+
+            // devtools
             \Aloe\Command\DevToolsCommand::class,
 
             // Env Commands
