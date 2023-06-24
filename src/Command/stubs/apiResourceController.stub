@@ -18,7 +18,7 @@ class ClassName extends Controller
         | example
         |
         */
-        // response(ModelName::all());
+        // response()->json(ModelName::all());
     }
 
     /**
@@ -34,7 +34,7 @@ class ClassName extends Controller
         |
         */
         // $row = new ModelName;
-        // $row->column = requestData('column');
+        // $row->column = request()->get('column');
         // $row->delete();
     }
 
@@ -59,7 +59,7 @@ class ClassName extends Controller
         |
         */
         // $row = ModelName::find($id);
-        // $row->column = requestData('column');
+        // $row->column = request()->get('column');
         // $row->save();
     }
 

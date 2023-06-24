@@ -6,7 +6,7 @@ class ClassName extends Controller
 {
     public function index()
     {
-        response([
+        response()->json([
             'message' => 'ClassName@index output'
         ]);
     }
