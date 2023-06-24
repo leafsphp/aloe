@@ -25,7 +25,8 @@ class DevToolsCommand extends \Aloe\Command
 | Install the devtools
 |--------------------------------------------------------------------------
 |
-| Add Leaf devtools routes and config
+| Add Leaf devtools routes and config. Be sure to remove this when
+| you're deploying to production
 |
 */
 \Leaf\DevTools::install();",
