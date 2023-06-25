@@ -11,7 +11,7 @@ use Symfony\Component\Console\Application;
  * -----
  * Smart and interactive console/generator
  * for your leaf MVC applications
- * 
+ *
  * @author Michael Darko <mychi.darko@gmail.com>
  * @copyright 2019-2022 Michael Darko
  * @link https://leafphp.dev/aloe-cli/
@@ -34,7 +34,7 @@ class Console
 
     /**
      * Boot the aloe CLI
-     * 
+     *
      * @param string $app The name of the app to display in terminal
      * @param string $version The app version
      * @param bool $load Load the default Aloe CLI commands?
@@ -61,23 +61,21 @@ class Console
         return [
             // Random Commands
             \Aloe\Command\ServeCommand::class,
-            \Aloe\Command\ConsoleCommand::class,
+            \Aloe\Command\InteractCommand::class,
             \Aloe\Command\AppDownCommand::class,
             \Aloe\Command\AppUpCommand::class,
 
             // Aloe Commands
-            \Aloe\Command\AloeInstallCommand::class,
+            \Aloe\Command\DevToolsCommand::class,
 
             // auth Commands
             \Aloe\Command\AuthScaffoldCommand::class,
-
-            // devtools
-            \Aloe\Command\DevToolsCommand::class,
 
             // Env Commands
             \Aloe\Command\EnvGenerateCommand::class,
 
             // Generate Commands
+            \Aloe\Command\GenerateMailerCommand::class,
             \Aloe\Command\GenerateMigrationCommand::class,
             \Aloe\Command\GenerateModelCommand::class,
             \Aloe\Command\GenerateHelperCommand::class,
@@ -100,15 +98,18 @@ class Console
             \Aloe\Command\DatabaseMigrationCommand::class,
             \Aloe\Command\DatabaseResetCommand::class,
             \Aloe\Command\DatabaseRollbackCommand::class,
-            \Aloe\Command\DatabaseSeedCommand::class
+            \Aloe\Command\DatabaseSeedCommand::class,
+
+            // Mail commands
+            \Aloe\Command\MailSetupCommand::class,
         ];
     }
 
     /**
      * Register a custom command
-     * 
+     *
      * @param array|Aloe\Command $command: Command(s) to run
-     * 
+     *
      * @return void
      */
     public static function register($command)
