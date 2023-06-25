@@ -34,7 +34,7 @@ class AuthScaffoldCommand extends \Aloe\Command
         $installablesDir = $this->installable($driver);
 
         Installer::magicCopy($installablesDir);
-        Installer::installRoutes("$installablesDir/routes/");
+        Installer::installRoutes("$installablesDir/app/routes/");
 
         $this->info('Authentication generated successfully.');
 

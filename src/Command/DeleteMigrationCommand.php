@@ -19,17 +19,18 @@ class DeleteMigrationCommand extends Command
     protected function handle()
     {
         $fileToDelete = strtolower(Str::snake(Str::plural($this->argument('file'))));
-        $migrations = glob(Config::migrationsPath("*_$fileToDelete.php"));
+        $migrations = glob(Config::rootpath(MigrationsPath("*_$fileToDelete.php")));
 
         if (count($migrations) === 0) {
-            return $this->error("$fileToDelete not found");
+            $this->error("$fileToDelete not found");
+            return 1;
         }
 
         $displayNames = [];
         $answers = [];
 
         foreach ($migrations as $migration) {
-            $displayNames[] = str_replace(Config::migrationsPath(), "", $migration);
+            $displayNames[] = str_replace(Config::rootpath(MigrationsPath()), "", $migration);
         }
 
         if (count($migrations) === 1) {
@@ -45,8 +46,10 @@ class DeleteMigrationCommand extends Command
         }
 
         foreach ($answers as $answer) {
-            unlink(Config::migrationsPath($answer));
+            unlink(Config::rootpath(MigrationsPath($answer)));
             $this->info(asComment(str_replace('.php', '', $answer)) . ' deleted successfully.');
         }
+
+        return 0;
     }
 }

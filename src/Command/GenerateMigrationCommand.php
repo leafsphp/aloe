@@ -36,7 +36,7 @@ class GenerateMigrationCommand extends Command
         }
 
         $actualFileName = Str::snake(date('Y_m_d_His') . "_$userInput.php");
-        $file = Config::migrationsPath($actualFileName);
+        $file = Config::rootPath(MigrationsPath($actualFileName));
 
         touch($file);
 
@@ -50,5 +50,6 @@ class GenerateMigrationCommand extends Command
         file_put_contents($file, $fileContent);
 
         $this->info(asComment($actualFileName) . ' generated successfully');
+        return 0;
     }
 }

@@ -25,16 +25,19 @@ class DeleteSeedCommand extends Command
             $seeder .= 'Seeder';
         }
 
-        $seederFile = Config::seedsPath("$seeder.php");
+        $seederFile = Config::rootpath(SeedsPath("$seeder.php"));
 
         if (!file_exists($seederFile)) {
-            return $this->error("$seeder doesn't exist!");
+            $this->error("$seeder doesn't exist!");
+            return 1;
         }
 
         if (!unlink($seederFile)) {
-            return $this->error("Couldn't delete $seeder, you might need to remove it manually.");
+            $this->error("Couldn't delete $seeder, you might need to remove it manually.");
+            return 1;
         }
 
         $this->comment("$seeder deleted successfully");
+        return 0;
     }
 }

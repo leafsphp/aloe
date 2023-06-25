@@ -21,10 +21,12 @@ class DatabaseResetCommand extends Command
         $this->rollback();
         $this->startMigration();
         $this->info("Database reset completed!\n");
+
+        return 0;
     }
 
     protected function rollback() {
-        $migrations = glob(Config::migrationsPath('*.php'));
+        $migrations = glob(Config::rootpath(MigrationsPath('*.php')));
 
         foreach ($migrations as $migration) {
             $file = pathinfo($migration);
@@ -39,7 +41,7 @@ class DatabaseResetCommand extends Command
         require_once $migration;
         $className = Str::studly(\substr($file['filename'], 17));
 
-        $migrationName = str_replace([Config::migrationsPath(), '.php'], '', $migration);
+        $migrationName = str_replace([Config::rootpath(MigrationsPath()), '.php'], '', $migration);
 
         $class = new $className;
         $class->down();
@@ -49,7 +51,7 @@ class DatabaseResetCommand extends Command
 
     protected function startMigration()
     {
-        $migrations = glob(Config::migrationsPath('*.php'));
+        $migrations = glob(Config::rootpath(MigrationsPath('*.php')));
 
         foreach ($migrations as $migration) {
             $file = pathinfo($migration);
@@ -59,7 +61,7 @@ class DatabaseResetCommand extends Command
                 $className = Str::studly(\substr($filename, 17));
 
                 $this->migrate($className, $filename);
-                $this->writeln('> db migration on ' . asComment(str_replace(Config::migrationsPath(), '', $migration)));
+                $this->writeln('> db migration on ' . asComment(str_replace(Config::rootpath(MigrationsPath()), '', $migration)));
 
                 if (!$this->option('noSeed')) {
                     $seederClass = $this->seedTable(str_replace(
@@ -80,7 +82,7 @@ class DatabaseResetCommand extends Command
 
     protected function migrate($className, $filename)
     {
-        require_once Config::migrationsPath("$filename.php", false);
+        require_once Config::rootpath(MigrationsPath("$filename.php", false));
 
         $class = new $className;
         $class->up();

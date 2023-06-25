@@ -27,10 +27,11 @@ class GenerateModelCommand extends Command
             list($dirname, $className) = explode('/', $model);
         }
 
-        $file = Config::modelsPath("$model.php");
+        $file = Config::rootpath(ModelsPath("$model.php"));
 
         if (file_exists($file)) {
-            return $this->error('Model already exists');
+            $this->error('Model already exists');
+            return 1;
         }
 
         $fileContent = \file_get_contents(__DIR__ . '/stubs/model.stub');
@@ -51,6 +52,10 @@ class GenerateModelCommand extends Command
                     asComment($migration) . ' migration generated' :
                     asError('Couldn\'t generate migration')
             );
+
+            return $process;
         }
+
+        return 0;
     }
 }

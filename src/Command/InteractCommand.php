@@ -4,7 +4,7 @@ namespace Aloe\Command;
 
 use Psy\Shell;
 
-class ConsoleCommand extends \Aloe\Command
+class InteractCommand extends \Aloe\Command
 {
     protected static $defaultName = 'interact';
     public $description = 'Interact with your application';
@@ -14,5 +14,6 @@ class ConsoleCommand extends \Aloe\Command
     {
         $shell = new Shell();
         $this->writeln($shell->run());
+        return 0;
     }
 }

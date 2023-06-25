@@ -34,18 +34,21 @@ class GenerateControllerCommand extends Command
             $controller .= 'Controller';
         }
 
-        $controllerFile = Config::controllersPath("$controller.php");
+        $controllerFile = Config::rootpath(ControllersPath("$controller.php"));
         $modelName = Str::singular(Str::studly(
             str_replace('Controller', '', $this->argument('controller'))
         ));
 
         if (file_exists($controllerFile)) {
-            return $this->error("$controller already exists");
+            $this->error("$controller already exists");
+            return 1;
         }
 
         $this->generateController($controllerFile, $controller, $modelName);
 
         $this->generateExtraFiles($modelName);
+
+        return 0;
     }
 
     protected function generateController($controllerFile, $controller, $modelName)
@@ -95,6 +98,8 @@ class GenerateControllerCommand extends Command
                         asError('Couldn\'t generate template')
                 );
             }
+
+            return $process;
         } else {
             if ($this->option('model')) {
                 $process = $this->runProcess(['php', 'leaf', 'g:model', $modelName]);
@@ -103,6 +108,8 @@ class GenerateControllerCommand extends Command
                         'Model generated successfully!' :
                         asError('Couldn\'t generate model')
                 );
+
+                return $process;
             }
 
             if ($this->option('template')) {
@@ -112,6 +119,8 @@ class GenerateControllerCommand extends Command
                         'Template generated successfully!' :
                         asError('Couldn\'t generate template')
                 );
+
+                return $process;
             }
         }
     }

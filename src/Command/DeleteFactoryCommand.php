@@ -24,14 +24,16 @@ class DeleteFactoryCommand extends Command
             $factory .= 'Factory';
         }
 
-        $file = Config::factoriesPath("$factory.php");
+        $file = Config::rootpath(FactoriesPath("$factory.php"));
 
         if (!file_exists($file)) {
-            return $this->error("$factory doesn't exists");
+            $this->error("$factory doesn't exists");
+            return 1;
         }
 
         unlink($file);
 
         $this->comment("$factory deleted successfully");
+        return 0;
     }
 }

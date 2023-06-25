@@ -10,9 +10,6 @@ class Config
     /**An array of all needed configurations */
     public static $configBlueprint = ['paths' => []];
 
-    /**Aloe config file path */
-    public static $aloeConfig = 'config/aloe.php';
-
     /**Aloe paths config file */
     public static $pathsConfig = 'config/paths.php';
 
@@ -24,7 +21,7 @@ class Config
      */
     public static function config()
     {
-        $config = static::rootpath(static::$aloeConfig);
+        $config = static::rootpath(static::$pathsConfig);
 
         if (file_exists($config)) {
             return require $config;
@@ -34,11 +31,11 @@ class Config
     }
 
     /**
-     * Get or generate aloe paths 
+     * Get or generate aloe paths
      */
     public static function paths($path = null)
     {
-        $paths = static::config()['paths'];
+        $paths = static::config();
         $paths = !$path ? $paths : $paths[$path] ?? null;
 
         if (empty($paths) || !$paths) {
@@ -56,50 +53,5 @@ class Config
     {
         $path = dirname(__DIR__, 5) . "/$file";
         return str_replace('//', '/', $path);
-    }
-
-    public static function controllersPath($file = null)
-    {
-        return static::rootpath(static::paths('controllersPath') . "/$file");
-    }
-
-    public static function viewsPath($file = null)
-    {
-        return static::rootpath(static::paths('viewsPath') . "/$file");
-    }
-
-    public static function configPath($file = null)
-    {
-        return static::rootpath(static::paths('configPath') . "/$file");
-    }
-
-    public static function modelsPath($file = null)
-    {
-        return static::rootpath(static::paths('modelsPath') . "/$file");
-    }
-
-    public static function migrationsPath($file = null)
-    {
-        return static::rootpath(static::paths('migrationsPath') . "/$file");
-    }
-
-    public static function seedsPath($file = null)
-    {
-        return static::rootpath(static::paths('seedsPath') . "/$file");
-    }
-
-    public static function commandsPath($file = null)
-    {
-        return static::rootpath(static::paths('commandsPath') . "/$file");
-    }
-
-    public static function helpersPath($file = null)
-    {
-        return static::rootpath(static::paths('helpersPath') . "/$file");
-    }
-
-    public static function factoriesPath($file = null)
-    {
-        return static::rootpath(static::paths('factoriesPath') . "/$file");
     }
 }

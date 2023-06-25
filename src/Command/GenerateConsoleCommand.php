@@ -20,14 +20,15 @@ class GenerateConsoleCommand extends Command
     {
         list($commandName, $className) = $this->mapNames($this->argument('consoleCommand'));
 
-        $file = Config::commandsPath("$className.php");
+        $file = Config::rootpath(CommandsPath("$className.php"));
 
         if (file_exists($file)) {
-            return $this->error("$className already exists!");
+            $this->error("$className already exists!");
+            return 1;
         }
 
-        if (file_exists(Config::commandsPath('.init'))) {
-            unlink(Config::commandsPath('.init'));
+        if (file_exists(Config::rootpath(CommandsPath('.init')))) {
+            unlink(Config::rootpath(CommandsPath('.init')));
         }
 
         touch($file);
@@ -45,6 +46,8 @@ class GenerateConsoleCommand extends Command
         \file_put_contents($aloe, $aloeContents);
 
         $this->comment("$className registered successfully");
+
+        return 0;
     }
 
     public function mapNames($command)

@@ -20,7 +20,7 @@ class DatabaseMigrationCommand extends Command
     protected function handle()
     {
         $fileToRollback = $this->option('file');
-        $migrations = glob(Config::migrationsPath('*.php'));
+        $migrations = glob(Config::rootpath(MigrationsPath('*.php')));
 
         foreach ($migrations as $migration) {
             $file = pathinfo($migration);
@@ -32,7 +32,7 @@ class DatabaseMigrationCommand extends Command
                 if ($fileToRollback) {
                     if (strpos($migration, Str::snake("_create_$fileToRollback.php")) !== false) {
                         $this->migrate($className, $filename);
-                        $this->info('db migration on ' . asComment(str_replace(Config::migrationsPath(), '', $migration)));
+                        $this->info('db migration on ' . asComment(str_replace(Config::rootpath(MigrationsPath()), '', $migration)));
 
                         if ($this->option('seed')) {
                             $seederClass = $this->seedTable(str_replace(
@@ -46,13 +46,14 @@ class DatabaseMigrationCommand extends Command
                             }
                         }
 
-                        return $this->info("Database migration completed!\n");
+                        $this->info("Database migration completed!\n");
+                        return 0;
                     }
 
                     continue;
                 } else {
                     $this->migrate($className, $filename);
-                    $this->writeln('> db migration on ' . asComment(str_replace(Config::migrationsPath(), '', $migration)));
+                    $this->writeln('> db migration on ' . asComment(str_replace(Config::rootpath(MigrationsPath()), '', $migration)));
 
                     if ($this->option('seed')) {
                         $seederClass = $this->seedTable(str_replace(
@@ -70,11 +71,12 @@ class DatabaseMigrationCommand extends Command
         }
 
         $this->info("Database migration completed!\n");
+        return 0;
     }
 
     protected function migrate($className, $filename)
     {
-        require_once Config::migrationsPath("$filename.php", false);
+        require_once Config::rootpath(MigrationsPath("$filename.php", false));
 
         $class = new $className;
         $class->up();

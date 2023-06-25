@@ -18,15 +18,14 @@ class DevToolsCommand extends \Aloe\Command
 
         $this->comment('Installing leaf devtools routes...');
 
-        $rootFile = FS::readFile(Config::rootPath('public/index.php'));
+        $rootFile = FS::readFile(Config::rootPath(PublicPath('index.php')));
         $rootFile = str_replace(
             "/*
 |--------------------------------------------------------------------------
 | Install the devtools
 |--------------------------------------------------------------------------
 |
-| Add Leaf devtools routes and config. Be sure to remove this when
-| you're deploying to production
+| Add Leaf devtools routes and config
 |
 */
 \Leaf\DevTools::install();",
@@ -52,7 +51,7 @@ class DevToolsCommand extends \Aloe\Command
 
         $rootFile = str_replace("\n\n\n", "\n", $rootFile);
 
-        FS::writeFile(Config::rootPath('public/index.php'), $rootFile);
+        FS::writeFile(Config::rootPath(PublicPath('index.php')), $rootFile);
 
         $this->info('Leaf devtools installed successfully!');
 

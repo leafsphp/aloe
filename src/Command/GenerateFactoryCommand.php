@@ -26,10 +26,11 @@ class GenerateFactoryCommand extends Command
 
         $modelName = str_replace('Factory', '', $factory);
 
-        $file = Config::factoriesPath("$factory.php");
+        $file = Config::rootpath(FactoriesPath("$factory.php"));
 
         if (file_exists($file)) {
-            return $this->error("$factory already exists");
+            $this->error("$factory already exists");
+            return 1;
         }
 
         touch($file);
@@ -43,5 +44,6 @@ class GenerateFactoryCommand extends Command
         file_put_contents($file, $fileContent);
 
         $this->comment("$factory generated successfully");
+        return 0;
     }
 }

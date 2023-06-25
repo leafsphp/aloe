@@ -20,7 +20,7 @@ class DatabaseRollbackCommand extends Command
 
     protected function handle()
     {
-        $migrations = glob(Config::migrationsPath('*.php'));
+        $migrations = glob(Config::rootpath(MigrationsPath('*.php')));
 
         $step = $this->option('step');
         $fileToRollback = $this->option('file');
@@ -37,15 +37,21 @@ class DatabaseRollbackCommand extends Command
             }
 
             if ($fileToRollback && strpos($migration, Str::snake("_create_$fileToRollback.php")) !== false) {
-                return $this->down($file, $migration);
+                $this->down($file, $migration);
+                $this->info(
+                    "Database rollback completed!\n"
+                );
+                return 0;
             }
         }
 
         if ($fileToRollback && !in_array($fileToRollback, $migrations)) {
-            return $this->error("$fileToRollback not found!");
+            $this->error("$fileToRollback not found!");
+            return 1;
         }
 
         $this->info("Database rollback completed!\n");
+        return 0;
     }
 
     protected function down($file, $migration)
@@ -53,7 +59,7 @@ class DatabaseRollbackCommand extends Command
         require_once $migration;
         $className = Str::studly(\substr($file['filename'], 17));
 
-        $migrationName = str_replace([Config::migrationsPath(), '.php'], '', $migration);
+        $migrationName = str_replace([Config::rootpath(MigrationsPath()), '.php'], '', $migration);
 
         $class = new $className;
         $class->down();

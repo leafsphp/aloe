@@ -13,13 +13,16 @@ class EnvGenerateCommand extends Command
     protected function handle()
     {
         if (file_exists(Config::rootpath('.env'))) {
-            return $this->error('.env already exists');
+            $this->error('.env already exists');
+            return 1;
         }
 
         if (copy(__DIR__ . '/stubs/.env.stub', Config::rootpath('.env'))) {
-            return $this->comment('.env generated successfully!');
+            $this->comment('.env generated successfully!');
+            return 0;
         }
 
-        $this->comment('Couldn\'t generate env file');
+        $this->error('Couldn\'t generate env file');
+        return 1;
     }
 }

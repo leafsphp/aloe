@@ -13,21 +13,15 @@ class AppUpCommand extends \Aloe\Command
         $env = Config::rootpath('.env');
         $envContent = file_get_contents($env);
         $envContent = str_replace(
-            'APP_DOWN=true',
+            ['APP_DOWN=true', 'APP_DOWN = true'],
             'APP_DOWN=false',
             $envContent
         );
         file_put_contents($env, $envContent);
 
-        $index = Config::rootpath('index.php');
-        $indexContent = file_get_contents($index);
-        $indexContent = str_replace(
-            ['([\'mode\' => \'down\'])', '[\'mode\' => \'down\']'],
-            '',
-            $indexContent
-        );
-        file_put_contents($index, $indexContent);
-
         $this->comment('App is now out of down mode...');
+        $this->info('You might need to restart your server to see changes');
+
+        return 0;
     }
 }

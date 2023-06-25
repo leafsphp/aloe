@@ -22,9 +22,11 @@ class DatabaseInstallCommand extends Command
             \mysqli_connect($host, $user, $password, '', (int) $port),
             "CREATE DATABASE `$database`"
         )) {
-            return $this->info("$database created successfully.");
+            $this->info("$database created successfully.");
+            return 0;
         }
 
-        return $this->error("$database could not be created.");
+        $this->error("$database could not be created.");
+        return 1;
     }
 }

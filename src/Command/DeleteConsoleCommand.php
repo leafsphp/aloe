@@ -24,14 +24,16 @@ class DeleteConsoleCommand extends Command
             $command .= 'Command';
         }
 
-        $file = Config::commandsPath("$command.php");
+        $file = Config::rootpath(CommandsPath("$command.php"));
 
         if (!file_exists($file)) {
-            return $this->error("$command doesn't exist!");
+            $this->error("$command doesn't exist!");
+            return 1;
         }
 
         if (!unlink($file)) {
-            return $this->error("Couldn't delete $command, you might need to remove it manually.");
+            $this->error("Couldn't delete $command, you might need to remove it manually.");
+            return 1;
         }
 
         $this->comment("$command deleted successfully");
@@ -43,5 +45,6 @@ class DeleteConsoleCommand extends Command
         \file_put_contents($aloe, $aloeContents);
 
         $this->comment("$command command unregistered");
+        return 0;
     }
 }

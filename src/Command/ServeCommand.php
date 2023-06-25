@@ -12,7 +12,7 @@ class ServeCommand extends Command
 
     protected function config()
     {
-        $this->setOption('port', 'p', 'optional', 'Port to run Leaf app on', 5500);
+        $this->setOption('port', 'p', 'optional', 'Port to run Leaf app on', _env('SERVER_PORT', 5500));
         $this->setArgument('path', 'optional', 'Path to your app (in case you changed it)');
     }
 
@@ -24,5 +24,7 @@ class ServeCommand extends Command
         $this->writeln('Server started on ' . asComment("http://localhost:$port"));
         $this->info("Happy gardening!!\n");
         $this->writeln(shell_exec("php -S localhost:$port $path"));
+
+        return 0;
     }
 }
