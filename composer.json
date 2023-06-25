@@ -25,6 +25,7 @@
         "psy/psysh": "^0.10.9",
         "symfony/console": "^5.3",
         "illuminate/support": "^8.73",
+        "leafs/mvc-core": "*",
         "leafs/fs": "^1.0"
     },
     "require-dev": {
