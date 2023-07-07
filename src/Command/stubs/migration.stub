@@ -1,5 +1,6 @@
 <?php
 
+use Leaf\Schema;
 use Leaf\Database;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -19,13 +20,13 @@ class ClassName extends Database
             });
         endif;
 
-        // you can now build your migrations with schemas
-        // Schema::build(static::$capsule, dirname(__DIR__) . '/Schema/tableName.json');
+        // you can now build your migrations with schemas.
+        // see: https://leafphp.dev/docs/mvc/schema.html
+        // Schema::build('tableName');
     }
 
     /**
      * Reverse the migrations.
-     *
      * @return void
      */
     public function down()
