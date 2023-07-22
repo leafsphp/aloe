@@ -46,7 +46,7 @@ class ExampleMailer
             'subject' => 'Leaf Mail Test',
             // just add the view() function to your body.
             // It will be rendered immediately as html
-            'body' => view("mails.example", $user),
+            'body' => view('mails.example', $user),
             'recipientEmail' => 'name@example.com',
             'recipientName' => 'First Last',
 
@@ -71,7 +71,7 @@ class ExampleMailer
             'senderEmail' => 'name@example.com',
         ]);
 
-        $mail->attach("path/to/file");
+        $mail->attach('path/to/file');
 
         return $mail;
     }

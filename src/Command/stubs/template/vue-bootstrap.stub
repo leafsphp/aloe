@@ -1,12 +1,10 @@
+<script setup>
+const msg = 'pagename Page!'
+</script>
+
 <template>
     <div>
-        <h2>pagename Page.</h2>
+        <h2>{{ msg }}</h2>
         <p>This is the pagename page.</p>
     </div>
 </template>
-
-<script>
-export default {
-    name: "pagenamePage",
-};
-</script>

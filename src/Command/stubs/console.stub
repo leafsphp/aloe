@@ -29,5 +29,7 @@ class ClassName extends Command
         $this->comment(
             "CommandName command's output {$this->argument('argument')} {$this->option('option')}"
         );
+
+        return 0;
     }
 }

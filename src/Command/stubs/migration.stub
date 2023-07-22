@@ -8,7 +8,6 @@ class ClassName extends Database
 {
     /**
      * Run the migrations.
-     *
      * @return void
      */
     public function up()

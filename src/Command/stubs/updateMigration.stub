@@ -7,7 +7,6 @@ class ClassName extends Database
 {
     /**
      * Run the migrations.
-     *
      * @return void
      */
     public function up()
@@ -27,7 +26,6 @@ class ClassName extends Database
 
     /**
      * Reverse the migrations.
-     *
      * @return void
      */
     public function down()
