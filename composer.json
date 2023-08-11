@@ -22,11 +22,12 @@
     "minimum-stability": "dev",
 	"prefer-stable": true,
     "require": {
-        "psy/psysh": "^0.10.9",
-        "symfony/console": "^5.3",
         "illuminate/support": "^8.73",
+        "leafs/fs": "^1.0",
         "leafs/mvc-core": "*",
-        "leafs/fs": "^1.0"
+        "psy/psysh": "^0.10.9",
+        "symfony/console": "^5.0|^6.0",
+        "symfony/process": "^5.0|^6.0"
     },
     "require-dev": {
         "leafs/leaf": "*"

@@ -21,7 +21,19 @@ class ViewBuildCommand extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
+		$directory = getcwd();
 		$npm = \Aloe\Core::findNpm();
+
+		if (!is_dir("$directory/node_modules")) {
+			$output->writeln("<info>Installing dependencies...</info>");
+			$success = \Aloe\Core::run("$npm install", $output);
+
+			if (!$success) {
+				$output->writeln("<error>❌  Failed to install dependencies.</error>");
+				return 1;
+			}
+		}
+
 		$success = \Aloe\Core::run("$npm run build", $output);
 
 		if (!$success) return 1;
