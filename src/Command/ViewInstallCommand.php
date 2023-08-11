@@ -152,7 +152,7 @@ class ViewInstallCommand extends Command
         $output->writeln("\n✅  <info>Vite installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf Inertia server bridge...</info>\n");
 
-        $success = \Aloe\Core::run("$composer require leafs/vite:dev-main leafs/inertia:dev-main", $output);
+        $success = \Aloe\Core::run("$composer require leafs/vite leafs/inertia", $output);
 
         if (!$success) {
             $output->writeln("❌  <error>Failed to setup Leaf Inertia server bridge</error>");
@@ -226,7 +226,7 @@ class ViewInstallCommand extends Command
         $output->writeln("\n✅  <info>React installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf React server bridge...</info>\n");
 
-        $success = \Aloe\Core::run("$composer require leafs/inertia:dev-main leafs/vite:dev-main", $output);
+        $success = \Aloe\Core::run("$composer require leafs/inertia leafs/vite", $output);
 
         if (!$success) {
             $output->writeln("❌  <error>Failed to setup Leaf React server bridge</error>");
@@ -318,7 +318,7 @@ class ViewInstallCommand extends Command
         $output->writeln("\n✅  <info>Tailwind CSS installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf server bridge...</info>\n");
 
-        $success = \Aloe\Core::run("$composer require leafs/vite:dev-main", $output);
+        $success = \Aloe\Core::run("$composer require leafs/vite", $output);
 
         if (!$success) {
             $output->writeln("❌  <error>Failed to setup Leaf server bridge</error>");
@@ -422,7 +422,7 @@ class ViewInstallCommand extends Command
         $output->writeln("\n✅  <info>Tailwind CSS installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf Vite server bridge...</info>\n");
 
-        $success = \Aloe\Core::run("$composer require leafs/vite:dev-main", $output);
+        $success = \Aloe\Core::run("$composer require leafs/vite", $output);
 
         if (!$success) {
             $output->writeln("❌  <error>Failed to setup Leaf Vite server bridge</error>");
@@ -479,7 +479,7 @@ class ViewInstallCommand extends Command
         $output->writeln("\n✅  <info>Vue installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf Vue server bridge...</info>\n");
 
-        $success = \Aloe\Core::run("$composer require leafs/inertia:dev-main leafs/vite:dev-main", $output);
+        $success = \Aloe\Core::run("$composer require leafs/inertia leafs/vite", $output);
 
         if (!$success) {
             $output->writeln("❌  <error>Failed to setup Leaf Vue server bridge</error>");
