@@ -102,6 +102,11 @@ class Console
 
             // Mail commands
             \Aloe\Command\MailSetupCommand::class,
+
+            // View commands
+            \Aloe\Command\ViewBuildCommand::class,
+            \Aloe\Command\ViewDevCommand::class,
+            \Aloe\Command\ViewInstallCommand::class,
         ];
     }
 
