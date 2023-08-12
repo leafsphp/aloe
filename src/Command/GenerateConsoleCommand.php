@@ -27,8 +27,8 @@ class GenerateConsoleCommand extends Command
             return 1;
         }
 
-        if (file_exists(Config::rootpath(CommandsPath('.init')))) {
-            unlink(Config::rootpath(CommandsPath('.init')));
+        if (file_exists(Config::rootpath(CommandsPath('.gitkeep')))) {
+            unlink(Config::rootpath(CommandsPath('.gitkeep')));
         }
 
         touch($file);

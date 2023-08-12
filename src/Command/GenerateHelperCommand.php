@@ -26,8 +26,8 @@ class GenerateHelperCommand extends Command
             return $this->error("$helper already exists!");
         }
 
-        if (file_exists(Config::rootpath(HelpersPath('.init')))) {
-            unlink(Config::rootpath(HelpersPath('.init')));
+        if (file_exists(Config::rootpath(HelpersPath('.gitkeep')))) {
+            unlink(Config::rootpath(HelpersPath('.gitkeep')));
         }
 
         touch($file);

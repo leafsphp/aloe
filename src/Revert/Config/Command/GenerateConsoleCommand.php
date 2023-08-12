@@ -30,8 +30,8 @@ class GenerateConsoleCommand extends Command
             return $output->writeln("<error>$className already exists!</error>");
         }
 
-        if (file_exists(BaseCommand::commands_path(".init"))) {
-            unlink(BaseCommand::commands_path(".init"));
+        if (file_exists(BaseCommand::commands_path(".gitkeep"))) {
+            unlink(BaseCommand::commands_path(".gitkeep"));
         }
 
         touch($file);
