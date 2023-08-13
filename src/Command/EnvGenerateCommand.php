@@ -18,15 +18,10 @@ class EnvGenerateCommand extends Command
         }
 
         if (file_exists(Config::rootpath('.env.example'))) {
-            if (copy(Config::rootpath('.env.example'), Config::rootpath('.env'))) {
+            if (copy(Config::rootpath('.env.example'), Config::rootpath('.env')) || copy(__DIR__ . '/stubs/.env.stub', Config::rootpath('.env'))) {
                 $this->comment('.env generated successfully!');
                 return 0;
             }
-        }
-
-        if (copy(__DIR__ . '/stubs/.env.stub', Config::rootpath('.env'))) {
-            $this->comment('.env generated successfully!');
-            return 0;
         }
 
         $this->error('Couldn\'t generate env file');
