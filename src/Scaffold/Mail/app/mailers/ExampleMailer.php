@@ -33,8 +33,8 @@ class ExampleMailer
             'recipientEmail' => 'name@example.com',
             'recipientName' => 'First Last',
 
-            // next couple of lines can be skipped if you
-            // set defaults in the config/mail.php file
+            // these have been set as defaults in .env file
+            // you can override them here, otherwise, just remove them
             'senderName' => 'Leaf Mail',
             'senderEmail' => 'name@example.com',
         ]);

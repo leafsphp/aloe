@@ -14,8 +14,8 @@ class ClassName
             'recipientEmail' => $user->email,
             'recipientName' => $user->name,
 
-            // next couple of lines can be skipped if you
-            // set defaults in the config/mail.php file
+            // these have been set as defaults in .env file
+            // you can override them here, otherwise, just remove them
             'senderName' => _env('MAIL_SENDER_NAME'),
             'senderEmail' => _env('MAIL_SENDER_EMAIL'),
         ]);
