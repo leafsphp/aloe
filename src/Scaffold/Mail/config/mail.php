@@ -94,7 +94,6 @@ return [
     |
     | use League\OAuth2\Client\Provider\Google;
     | use PHPMailer\PHPMailer\OAuth;
-    | use PHPMailer\PHPMailer\PHPMailer;
     |
     | 'auth' => new OAuth(
     |   [
@@ -127,5 +126,10 @@ return [
     | `replyToName`, and `replyToEmail` of your emails.
     |
     */
-    'defaults' => [],
+    'defaults' => [
+        'senderName' => _env('MAIL_SENDER_NAME'),
+        'senderEmail' => _env('MAIL_SENDER_EMAIL'),
+        'replyToName' => _env('MAIL_REPLY_TO_NAME'),
+        'replyToEmail' => _env('MAIL_REPLY_TO_EMAIL'),
+    ],
 ];
