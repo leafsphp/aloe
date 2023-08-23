@@ -67,6 +67,7 @@ class Console
 
             // Aloe Commands
             \Aloe\Command\DevToolsCommand::class,
+            \Aloe\Command\KeyGenerateCommand::class,
 
             // auth Commands
             \Aloe\Command\AuthScaffoldCommand::class,
