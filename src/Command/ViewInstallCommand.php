@@ -29,8 +29,6 @@ class ViewInstallCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // $composer = \Aloe\Core::findComposer();
-
         if ($input->getOption('blade')) {
             return $this->installBlade($output);
         }
@@ -118,11 +116,36 @@ class ViewInstallCommand extends Command
             $paths = require "$directory/config/paths.php";
             $viewsPath = trim($paths['views'] ?? 'app/views', '/');
 
-            \Leaf\FS::superCopy(__DIR__ . '/themes/bareui', "$directory/$viewsPath");
+            \Leaf\FS::superCopy(__DIR__ . '/themes/bareui/theme', "$directory/$viewsPath");
+            \Leaf\FS::superCopy(__DIR__ . '/themes/bareui/config', "$directory/config");
 
-            $viewConfig = require "$directory/config/view.php";
-            $viewConfig['viewEngine'] = '\Leaf\BareUI';
-            file_put_contents("$directory/config/view.php", '<?php return ' . var_export($viewConfig, true) . ';');
+            if (file_exists("$directory/$viewsPath/index.blade.php")) {
+                unlink("$directory/$viewsPath/index.blade.php");
+            }
+
+            $appRoutePartial = "$directory/app/routes/_app.php";
+
+            if (file_exists($appRoutePartial)) {
+                $appRoute = file_get_contents($appRoutePartial);
+                $appRoute = str_replace(
+                    "render('index');",
+                    "render('index', ['name' => 'Name Variable']);",
+                    $appRoute
+                );
+                file_put_contents($appRoutePartial, $appRoute);
+            }
+
+            $indexFile = "$directory/public/index.php";
+
+            if (file_exists($indexFile)) {
+                $index = file_get_contents($indexFile);
+                $index = str_replace(
+                    "Leaf\View::attach(\Leaf\Blade::class);",
+                    "Leaf\View::attach(\Leaf\BareUI::class);",
+                    $index
+                );
+                file_put_contents($indexFile, $index);
+            }
         } else {
             \Leaf\FS::superCopy(__DIR__ . '/themes/bareui', $directory);
         }

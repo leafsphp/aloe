@@ -1,6 +1,6 @@
 {
     "name": "leafs/aloe",
-    "version": "1.4.2",
+    "version": "1.4.3",
     "description": "Overpowered command line tool for your leaf apps.",
     "keywords": ["cli", "console", "cmd", "bash", "leaf", "php"],
     "homepage": "https://leafphp.dev/aloe-cli/",
@@ -22,7 +22,7 @@
     "minimum-stability": "dev",
 	"prefer-stable": true,
     "require": {
-        "illuminate/support": "^8.73",
+        "illuminate/support": "*",
         "leafs/fs": "^1.0",
         "leafs/mvc-core": "*",
         "psy/psysh": "^0.10.9|^0.11",
