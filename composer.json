@@ -1,9 +1,9 @@
 {
     "name": "leafs/aloe",
-    "version": "1.4.3",
+    "version": "1.4.4",
     "description": "Overpowered command line tool for your leaf apps.",
     "keywords": ["cli", "console", "cmd", "bash", "leaf", "php"],
-    "homepage": "https://leafphp.dev/aloe-cli/",
+    "homepage": "https://leafphp.dev/docs/mvc/console.html",
     "type": "library",
     "license": "MIT",
     "authors": [
