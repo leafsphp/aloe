@@ -31,6 +31,10 @@ class GenerateMailerCommand extends Command
             return 1;
         }
 
+        if (!is_dir(dirname($file))) {
+            mkdir(dirname($file), 0777, true);
+        }
+
         touch($file);
 
         $fileContent = \file_get_contents(__DIR__ . '/stubs/mailer.stub');
