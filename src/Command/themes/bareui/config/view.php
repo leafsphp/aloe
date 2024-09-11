@@ -22,9 +22,7 @@ return [
     | Configuration for your templating engine.
     |
     */
-    'config' => function ($config) {
-        View::bareui()->config($config['views']);
-    },
+    'config' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -35,7 +33,5 @@ return [
     | in your app if you're using a custom view engine.
     |
     */
-    'render' => function ($view, $data = []) {
-        return View::bareui()->render($view, $data);
-    },
+    'render' => null,
 ];
