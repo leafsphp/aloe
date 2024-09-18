@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Console;
+namespace Aloe\Command;
 
-use Aloe\Command;
-class LinkCommand extends Command
+class LinkCommand extends \Aloe\Command
 
 {
     protected static $defaultName = 'link';
