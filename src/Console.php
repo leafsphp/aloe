@@ -108,6 +108,9 @@ class Console
             \Aloe\Command\ViewBuildCommand::class,
             \Aloe\Command\ViewDevCommand::class,
             \Aloe\Command\ViewInstallCommand::class,
+
+            // Symbolic link command
+            \Aloe\Command\LinkCommand::class,   
         ];
     }
 
