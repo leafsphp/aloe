@@ -23,21 +23,10 @@ class Installer
      */
     public static function magicCopy($installablesDir)
     {
-        // $installables = FS::listFolders($installablesDir);
-
-        // foreach ($installables as $installableDir) {
-        //     $dir = FS::listDir($installableDir);
-        //     $trueDir = str_replace($installablesDir, '', $installableDir);
-
-        //     foreach ($dir as $installable) {
-        //         FS::superCopy(
-        //             "$installableDir/$installable",
-        //             Config::rootpath("$trueDir/$installable")
-        //         );
-        //     }
-        // }
-
-        Directory::copy($installablesDir, Config::rootpath());
+        if (!Directory::copy($installablesDir, getcwd(), ['recursive' => true])) {
+            echo "Couldn't install $installablesDir\n";
+            echo json_encode(Directory::errors(), JSON_PRETTY_PRINT);
+        }
     }
 
     /**

@@ -75,16 +75,16 @@ class ViewInstallCommand extends Command
         if (!$success) {
             $output->writeln("❌  <error>Failed to install blade</error>");
             return 1;
-        };
+        }
 
         if ($isMVCApp) {
-            \Leaf\FS\Directory::copy(__DIR__ . '/themes/blade', $directory);
+            \Leaf\FS\Directory::copy(__DIR__ . '/themes/blade', $directory, ['recursive' => true]);
 
             $viewConfig = require "$directory/config/view.php";
             $viewConfig['viewEngine'] = '\Leaf\Blade';
             file_put_contents("$directory/config/view.php", '<?php return ' . var_export($viewConfig, true) . ';');
         } else {
-            \Leaf\FS\Directory::copy(__DIR__ . '/themes/blade', $directory);
+            \Leaf\FS\Directory::copy(__DIR__ . '/themes/blade', $directory, ['recursive' => true]);
         }
 
         $output->writeln("\n🎉   <info>Blade setup successfully.</info>");
@@ -107,13 +107,13 @@ class ViewInstallCommand extends Command
         if (!$success) {
             $output->writeln("❌  <error>Failed to install Bare UI</error>");
             return 1;
-        };
+        }
 
         if ($isMVCApp) {
             $paths = require "$directory/config/paths.php";
             $viewsPath = trim($paths['views'] ?? 'app/views', '/');
 
-            \Leaf\FS\Directory::copy(__DIR__ . '/themes/bareui', $directory);
+            \Leaf\FS\Directory::copy(__DIR__ . '/themes/bareui', $directory, ['recursive' => true]);
 
             if (file_exists("$directory/$viewsPath/index.blade.php")) {
                 unlink("$directory/$viewsPath/index.blade.php");
@@ -143,7 +143,7 @@ class ViewInstallCommand extends Command
                 file_put_contents($indexFile, $index);
             }
         } else {
-            \Leaf\FS\Directory::copy(__DIR__ . '/themes/bareui', $directory);
+            \Leaf\FS\Directory::copy(__DIR__ . '/themes/bareui', $directory, ['recursive' => true]);
         }
 
         $output->writeln("\n🎉   <info>Bare UI setup successfully.</info>");
@@ -166,7 +166,7 @@ class ViewInstallCommand extends Command
         if (!$success) {
             $output->writeln("❌  <error>Failed to install vite</error>");
             return 1;
-        };
+        }
 
         $output->writeln("\n✅  <info>Vite installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf Inertia server bridge...</info>\n");
@@ -176,14 +176,15 @@ class ViewInstallCommand extends Command
         if (!$success) {
             $output->writeln("❌  <error>Failed to setup Leaf Inertia server bridge</error>");
             return 1;
-        };
+        }
 
         $isMVCApp = $this->isMVCApp();
         $isBladeProject = $this->isBladeProject();
 
         \Leaf\FS\Directory::copy(
             __DIR__ . '/themes/inertia/' . ($isBladeProject ? 'blade' : 'bare-ui'),
-            $directory
+            $directory,
+            ['recursive' => true]
         );
 
         if (!$isMVCApp) {
@@ -225,7 +226,7 @@ class ViewInstallCommand extends Command
         if (!$success) {
             $output->writeln("❌  <error>Failed to install react</error>");
             return 1;
-        };
+        }
 
         $output->writeln("\n✅  <info>React installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf React server bridge...</info>\n");
@@ -235,7 +236,7 @@ class ViewInstallCommand extends Command
         if (!$success) {
             $output->writeln("❌  <error>Failed to setup Leaf React server bridge</error>");
             return 1;
-        };
+        }
 
         $isMVCApp = $this->isMVCApp();
         $isBladeProject = $this->isBladeProject();
@@ -248,12 +249,13 @@ class ViewInstallCommand extends Command
             if (!$success) {
                 $output->writeln("❌  <error>Could not install BareUI, run leaf install bareui</error>\n");
                 return 1;
-            };
+            }
         }
 
         \Leaf\FS\Directory::copy(
             __DIR__ . '/themes/react/' . ($isBladeProject ? 'blade' : 'bare-ui'),
-            $directory
+            $directory,
+            ['recursive' => true]
         );
 
         $package = json_decode(file_get_contents("$directory/package.json"), true);
@@ -286,7 +288,7 @@ class ViewInstallCommand extends Command
         if (!$success) {
             $output->writeln("❌  <error>Failed to install tailwind</error>");
             return 1;
-        };
+        }
 
         $output->writeln("\n✅  <info>Tailwind CSS installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf server bridge...</info>\n");
@@ -296,13 +298,14 @@ class ViewInstallCommand extends Command
         if (!$success) {
             $output->writeln("❌  <error>Failed to setup Leaf server bridge</error>");
             return 1;
-        };
+        }
 
         $isMVCApp = $this->isMVCApp();
 
         \Leaf\FS\Directory::copy(
             __DIR__ . '/themes/tailwind/',
-            $directory
+            $directory,
+            ['recursive' => true]
         );
 
         if ($isMVCApp) {
@@ -380,7 +383,7 @@ class ViewInstallCommand extends Command
         if (!$success) {
             $output->writeln("❌  <error>Failed to install vite</error>");
             return 1;
-        };
+        }
 
         $output->writeln("\n✅  <info>Tailwind CSS installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf Vite server bridge...</info>\n");
@@ -390,12 +393,12 @@ class ViewInstallCommand extends Command
         if (!$success) {
             $output->writeln("❌  <error>Failed to setup Leaf Vite server bridge</error>");
             return 1;
-        };
+        }
 
         $isMVCApp = $this->isMVCApp();
 
         if (!file_exists("$directory/vite.config.js")) {
-            \Leaf\FS\Directory::copy(__DIR__ . '/themes/vite', $directory);
+            \Leaf\FS\Directory::copy(__DIR__ . '/themes/vite', $directory, ['recursive' => true]);
         }
 
         if (!$isMVCApp) {
@@ -437,7 +440,7 @@ class ViewInstallCommand extends Command
         if (!$success) {
             $output->writeln("❌  <error>Failed to install Vue</error>");
             return 1;
-        };
+        }
 
         $output->writeln("\n✅  <info>Vue installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf Vue server bridge...</info>\n");
@@ -447,7 +450,7 @@ class ViewInstallCommand extends Command
         if (!$success) {
             $output->writeln("❌  <error>Failed to setup Leaf Vue server bridge</error>");
             return 1;
-        };
+        }
 
         $isMVCApp = $this->isMVCApp();
         $isBladeProject = $this->isBladeProject();
@@ -460,19 +463,21 @@ class ViewInstallCommand extends Command
             if (!$success) {
                 $output->writeln("❌  <error>Could not install BareUI, run leaf install bareui</error>\n");
                 return 1;
-            };
+            }
         }
 
         \Leaf\FS\Directory::copy(
             __DIR__ . '/themes/vue/' . ($isBladeProject ? 'blade' : 'bare-ui'),
-            $directory
+            $directory,
+            ['recursive' => true]
         );
 
         if (!$isMVCApp) {
-            \Leaf\FS\Directory::copy(__DIR__ . '/themes/vue/routes', $directory);
+            \Leaf\FS\Directory::copy(__DIR__ . '/themes/vue/routes', $directory, ['recursive' => true]);
             \Leaf\FS\Directory::copy(
-                (__DIR__ . '/themes/vue/views/' . ($isBladeProject ? 'blade' : 'bare-ui')),
-                $directory
+                __DIR__ . '/themes/vue/views/' . ($isBladeProject ? 'blade' : 'bare-ui'),
+                $directory,
+                ['recursive' => true]
             );
 
             $viteConfig = file_get_contents("$directory/vite.config.js");
