@@ -24,41 +24,11 @@ class Console
      */
     private static $app;
 
-    /**
-     * Load up aloe without calling the boot method
-     */
-    public function __construct($app = 'ALoe CLI', $version = 'v1.0')
+    public function __construct($version = 'v1.0')
     {
-        static::boot($app, $version);
-    }
+        static::$app = new Application(asComment('Leaf MVC'), $version);
 
-    /**
-     * Boot the aloe CLI
-     *
-     * @param string $app The name of the app to display in terminal
-     * @param string $version The app version
-     * @param bool $load Load the default Aloe CLI commands?
-     */
-    public static function boot($app = 'Aloe CLI', $version = 'v1.0', $load = true)
-    {
-        static::$app = new Application(asComment($app), $version);
-        if ($load) static::load();
-    }
-
-    /**
-     * Load default console commands
-     */
-    public static function load()
-    {
-        static::register(static::commands());
-    }
-
-    /**
-     * Return list of all default commands
-     */
-    public static function commands()
-    {
-        return [
+        static::register([
             // Random Commands
             \Aloe\Command\ServeCommand::class,
             \Aloe\Command\InteractCommand::class,
@@ -110,14 +80,14 @@ class Console
             \Aloe\Command\ViewInstallCommand::class,
 
             // Symbolic link command
-            \Aloe\Command\LinkCommand::class,   
-        ];
+            \Aloe\Command\LinkCommand::class,
+        ]);
     }
 
     /**
      * Register a custom command
      *
-     * @param array|Aloe\Command $command: Command(s) to run
+     * @param array|\Symfony\Component\Console\Command\Command $command: Command(s) to run
      *
      * @return void
      */
