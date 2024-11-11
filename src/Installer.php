@@ -2,8 +2,8 @@
 
 namespace Aloe;
 
-use Leaf\FS;
 use Aloe\Command\Config;
+use Leaf\FS\Directory;
 
 /**
  * Aloe Installer
@@ -23,19 +23,21 @@ class Installer
      */
     public static function magicCopy($installablesDir)
     {
-        $installables = FS::listFolders($installablesDir);
+        // $installables = FS::listFolders($installablesDir);
 
-        foreach ($installables as $installableDir) {
-            $dir = FS::listDir($installableDir);
-            $trueDir = str_replace($installablesDir, '', $installableDir);
+        // foreach ($installables as $installableDir) {
+        //     $dir = FS::listDir($installableDir);
+        //     $trueDir = str_replace($installablesDir, '', $installableDir);
 
-            foreach ($dir as $installable) {
-                FS::superCopy(
-                    "$installableDir/$installable",
-                    Config::rootpath("$trueDir/$installable")
-                );
-            }
-        }
+        //     foreach ($dir as $installable) {
+        //         FS::superCopy(
+        //             "$installableDir/$installable",
+        //             Config::rootpath("$trueDir/$installable")
+        //         );
+        //     }
+        // }
+
+        Directory::copy($installablesDir, Config::rootpath());
     }
 
     /**
@@ -43,19 +45,19 @@ class Installer
      */
     public static function installRoutes($routesDir, $routeFile = 'index.php')
     {
-        $routeHome = Config::rootpath(RoutesPath($routeFile));
-        $routeData = FS::readFile($routeHome);
-        $routes = FS::listDir($routesDir);
+        // $routeHome = Config::rootpath(RoutesPath($routeFile));
+        // $routeData = FS::readFile($routeHome);
+        // $routes = FS::listDir($routesDir);
 
-        foreach ($routes as $route) {
-            $data = str_replace(
-                "require __DIR__ . '/$route';",
-                "",
-                $routeData
-            );
-            FS::writeFile($routeHome, $data);
-            FS::append($routeHome, "require __DIR__ . '/$route';");
-        }
+        // foreach ($routes as $route) {
+        //     $data = str_replace(
+        //         "require __DIR__ . '/$route';",
+        //         "",
+        //         $routeData
+        //     );
+        //     FS::writeFile($routeHome, $data);
+        //     FS::append($routeHome, "require __DIR__ . '/$route';");
+        // }
     }
 
     /**

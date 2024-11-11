@@ -3,7 +3,7 @@
 namespace Aloe\Command;
 
 use Aloe\Installer;
-use Leaf\FS;
+use Leaf\FS\Storage;
 
 class DevToolsCommand extends \Aloe\Command
 {
@@ -18,7 +18,7 @@ class DevToolsCommand extends \Aloe\Command
 
         $this->comment('Installing leaf devtools routes...');
 
-        $rootFile = FS::readFile(Config::rootPath(PublicPath('index.php')));
+        $rootFile = Storage::read(Config::rootPath(PublicPath('index.php')));
         $rootFile = str_replace(
             "/*
 |--------------------------------------------------------------------------
@@ -51,7 +51,7 @@ class DevToolsCommand extends \Aloe\Command
 
         $rootFile = str_replace("\n\n\n", "\n", $rootFile);
 
-        FS::writeFile(Config::rootPath(PublicPath('index.php')), $rootFile);
+        Storage::writeFile(Config::rootPath(PublicPath('index.php')), $rootFile);
 
         $this->info('Leaf devtools installed successfully!');
 

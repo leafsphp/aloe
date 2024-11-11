@@ -3,7 +3,6 @@
 namespace Aloe\Command;
 
 use Aloe\Installer;
-use Leaf\FS;
 
 class MailSetupCommand extends \Aloe\Command
 {

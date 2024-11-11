@@ -2,41 +2,42 @@
 
 namespace App\Controllers\Auth;
 
-use Leaf\Auth;
-
 class RegisterController extends Controller
 {
     public function show()
     {
-        auth()->guard('guest');
+        $form = flash()->display('form') ?? [];
 
-        echo view('pages.auth.register');
+        echo view('pages.auth.register', array_merge($form, [
+            'errors' => flash()->display('error') ?? []
+        ]));
     }
 
     public function store()
     {
-        auth()->guard('guest');
-
-        $credentials = request()->get(['name', 'username', 'email', 'password']);
-
-        $this->form->validate([
-            'name' => 'required',
-            'username' => 'validUsername',
+        $credentials = request()->validate([
+            'name' => 'string',
             'email' => 'email',
-            'password' => 'required'
+            'password' => 'min:8',
+            'confirmPassword*' => 'matchesValueOf:password'
         ]);
 
-        auth()->config('SESSION_ON_REGISTER', true);
-
-        $user = auth()->register($credentials, [
-            'username', 'email'
-        ]);
-
-        if (!$user) {
-            echo view('pages.auth.register', array_merge(
-                ['errors' => array_merge(auth()->errors(), $this->form->errors())],
-                $credentials
-            ));
+        if (!$credentials) {
+            return response()
+                ->withFlash('form', request()->body())
+                ->withFlash('error', request()->errors())
+                ->redirect('/auth/register');
         }
+
+        $success = auth()->register($credentials);
+
+        if (!$success) {
+            return response()
+                ->withFlash('form', request()->body())
+                ->withFlash('error', auth()->errors())
+                ->redirect('/auth/register');
+        }
+
+        return response()->redirect('/dashboard');
     }
 }

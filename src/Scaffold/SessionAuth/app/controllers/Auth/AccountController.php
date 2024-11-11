@@ -6,8 +6,6 @@ class AccountController extends Controller
 {
     public function user()
     {
-        auth()->guard('auth');
-
         $user = auth()->user(['password']);
 
         if (!$user) {
@@ -21,15 +19,13 @@ class AccountController extends Controller
 
     public function show_update()
     {
-        auth()->guard('auth');
-
-        $user = auth()->user();
+        $user = auth()->data();
 
         echo view('pages.auth.update', [
             'user' => auth()->id(),
-            'username' => $user['username'] ?? null,
-            'email' => $user['email'] ?? null,
+            // 'username' => $user['username'] ?? null,
             'name' => $user['name'] ?? null,
+            'email' => $user['email'] ?? null,
         ]);
     }
 

@@ -2,43 +2,45 @@
 
 namespace App\Controllers\Auth;
 
-use App\Models\User;
-
 class LoginController extends Controller
 {
     public function show()
     {
-        auth()->guard('guest');
+        $form = flash()->display('form') ?? [];
 
-        echo view('pages.auth.login');
+        echo view('pages.auth.login', array_merge($form, [
+            'errors' => flash()->display('error') ?? []
+        ]));
     }
 
     public function store()
     {
-        auth()->guard('guest');
-
-        $data = request()->get(['username', 'password']);
-
-        $this->form->validate([
-            'username' => 'validUsername',
+        $data = request()->validate([
+            'email' => 'email',
+            'password' => 'min:8'
         ]);
 
-        $user = auth()->login($data);
-
-        if (!$user) {
-            echo view('pages.auth.login', array_merge($data, [
-                'errors' => array_merge(
-                    auth()->errors(),
-                    $this->form->errors()
-                ),
-            ]));
+        if (!$data) {
+            response()
+                ->withFlash('form', request()->body())
+                ->withFlash('error', request()->errors())
+                ->redirect('/auth/login');
         }
+
+        $success = auth()->login($data);
+
+        if (!$success) {
+            response()
+                ->withFlash('form', request()->body())
+                ->withFlash('error', request()->errors())
+                ->redirect('/auth/login');
+        }
+
+        response()->redirect('/dashboard');
     }
 
     public function logout()
     {
-        auth()->guard('auth');
-
-        auth()->logout('GUARD_LOGIN');
+        auth()->logout('/');
     }
 }

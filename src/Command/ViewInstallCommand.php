@@ -78,16 +78,13 @@ class ViewInstallCommand extends Command
         };
 
         if ($isMVCApp) {
-            $paths = require "$directory/config/paths.php";
-            $viewsPath = trim($paths['views'] ?? 'app/views', '/');
-
-            \Leaf\FS::superCopy(__DIR__ . '/themes/blade', "$directory/$viewsPath");
+            \Leaf\FS\Directory::copy(__DIR__ . '/themes/blade', $directory);
 
             $viewConfig = require "$directory/config/view.php";
             $viewConfig['viewEngine'] = '\Leaf\Blade';
             file_put_contents("$directory/config/view.php", '<?php return ' . var_export($viewConfig, true) . ';');
         } else {
-            \Leaf\FS::superCopy(__DIR__ . '/themes/blade', $directory);
+            \Leaf\FS\Directory::copy(__DIR__ . '/themes/blade', $directory);
         }
 
         $output->writeln("\n🎉   <info>Blade setup successfully.</info>");
@@ -116,8 +113,7 @@ class ViewInstallCommand extends Command
             $paths = require "$directory/config/paths.php";
             $viewsPath = trim($paths['views'] ?? 'app/views', '/');
 
-            \Leaf\FS::superCopy(__DIR__ . '/themes/bareui/theme', "$directory/$viewsPath");
-            \Leaf\FS::superCopy(__DIR__ . '/themes/bareui/config', "$directory/config");
+            \Leaf\FS\Directory::copy(__DIR__ . '/themes/bareui', $directory);
 
             if (file_exists("$directory/$viewsPath/index.blade.php")) {
                 unlink("$directory/$viewsPath/index.blade.php");
@@ -147,7 +143,7 @@ class ViewInstallCommand extends Command
                 file_put_contents($indexFile, $index);
             }
         } else {
-            \Leaf\FS::superCopy(__DIR__ . '/themes/bareui', $directory);
+            \Leaf\FS\Directory::copy(__DIR__ . '/themes/bareui', $directory);
         }
 
         $output->writeln("\n🎉   <info>Bare UI setup successfully.</info>");
@@ -185,17 +181,10 @@ class ViewInstallCommand extends Command
         $isMVCApp = $this->isMVCApp();
         $isBladeProject = $this->isBladeProject();
 
-        foreach (glob(__DIR__ . '/themes/inertia/root/{,.}[!.,!..]*', GLOB_MARK | GLOB_BRACE) as $file) {
-            if (basename($file) === 'vite.config.js' && file_exists("$directory/vite.config.js")) {
-                continue;
-            }
-
-            if (is_file($file)) {
-                copy($file, rtrim($directory, '/') . '/' . basename($file));
-            } else {
-                \Leaf\FS::superCopy($file, rtrim($directory, '/') . '/' . basename($file));
-            }
-        }
+        \Leaf\FS\Directory::copy(
+            __DIR__ . '/themes/inertia/' . ($isBladeProject ? 'blade' : 'bare-ui'),
+            $directory
+        );
 
         if (!$isMVCApp) {
             $viteConfig = file_get_contents("$directory/vite.config.js");
@@ -205,14 +194,6 @@ class ViewInstallCommand extends Command
                 $viteConfig
             );
             file_put_contents("$directory/vite.config.js", $viteConfig);
-        } else {
-            $paths = require "$directory/config/paths.php";
-            $viewsPath = trim($paths['views'] ?? 'app/views', '/');
-
-            \Leaf\FS::superCopy(
-                (__DIR__ . '/themes/inertia/views/' . ($isBladeProject ? 'blade' : 'bare-ui')),
-                "$directory/$viewsPath"
-            );
         }
 
         $package = json_decode(file_get_contents("$directory/package.json"), true);
@@ -270,41 +251,10 @@ class ViewInstallCommand extends Command
             };
         }
 
-        \Leaf\FS::superCopy(__DIR__ . '/themes/react/root', $directory);
-
-        if ($isMVCApp) {
-            $paths = require "$directory/config/paths.php";
-            $viewsPath = trim($paths['views'] ?? 'app/views', '/');
-            $routesPath = trim($paths['routes'] ?? 'app/routes', '/');
-
-            \Leaf\FS::superCopy(__DIR__ . '/themes/react/routes',  "$directory/$routesPath");
-            \Leaf\FS::superCopy(
-                (__DIR__ . '/themes/react/views/' . ($isBladeProject ? 'blade' : 'bare-ui')),
-                "$directory/$viewsPath"
-            );
-        } else {
-            \Leaf\FS::superCopy(__DIR__ . '/themes/react/routes', $directory);
-            \Leaf\FS::superCopy(
-                (__DIR__ . '/themes/react/views/' . ($isBladeProject ? 'blade' : 'bare-ui')),
-                $directory
-            );
-
-            $viteConfig = file_get_contents("$directory/vite.config.js");
-            $viteConfig = str_replace(
-                "leaf({",
-                "leaf({\nhotFile: 'hot',",
-                $viteConfig
-            );
-            file_put_contents("$directory/vite.config.js", $viteConfig);
-
-            $inertiaView = file_get_contents("$directory/_inertia.$ext.php");
-            $inertiaView = str_replace(
-                '<?php echo vite([\'/js/app.jsx\', "/js/Pages/{$page[\'component\']}.jsx"]); ?>',
-                '<?php echo vite([\'js/app.jsx\', "js/Pages/{$page[\'component\']}.jsx"], \'/\'); ?>',
-                $inertiaView
-            );
-            file_put_contents("$directory/_inertia.$ext.php", $inertiaView);
-        }
+        \Leaf\FS\Directory::copy(
+            __DIR__ . '/themes/react/' . ($isBladeProject ? 'blade' : 'bare-ui'),
+            $directory
+        );
 
         $package = json_decode(file_get_contents("$directory/package.json"), true);
         $package['type'] = 'module';
@@ -350,23 +300,14 @@ class ViewInstallCommand extends Command
 
         $isMVCApp = $this->isMVCApp();
 
-        foreach (glob(__DIR__ . '/themes/tailwind/root/{,.}[!.,!..]*', GLOB_MARK | GLOB_BRACE) as $file) {
-            if (basename($file) === 'vite.config.js' && file_exists("$directory/vite.config.js")) {
-                continue;
-            }
-
-            if (is_file($file)) {
-                copy($file, rtrim($directory, '/') . '/' . basename($file));
-            } else {
-                \Leaf\FS::superCopy($file, rtrim($directory, '/') . '/' . basename($file));
-            }
-        }
+        \Leaf\FS\Directory::copy(
+            __DIR__ . '/themes/tailwind/',
+            $directory
+        );
 
         if ($isMVCApp) {
             $paths = require "$directory/config/paths.php";
             $viewsPath = trim($paths['views'] ?? 'app/views', '/');
-
-            \Leaf\FS::superCopy(__DIR__ . '/themes/tailwind/view', "$directory/$viewsPath");
 
             if (file_exists("$directory/app/views/js/app.js")) {
                 $jsApp = file_get_contents("$directory/app/views/js/app.js");
@@ -382,8 +323,6 @@ class ViewInstallCommand extends Command
                 }
             }
         } else {
-            \Leaf\FS::superCopy(__DIR__ . '/themes/tailwind/view', $directory);
-
             $viteConfig = file_get_contents("$directory/vite.config.js");
             $viteConfig = str_replace(
                 ["hotFile: 'hot',", 'hotFile: "hot",'],
@@ -395,6 +334,7 @@ class ViewInstallCommand extends Command
                 "leaf({\nhotFile: 'hot',",
                 $viteConfig
             );
+
             file_put_contents("$directory/vite.config.js", $viteConfig);
 
             if (file_exists("$directory/js/app.js")) {
@@ -455,7 +395,7 @@ class ViewInstallCommand extends Command
         $isMVCApp = $this->isMVCApp();
 
         if (!file_exists("$directory/vite.config.js")) {
-            \Leaf\FS::superCopy(__DIR__ . '/themes/vite', $directory);
+            \Leaf\FS\Directory::copy(__DIR__ . '/themes/vite', $directory);
         }
 
         if (!$isMVCApp) {
@@ -523,21 +463,14 @@ class ViewInstallCommand extends Command
             };
         }
 
-        \Leaf\FS::superCopy(__DIR__ . '/themes/vue/root', $directory);
+        \Leaf\FS\Directory::copy(
+            __DIR__ . '/themes/vue/' . ($isBladeProject ? 'blade' : 'bare-ui'),
+            $directory
+        );
 
-        if ($isMVCApp) {
-            $paths = require "$directory/config/paths.php";
-            $viewsPath = trim($paths['views'] ?? 'app/views', '/');
-            $routesPath = trim($paths['routes'] ?? 'app/routes', '/');
-
-            \Leaf\FS::superCopy(__DIR__ . '/themes/vue/routes',  "$directory/$routesPath");
-            \Leaf\FS::superCopy(
-                (__DIR__ . '/themes/vue/views/' . ($isBladeProject ? 'blade' : 'bare-ui')),
-                "$directory/$viewsPath"
-            );
-        } else {
-            \Leaf\FS::superCopy(__DIR__ . '/themes/vue/routes', $directory);
-            \Leaf\FS::superCopy(
+        if (!$isMVCApp) {
+            \Leaf\FS\Directory::copy(__DIR__ . '/themes/vue/routes', $directory);
+            \Leaf\FS\Directory::copy(
                 (__DIR__ . '/themes/vue/views/' . ($isBladeProject ? 'blade' : 'bare-ui')),
                 $directory
             );

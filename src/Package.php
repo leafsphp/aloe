@@ -6,7 +6,7 @@ namespace Aloe;
  * Package
  * ----
  * Meta info on aloe cli
- * 
+ *
  * @since 1.2.4
  */
 class Package

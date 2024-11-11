@@ -3,7 +3,6 @@
 namespace Aloe\Command;
 
 use Aloe\Installer;
-use Leaf\FS;
 use Illuminate\Support\Str;
 
 class AuthScaffoldCommand extends \Aloe\Command
@@ -34,7 +33,6 @@ class AuthScaffoldCommand extends \Aloe\Command
         $installablesDir = $this->installable($driver);
 
         Installer::magicCopy($installablesDir);
-        Installer::installRoutes("$installablesDir/app/routes/");
 
         $this->info('Authentication generated successfully.');
 
@@ -43,6 +41,6 @@ class AuthScaffoldCommand extends \Aloe\Command
 
     protected function installable($driver)
     {
-        return dirname(__DIR__) . '/Scaffold/' .  Str::studly($driver . 'Auth');
+        return dirname(__DIR__) . '/Scaffold/' .  Str::studly("{$driver}Auth");
     }
 }

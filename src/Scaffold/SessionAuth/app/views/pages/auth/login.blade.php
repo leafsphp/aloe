@@ -1,28 +1,39 @@
 @extends('layouts.auth')
 
 @section('content')
-    <div class="register-container w-75">
-        <section>
-            <h1>Login</h1>
-            <p>
-                Sign into {{ _env('APP_NAME', 'Leaf MVC') }}
-            </p>
-        </section>
-        <form action="/auth/login" method="post">
-            <div class="form-group mb-3">
-                <input class="form-control" type="text" name="username" placeholder="username"
-                    value="{{ $username ?? '' }}">
-                <small class="mb-1 text-danger">{{ $errors['username'] ?? ($errors['auth'] ?? null) }}</small>
+    <div class="text-base max-w-96 w-full">
+        <div class="mb-8">
+            <a href="/" class="flex justify-center items-center shadow-md p-2 w-16 h-16 rounded-2xl mb-8 bg-gray-50/15">
+                <img src="https://leafphp.dev/logo-circle.png" alt="{{ _env('APP_NAME') }}" class="h-8 w-auto sm:h-10">
+            </a>
+            <div>
+                <p>Don't have a {{ _env('APP_NAME', 'Leaf MVC') }} account?</p>
+                <a href="/auth/register" class="text-green-600">Sign up</a>
             </div>
-            <div class="form-group mb-3">
-                <input class="form-control" type="password" name="password" placeholder="password"
-                    value="{{ $password ?? '' }}">
-                <small class="mb-1 text-danger">{{ $errors['password'] ?? null }}</small>
-            </div>
-            <button class="btn btn-primary">Login</button>
-        </form>
-        <div class="mt-4">
-            <a href="{{ AuthConfig('GUARD_REGISTER') }}">Create an account</a>
         </div>
+
+        <form action="/auth/login" method="POST" class="grid gap-6">
+            <?php csrf()->form(); ?>
+
+            <div class="grid">
+                <label>Email</label>
+                <input class="bg-[#F5F8F9] py-2 px-3 border border-gray-150 rounded-lg" placeholder="example@example.com" type="email" name="email" value="{{ $email ?? '' }}">
+                <p class="text-red-700 text-sm">{{ $errors['email'] ?? ($errors['auth'] ?? null) }}</p>
+            </div>
+
+            <div class="grid">
+                <label>Password</label>
+                <input class="bg-[#F5F8F9] py-2 px-3 border border-gray-150 rounded-lg" placeholder="••••••••" type="password" name="password">
+                <p class="text-red-700 text-sm">{{ $errors['password'] ?? null }}</p>
+            </div>
+
+            <button
+                type="submit"
+                class="transition-all inline-flex justify-center rounded-lg text-sm font-semibold py-3 px-4 bg-green-600 hover:bg-green-500 text-white w-28"
+                data-zero-component="Button"
+            >
+                Get started
+            </button>
+        </form>
     </div>
 @endsection

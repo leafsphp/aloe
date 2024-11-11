@@ -2,12 +2,10 @@
 
 namespace App\Controllers\Auth;
 
-class HomeController extends Controller
+class DashboardController extends Controller
 {
     public function index()
     {
-        auth()->guard('auth');
-
         echo view('pages.auth.home');
     }
 }
