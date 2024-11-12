@@ -19,40 +19,36 @@ class AccountController extends Controller
 
     public function show_update()
     {
-        $user = auth()->data();
+        $user = auth()->user();
 
         echo view('pages.auth.update', [
-            'user' => auth()->id(),
-            // 'username' => $user['username'] ?? null,
-            'name' => $user['name'] ?? null,
-            'email' => $user['email'] ?? null,
+            'errors' => flash()->display('errors') ?? [],
+            'name' => $user->name ?? null,
+            'email' => $user->email ?? null,
         ]);
     }
 
     public function update()
     {
-        auth()->guard('auth');
+        $data = request()->validate([
+            'email' => 'email',
+            'name' => 'text',
+        ]);
 
-        $data = request()->try(['username', 'email', 'name']);
-        $uniques = ['username', 'email'];
-
-        foreach ($uniques as $key => $unique) {
-            if (!isset($data[$unique])) {
-                unset($uniques[$key]);
-            }
+        if (!$data) {
+            return response()
+                ->withFlash('errors', request()->errors())
+                ->redirect('/dashboard/user/update');
         }
 
-        $user = auth()->update($data, $uniques);
+        $success = auth()->update($data);
 
-        if (!$user) {
-            return view('pages.auth.update', [
-                'errors' => auth()->errors(),
-                'username' => $data['username'] ?? null,
-                'email' => $data['email'] ?? null,
-                'name' => $data['name'] ?? null,
-            ]);
+        if (!$success) {
+            return response()
+                ->withFlash('errors', auth()->errors())
+                ->redirect('/dashboard/user/update');
         }
 
-        response()->redirect('/user');
+        response()->redirect('/dashboard/user');
     }
 }
