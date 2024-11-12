@@ -31,8 +31,8 @@ class AccountController extends Controller
     public function update()
     {
         $data = request()->validate([
-            'email' => 'email',
-            'name' => 'text',
+            'email' => 'optional|email',
+            'name' => 'optional|text',
         ]);
 
         if (!$data) {
