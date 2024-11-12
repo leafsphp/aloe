@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="https://leafphp.dev/logo-circle.png" type="image/x-icon">
     <link rel="stylesheet" href="{{ assets('css/styles.css') }}">
 
-    {{ vite('css/app.css') }}
+    {{-- {{ vite('css/app.css') }} --}}
 </head>
 
 <body>
