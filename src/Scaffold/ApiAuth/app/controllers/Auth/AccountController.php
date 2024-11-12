@@ -4,34 +4,40 @@ namespace App\Controllers\Auth;
 
 class AccountController extends Controller
 {
-    public function user()
+    public function index()
     {
-        $user = auth()->user(['password']);
-
-        if (!$user) {
-            response()->exit(auth()->errors());
-        }
-
-        response()->json($user);
+        response()->json([
+            'message' => 'User account',
+            'data' => auth()->user()->get(),
+        ]);
     }
 
     public function update()
     {
-        $data = request()->try(['username', 'email', 'name'], true, true);
-        $uniques = ['username', 'email'];
+        $data = request()->validate([
+            'email' => 'optional|email',
+            'name' => 'optional|text',
+        ]);
 
-        foreach ($uniques as $key => $unique) {
-            if (!isset($data[$unique])) {
-                unset($uniques[$key]);
-            }
+        if (!$data) {
+            return response()->exit([
+                'message' => 'Validation failed',
+                'data' => request()->errors(),
+            ], 400);
         }
 
-        $user = auth()->update($data, $uniques);
+        $success = auth()->update($data);
 
-        if (!$user) {
-            response()->exit(auth()->errors());
+        if (!$success) {
+            return response()->exit([
+                'message' => 'Update failed',
+                'data' => auth()->errors(),
+            ], 400);
         }
 
-        response()->json($user);
+        response()->json([
+            'message' => 'User account updated',
+            'data' => auth()->user()->get(),
+        ]);
     }
 }

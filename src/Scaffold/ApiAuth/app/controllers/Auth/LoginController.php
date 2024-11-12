@@ -2,41 +2,39 @@
 
 namespace App\Controllers\Auth;
 
-use Leaf\Form;
-
 class LoginController extends Controller
 {
-    public function index()
+    public function store()
     {
-        $credentials = request()->get(['username', 'password']);
-
-        Form::rule('max', function ($field, $value, $params) {
-            if (strlen($value) > $params) {
-                Form::addError($field, "$field can't be more than $params characters");
-                return false;
-            }
-        });
-
-        $validation = Form::validate([
-            'username' => 'max:15',
-            'password' => 'min:8',
+        $data = request()->validate([
+            'email' => 'email',
+            'password' => 'string'
         ]);
 
-        if (!$validation) {
-            response()->exit(Form::errors());
+        if (!$data) {
+            return response()->exit([
+                'message' => 'Validation failed',
+                'data' => request()->errors()
+            ], 400);
         }
 
-        $user = auth()->login($credentials);
+        $success = auth()->login($data);
 
-        if (!$user) {
-            response()->exit(auth()->errors());
+        if (!$success) {
+            return response()->exit([
+                'message' => 'Login failed',
+                'data' => auth()->errors()
+            ], 400);
         }
 
-        response()->json($user);
+        response()->json([
+            'message' => 'Login successful',
+            'data' => auth()->data()
+        ]);
     }
 
     public function logout()
     {
-        response()->json('Logged out successfully!');
+        auth()->logout();
     }
 }
