@@ -315,14 +315,18 @@ class ViewInstallCommand extends Command
             if (file_exists("$directory/app/views/js/app.js")) {
                 $jsApp = file_get_contents("$directory/app/views/js/app.js");
                 if (strpos($jsApp, "import '../css/app.css';") === false) {
-                    \Leaf\FS::prepend("$directory/app/views/js/app.js", "import '../css/app.css';\n");
+                    \Leaf\FS\File::write("$directory/app/views/js/app.js", function ($content) {
+                        return "import '../css/app.css';\n$content";
+                    });
                 }
             }
 
             if (file_exists("$directory/app/views/js/app.jsx")) {
                 $jsApp = file_get_contents("$directory/app/views/js/app.jsx");
                 if (strpos($jsApp, "import '../css/app.css';") === false) {
-                    \Leaf\FS::prepend("$directory/app/views/js/app.jsx", "import '../css/app.css';\n");
+                    \Leaf\FS\File::write("$directory/app/views/js/app.jsx", function ($content) {
+                        return "import '../css/app.css';\n$content";
+                    });
                 }
             }
         } else {
@@ -342,15 +346,21 @@ class ViewInstallCommand extends Command
 
             if (file_exists("$directory/js/app.js")) {
                 $jsApp = file_get_contents("$directory/js/app.js");
+
                 if (strpos($jsApp, "import '../css/app.css';") === false) {
-                    \Leaf\FS::prepend("$directory/js/app.js", "import '../css/app.css';\n");
+                    \Leaf\FS\File::write("$directory/js/app.js", function ($content) {
+                        return "import '../css/app.css';\n$content";
+                    });
                 }
             }
 
             if (file_exists("$directory/js/app.jsx")) {
                 $jsApp = file_get_contents("$directory/js/app.jsx");
+
                 if (strpos($jsApp, "import '../css/app.css';") === false) {
-                    \Leaf\FS::prepend("$directory/js/app.jsx", "import '../css/app.css';\n");
+                    \Leaf\FS\File::write("$directory/js/app.jsx", function ($content) {
+                        return "import '../css/app.css';\n$content";
+                    });
                 }
             }
         }
