@@ -6,7 +6,7 @@ use Aloe\Installer;
 
 class MailSetupCommand extends \Aloe\Command
 {
-    protected static $defaultName = 'mail:setup';
+    protected static $defaultName = 'config:mail';
     public $description = 'Install leaf mail and setup mail config';
     public $help = 'Install leaf mail and setup mail config';
 
