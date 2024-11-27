@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Middleware;
+
+use Leaf\Middleware;
+
+class ClassName extends Middleware
+{
+    public function call()
+    {
+        //
+    }
+}

@@ -55,6 +55,7 @@ class Console
             \Aloe\Command\GenerateConsoleCommand::class,
             \Aloe\Command\GenerateFactoryCommand::class,
             \Aloe\Command\GenerateTemplateCommand::class,
+            \Aloe\Command\GenerateMiddlewareCommand::class,
 
             // Delete Commands
             \Aloe\Command\DeleteModelCommand::class,
