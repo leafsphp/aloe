@@ -42,6 +42,10 @@ class Console
             // auth Commands
             \Aloe\Command\AuthScaffoldCommand::class,
 
+            // config commands
+            \Aloe\Command\ConfigLibCommand::class,
+            \Aloe\Command\ConfigMailCommand::class,
+
             // Env Commands
             \Aloe\Command\EnvGenerateCommand::class,
 
@@ -71,9 +75,6 @@ class Console
             \Aloe\Command\DatabaseResetCommand::class,
             \Aloe\Command\DatabaseRollbackCommand::class,
             \Aloe\Command\DatabaseSeedCommand::class,
-
-            // Mail commands
-            \Aloe\Command\MailSetupCommand::class,
 
             // View commands
             \Aloe\Command\ViewBuildCommand::class,

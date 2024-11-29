@@ -59,7 +59,7 @@ class ExampleMailer
 
     public static function exampleWithAttachments($user)
     {
-        $mail = new Mail([
+        $mail = mailer()->create([
             'subject' => 'Leaf Mail Test',
             'body' => 'This is a test mail from Leaf Mail',
             'recipientEmail' => 'name@example.com',

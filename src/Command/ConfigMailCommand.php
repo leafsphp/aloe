@@ -4,7 +4,7 @@ namespace Aloe\Command;
 
 use Aloe\Installer;
 
-class MailSetupCommand extends \Aloe\Command
+class ConfigMailCommand extends \Aloe\Command
 {
     protected static $defaultName = 'config:mail';
     public $description = 'Install leaf mail and setup mail config';
