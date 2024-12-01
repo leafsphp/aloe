@@ -45,6 +45,7 @@ class Console
             // config commands
             \Aloe\Command\ConfigLibCommand::class,
             \Aloe\Command\ConfigMailCommand::class,
+            \Aloe\Command\ConfigPublishCommand::class,
 
             // Env Commands
             \Aloe\Command\EnvGenerateCommand::class,

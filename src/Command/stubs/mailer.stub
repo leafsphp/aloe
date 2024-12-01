@@ -2,6 +2,8 @@
 
 namespace App\Mailers;
 
+use Leaf\Mail;
+
 class ClassName
 {
     public static function action($user)
