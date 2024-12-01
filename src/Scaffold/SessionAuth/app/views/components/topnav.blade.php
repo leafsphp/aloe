@@ -96,7 +96,7 @@
                             <a href="/dashboard/user" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                 tabindex="-1" id="menu-item-0">Account settings</a>
                             <form method="POST" action="/auth/logout" role="none">
-                                {{ csrf()->form() }}
+                                {{ function_exists('csrf') && csrf()->form() }}
                                 <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700"
                                     role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
                             </form>
