@@ -10,7 +10,7 @@
         </section>
 
         <form action="/dashboard/user/update" method="post" class="mb-4">
-            {{ csrf()->form() }}
+            {{ function_exists('csrf') && csrf()->form() }}
             <div class="grid">
                 <label>Name</label>
                 <input class="bg-[#F5F8F9] py-2 px-3 border border-gray-150 rounded-lg" type="text" name="name" placeholder="name" value="{{ $name ?? '' }}">
