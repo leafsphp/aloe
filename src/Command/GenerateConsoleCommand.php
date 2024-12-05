@@ -31,17 +31,13 @@ class GenerateConsoleCommand extends Command
             unlink(Config::rootpath(CommandsPath('.gitkeep')));
         }
 
-        $success = \Leaf\FS\File::create($file, function () use ($className, $commandName) {
-            $fileContent = \file_get_contents(__DIR__ . '/stubs/console.stub');
-            $fileContent = str_replace(['ClassName', 'CommandName'], [$className, $commandName], $fileContent);
-
-            return $fileContent;
+        \Leaf\FS\File::create($file, function () use ($className, $commandName) {
+            return str_replace(
+                ['ClassName', 'CommandName'],
+                [$className, $commandName],
+                \file_get_contents(__DIR__ . '/stubs/console.stub')
+            );
         }, ['recursive' => true]);
-
-        if (!$success) {
-            $this->error("Failed to create $className");
-            return 1;
-        }
 
         $this->comment("$className generated successfully");
 
