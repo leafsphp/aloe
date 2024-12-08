@@ -20,8 +20,8 @@ return [
     | Configuration for your templating engine.
     |
     */
-    'config' => function ($config) {
-        \Leaf\Config::get('views.blade')->configure($config['views'], $config['cache']);
+    'config' => function (\Leaf\Blade $engine, array $config) {
+        $engine->configure($config['views'], $config['cache']);
     },
 
     /*
@@ -34,4 +34,17 @@ return [
     |
     */
     'render' => null,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Extend view engine
+    |--------------------------------------------------------------------------
+    |
+    | Some view engines like blade allow you extend the engine to
+    | add extra functions or directives. This is just the place to
+    | do all of that. Extend is a function that accepts an instance
+    | of your view engine which you can 'extend'
+    |
+    */
+    'extend' => null,
 ];

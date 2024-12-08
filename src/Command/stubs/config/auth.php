@@ -119,7 +119,7 @@ return [
     | Use session based authentication instead of the default JWT based auth.
     |
     */
-    'session' => true,
+    'session' => _env('AUTH_SESSION', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -168,7 +168,7 @@ return [
     | Secret string to encode JWT
     |
     */
-    'token.secret' => _env('TOKEN_SECRET', '@leaf$MVC*JWT#AUTH.Secret'),
+    'token.secret' => _env('AUTH_TOKEN_SECRET', '@leaf$MVC*JWT#AUTH.Secret'),
 
     /*
     |--------------------------------------------------------------------------

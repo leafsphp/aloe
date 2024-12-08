@@ -128,7 +128,7 @@ return [
     | The mode does not affect a Leaf application’s internal functionality.
     |
     */
-    'mode' => 'development',
+    'mode' => _env('APP_ENV', 'development'),
 
     /*
     |--------------------------------------------------------------------------

@@ -28,7 +28,7 @@ return [
     |   non-function value of the origin option) as the second.
     |
     */
-    'origin' => '*',
+    'origin' => _env('CORS_ALLOWED_ORIGINS', '*'),
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return [
     | an array (ex: ['GET', 'PUT', 'POST'])
     |
     */
-    'methods' => 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'methods' => _env('CORS_ALLOWED_METHODS', 'GET,HEAD,PUT,PATCH,POST,DELETE'),
 
     /*
     |--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return [
     | Access-Control-Request-Headers header.
     |
     */
-    'allowedHeaders' => '*',
+    'allowedHeaders' => _env('CORS_ALLOWED_HEADERS', '*'),
 
     /*
     |--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ return [
     | If not specified, no custom headers are exposed.
     |
     */
-    'exposedHeaders' => '',
+    'exposedHeaders' => _env('CORS_EXPOSED_HEADERS', ''),
 
     /*
     |--------------------------------------------------------------------------
