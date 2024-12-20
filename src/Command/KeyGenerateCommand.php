@@ -15,13 +15,13 @@ class KeyGenerateCommand extends Command
 	protected function configure()
 	{
 		$this
-			->setHelp('Run your frontend dev command')
-			->setDescription('Run your frontend dev server');
+			->setHelp('Generate/Regenerate your app key')
+			->setDescription('Generate/Regenerate your app key');
 	}
 
 	protected function generateKey()
 	{
-		return 'base64:' . base64_encode(random_bytes(32));
+		return 'base64:' . base64_encode(\random_bytes(32));
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int

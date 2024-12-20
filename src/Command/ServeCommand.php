@@ -3,6 +3,7 @@
 namespace Aloe\Command;
 
 use Aloe\Command;
+use Symfony\Component\Process\Process;
 
 class ServeCommand extends Command
 {
@@ -41,7 +42,7 @@ class ServeCommand extends Command
             $localSocket = @fsockopen('localhost', $port, $errno, $errstr, 1);
 
             if ($defSocket) {
-                $this->write("Port $port is already in use by $host, trying port " . ($port + 1)) . "...";
+                $this->writeln("Port $port is already in use by $host, trying port " . ($port + 1) . '...');
                 $port++;
             } else if (!$localSocket) {
                 break;
