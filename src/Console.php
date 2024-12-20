@@ -30,17 +30,14 @@ class Console
 
         static::register([
             // Random Commands
-            \Aloe\Command\ServeCommand::class,
-            \Aloe\Command\InteractCommand::class,
             \Aloe\Command\AppDownCommand::class,
             \Aloe\Command\AppUpCommand::class,
+            \Aloe\Command\InteractCommand::class,
+            \Aloe\Command\ServeCommand::class,
 
             // Aloe Commands
             \Aloe\Command\DevToolsCommand::class,
             \Aloe\Command\KeyGenerateCommand::class,
-
-            // auth Commands
-            \Aloe\Command\AuthScaffoldCommand::class,
 
             // config commands
             \Aloe\Command\ConfigLibCommand::class,
@@ -50,32 +47,26 @@ class Console
             // Env Commands
             \Aloe\Command\EnvGenerateCommand::class,
 
-            // Generate Commands
-            \Aloe\Command\GenerateMailerCommand::class,
-            \Aloe\Command\GenerateMigrationCommand::class,
-            \Aloe\Command\GenerateModelCommand::class,
-            \Aloe\Command\GenerateHelperCommand::class,
-            \Aloe\Command\GenerateControllerCommand::class,
-            \Aloe\Command\GenerateSeedCommand::class,
-            \Aloe\Command\GenerateConsoleCommand::class,
-            \Aloe\Command\GenerateFactoryCommand::class,
-            \Aloe\Command\GenerateTemplateCommand::class,
-            \Aloe\Command\GenerateMiddlewareCommand::class,
-
-            // Delete Commands
-            \Aloe\Command\DeleteModelCommand::class,
-            \Aloe\Command\DeleteSeedCommand::class,
-            \Aloe\Command\DeleteFactoryCommand::class,
-            \Aloe\Command\DeleteControllerCommand::class,
-            \Aloe\Command\DeleteConsoleCommand::class,
-            \Aloe\Command\DeleteMigrationCommand::class,
-
             // Database Commands
-            \Aloe\Command\DatabaseInstallCommand::class,
+            \Aloe\Command\DatabaseDropCommand::class,
             \Aloe\Command\DatabaseMigrationCommand::class,
             \Aloe\Command\DatabaseResetCommand::class,
             \Aloe\Command\DatabaseRollbackCommand::class,
-            \Aloe\Command\DatabaseSeedCommand::class,
+
+            // Delete Commands
+            \Aloe\Command\DeleteModelCommand::class,
+            \Aloe\Command\DeleteControllerCommand::class,
+            \Aloe\Command\DeleteConsoleCommand::class,
+
+            // Generate Commands
+            \Aloe\Command\GenerateConsoleCommand::class,
+            \Aloe\Command\GenerateControllerCommand::class,
+            \Aloe\Command\GenerateHelperCommand::class,
+            \Aloe\Command\GenerateMailerCommand::class,
+            \Aloe\Command\GenerateMiddlewareCommand::class,
+            \Aloe\Command\GenerateModelCommand::class,
+            \Aloe\Command\GenerateSchemaCommand::class,
+            \Aloe\Command\GenerateTemplateCommand::class,
 
             // View commands
             \Aloe\Command\ViewBuildCommand::class,
