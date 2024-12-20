@@ -16,7 +16,7 @@ class ConfigMailCommand extends \Aloe\Command
         Installer::installPackages('mail');
 
         $this->comment('Setting up leaf mail...');
-        Installer::magicCopy(dirname(__DIR__) . '/Scaffold/Mail');
+        Installer::magicCopy(dirname(__DIR__) . '/themes/mail');
 
         $this->info('Leaf mail installed successfully!');
 
