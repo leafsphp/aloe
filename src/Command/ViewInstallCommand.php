@@ -123,8 +123,6 @@ class ViewInstallCommand extends Command
             ['recursive' => true]
         );
 
-        $paths = require "$directory/config/paths.php";
-
         if (file_exists("$directory/app/views/js/app.js")) {
             $jsApp = file_get_contents("$directory/app/views/js/app.js");
 
@@ -141,6 +139,16 @@ class ViewInstallCommand extends Command
                     return "import '../css/app.css';\n$content";
                 });
             }
+        }
+
+        if (file_exists("$directory/app/views/css/app.css")) {
+            storage()->writeFile("$directory/app/views/css/app.css", function ($content) {
+                if (strpos($content, '@tailwind base;') === false) {
+                    return "@tailwind base;\n@tailwind components;\n@tailwind utilities;\n\n$content";
+                }
+
+                return $content;
+            });
         }
 
         $package = json_decode(file_get_contents("$directory/package.json"), true);
