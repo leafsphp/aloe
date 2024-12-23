@@ -41,7 +41,6 @@ class Console
 
             // config commands
             \Aloe\Command\ConfigLibCommand::class,
-            \Aloe\Command\ConfigMailCommand::class,
             \Aloe\Command\ConfigPublishCommand::class,
 
             // Env Commands
@@ -75,6 +74,10 @@ class Console
 
             // Symbolic link command
             \Aloe\Command\LinkCommand::class,
+
+            // Scaffold Commands
+            \Aloe\Command\ScaffoldAuthCommand::class,
+            \Aloe\Command\ScaffoldMailCommand::class,
         ]);
     }
 
