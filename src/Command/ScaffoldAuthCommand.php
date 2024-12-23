@@ -41,6 +41,6 @@ class ScaffoldAuthCommand extends \Aloe\Command
 
     protected function installable($driver)
     {
-        return dirname(__DIR__) . '/Scaffold/' .  Str::studly("{$driver}Auth");
+        return __DIR__ . '/themes/auth/' . $driver;
     }
 }
