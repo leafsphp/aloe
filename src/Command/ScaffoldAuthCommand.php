@@ -32,6 +32,9 @@ class ScaffoldAuthCommand extends \Aloe\Command
 
         $installablesDir = $this->installable($driver);
 
+        $this->comment('Installing leaf auth...');
+
+        Installer::installPackages('auth');
         Installer::magicCopy($installablesDir);
 
         $this->info('Authentication generated successfully.');

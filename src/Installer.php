@@ -72,6 +72,6 @@ class Installer
             $parsedPackages .= "$package ";
         }
 
-        return shell_exec("composer require $parsedPackages");
+        return shell_exec("composer require $parsedPackages --ansi");
     }
 }
