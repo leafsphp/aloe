@@ -3,7 +3,6 @@
 namespace Aloe\Command;
 
 use Aloe\Command;
-use Symfony\Component\Process\Process;
 
 class ServeCommand extends Command
 {
@@ -34,6 +33,7 @@ class ServeCommand extends Command
 
         if (!is_dir($path)) {
             $this->error("Directory $path does not exist");
+
             return 1;
         }
 
@@ -44,7 +44,7 @@ class ServeCommand extends Command
             if ($defSocket) {
                 $this->writeln("Port $port is already in use by $host, trying port " . ($port + 1) . '...');
                 $port++;
-            } else if (!$localSocket) {
+            } elseif (!$localSocket) {
                 break;
             } else {
                 $this->error('WARNING:');

@@ -28,6 +28,7 @@ class GenerateMiddlewareCommand extends Command
 
         if (file_exists($file)) {
             $this->error("$middleware already exists");
+
             return 1;
         }
 

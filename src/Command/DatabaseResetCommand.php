@@ -25,7 +25,8 @@ class DatabaseResetCommand extends Command
         return 0;
     }
 
-    protected function rollback() {
+    protected function rollback()
+    {
         $migrations = glob(Config::rootpath(MigrationsPath('*.php')));
 
         foreach ($migrations as $migration) {
@@ -43,7 +44,7 @@ class DatabaseResetCommand extends Command
 
         $migrationName = str_replace([Config::rootpath(MigrationsPath()), '.php'], '', $migration);
 
-        $class = new $className;
+        $class = new $className();
         $class->down();
 
         $this->writeln('> db rollback on ' . asComment($migrationName));
@@ -84,7 +85,7 @@ class DatabaseResetCommand extends Command
     {
         require_once Config::rootpath(MigrationsPath("$filename.php", false));
 
-        $class = new $className;
+        $class = new $className();
         $class->up();
     }
 
@@ -92,9 +93,11 @@ class DatabaseResetCommand extends Command
     {
         $className = '\App\Database\Seeds\\' . Str::plural($table) . 'Seeder';
 
-        if (!class_exists($className)) return false;
+        if (!class_exists($className)) {
+            return false;
+        }
 
-        $class = new $className;
+        $class = new $className();
         $class->run();
 
         return $className;

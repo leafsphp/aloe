@@ -32,6 +32,7 @@ class GenerateSchemaCommand extends Command
 
         if (file_exists($schemaFile)) {
             $this->error("$schema already exists");
+
             return 1;
         }
 

@@ -28,11 +28,13 @@ class DeleteConsoleCommand extends Command
 
         if (!file_exists($file)) {
             $this->error("$command doesn't exist!");
+
             return 1;
         }
 
         if (!unlink($file)) {
             $this->error("Couldn't delete $command, you might need to remove it manually.");
+
             return 1;
         }
 
@@ -45,6 +47,7 @@ class DeleteConsoleCommand extends Command
         \file_put_contents($aloe, $aloeContents);
 
         $this->comment("$command command unregistered");
+
         return 0;
     }
 }

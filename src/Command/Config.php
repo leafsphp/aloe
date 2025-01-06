@@ -52,6 +52,7 @@ class Config
     public static function rootpath($file = null)
     {
         $path = dirname(__DIR__, 5) . "/$file";
+
         return str_replace('//', '/', $path);
     }
 }

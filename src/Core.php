@@ -123,7 +123,7 @@ class Core
      */
     public static function commandExists(string $cmd)
     {
-        return !empty(shell_exec(sprintf("which %s", escapeshellarg($cmd))));
+        return !empty(shell_exec(sprintf('which %s', escapeshellarg($cmd))));
     }
 
     /**
@@ -137,12 +137,13 @@ class Core
         if (file_exists("$directory/config/view.php")) {
             $viewConfig = require "$directory/config/view.php";
             $isBladeProject = strpos(strtolower($viewConfig['viewEngine'] ?? $viewConfig['view_engine'] ?? ''), 'blade') !== false;
-        } else if (file_exists("$directory/composer.lock")) {
+        } elseif (file_exists("$directory/composer.lock")) {
             $composerLock = json_decode(file_get_contents("$directory/composer.lock"), true);
             $packages = $composerLock['packages'] ?? [];
             foreach ($packages as $package) {
                 if ($package['name'] === 'leafs/blade') {
                     $isBladeProject = true;
+
                     break;
                 }
             }
@@ -157,6 +158,7 @@ class Core
     public static function isMVCProject($directory = null)
     {
         $directory = $directory ?? getcwd();
+
         return is_dir("$directory/app/views") && file_exists("$directory/config/paths.php") && is_dir("$directory/public");
     }
 }

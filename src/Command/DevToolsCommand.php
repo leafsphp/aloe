@@ -29,7 +29,7 @@ class DevToolsCommand extends \Aloe\Command
 |
 */
 \Leaf\DevTools::install();",
-            "",
+            '',
             $rootFile
         );
 

@@ -17,12 +17,13 @@ class LinkCommand extends \Aloe\Command
 
         if (file_exists("$publicPath/storage")) {
             $this->error('Symbolic link already exists');
+
             return 1;
         }
 
         if (!file_exists($storagePath)) {
             storage()->createFolder($storagePath, [
-                'recursive' => true
+                'recursive' => true,
             ]);
         }
 
@@ -31,7 +32,7 @@ class LinkCommand extends \Aloe\Command
             $publicPath = str_replace('/', '\\', $publicPath);
             $storagePath = str_replace('/', '\\', $storagePath);
 
-            $this->writeln(asComment("Experimental: ") . "This command is experimental and may not work on Windows");
+            $this->writeln(asComment('Experimental: ') . 'This command is experimental and may not work on Windows');
             $this->writeln(shell_exec("mklink /J $publicPath\\storage $storagePath"));
 
         } else {

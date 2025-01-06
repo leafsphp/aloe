@@ -8,13 +8,13 @@ class LoginController extends Controller
     {
         $data = request()->validate([
             'email' => 'email',
-            'password' => 'string'
+            'password' => 'string',
         ]);
 
         if (!$data) {
             return response()->exit([
                 'message' => 'Validation failed',
-                'data' => request()->errors()
+                'data' => request()->errors(),
             ], 400);
         }
 
@@ -23,13 +23,13 @@ class LoginController extends Controller
         if (!$success) {
             return response()->exit([
                 'message' => 'Login failed',
-                'data' => auth()->errors()
+                'data' => auth()->errors(),
             ], 400);
         }
 
         response()->json([
             'message' => 'Login successful',
-            'data' => auth()->data()
+            'data' => auth()->data(),
         ]);
     }
 

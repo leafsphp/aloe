@@ -95,7 +95,7 @@ class Console
                 static::register($item);
             }
         } else {
-            static::$app->add(new $command);
+            static::$app->add(new $command());
         }
     }
 

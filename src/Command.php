@@ -16,7 +16,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * Base class for Aloe Commands.
- * 
+ *
  * @author Michael Darko <mickdd22@gmail.com>
  */
 class Command extends BaseCommand
@@ -43,14 +43,14 @@ class Command extends BaseCommand
 
     /**
      * The input object
-     * 
+     *
      * @var InputInterface
      */
     protected $input;
 
     /**
      * The output object
-     * 
+     *
      * @var OutputInterface
      */
     protected $output;
@@ -79,7 +79,7 @@ class Command extends BaseCommand
         $this->setHelp($this->help);
         $this->config();
     }
-    
+
     protected function config()
     {
         //
@@ -188,24 +188,28 @@ class Command extends BaseCommand
 
     /**
      * Get an argument or return the input object
-     * 
+     *
      * @param string $data The argument to return
      */
     public function input($data = null)
     {
-        if (!$data) return $this->input;
+        if (!$data) {
+            return $this->input;
+        }
 
         return $this->argument($data);
     }
 
     /**
      * Output data or return the output object
-     * 
+     *
      * @param string $data The argument to return
      */
     public function output($data = null)
     {
-        if (!$data) return $this->output;
+        if (!$data) {
+            return $this->output;
+        }
 
         return $this->writeln($data);
     }
@@ -213,7 +217,7 @@ class Command extends BaseCommand
     /**
      * Add a new argument
      */
-    public function setArgument($name, $mode = null, $description = "", $default = null)
+    public function setArgument($name, $mode = null, $description = '', $default = null)
     {
         if (strtoupper($mode) === 'OPTIONAL') {
             $mode = InputArgument::OPTIONAL;
@@ -339,7 +343,7 @@ class Command extends BaseCommand
     /**
      * Ask a question with possible answers
      */
-    public function choice(string $question, array $choices, string $errorMessage = "Invalid choice", $default = 0)
+    public function choice(string $question, array $choices, string $errorMessage = 'Invalid choice', $default = 0)
     {
         $helper = $this->getHelper('question');
         $question = new ChoiceQuestion("$question ", $choices, $default);
@@ -352,7 +356,7 @@ class Command extends BaseCommand
     /**
      * Ask a question with possible answers + multiple choice
      */
-    public function multiChoice(string $question, array $choices, string $errorMessage = "Invalid choice", $default = 0)
+    public function multiChoice(string $question, array $choices, string $errorMessage = 'Invalid choice', $default = 0)
     {
         $helper = $this->getHelper('question');
         $question = new ChoiceQuestion("$question ", $choices, $default);
@@ -380,7 +384,7 @@ class Command extends BaseCommand
     /**
      * Prompt user for confirmation
      */
-    public function confirm($question, $param = false, $regex = "/^y/i")
+    public function confirm($question, $param = false, $regex = '/^y/i')
     {
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion("$question ", $param, $regex);
@@ -454,6 +458,7 @@ class Command extends BaseCommand
     public function runProcess(array $process)
     {
         $process = new Process($process);
+
         return $process->run();
     }
 }

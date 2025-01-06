@@ -15,7 +15,7 @@ class RegisterController extends Controller
         if (!$credentials) {
             return response()->exit([
                 'message' => 'Validation failed',
-                'data' => request()->errors()
+                'data' => request()->errors(),
             ], 400);
         }
 
@@ -24,13 +24,13 @@ class RegisterController extends Controller
         if (!$success) {
             return response()->exit([
                 'message' => 'Registration failed',
-                'data' => auth()->errors()
+                'data' => auth()->errors(),
             ], 400);
         }
 
         return response()->json([
             'message' => 'Registration successful',
-            'data' => auth()->data()
+            'data' => auth()->data(),
         ]);
     }
 }

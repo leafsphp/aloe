@@ -3,7 +3,6 @@
 namespace Aloe\Command;
 
 use Aloe\Command;
-use Illuminate\Support\Str;
 
 class DatabaseMigrationCommand extends Command
 {
@@ -33,12 +32,14 @@ class DatabaseMigrationCommand extends Command
 
             if (!\Leaf\Schema::migrate($migration)) {
                 $this->error("Could not migrate $currentFileName");
+
                 return 1;
             }
 
             if ($this->option('seed')) {
                 if (!\Leaf\Schema::seed($migration)) {
                     $this->error("Could not seed $currentFileName");
+
                     return 1;
                 }
 
@@ -70,6 +71,7 @@ class DatabaseMigrationCommand extends Command
 
         if (db()->create($database)->execute()) {
             $this->info("$database created successfully.");
+
             return 0;
         }
 

@@ -9,7 +9,7 @@ class RegisterController extends Controller
         $form = flash()->display('form') ?? [];
 
         echo view('pages.auth.register', array_merge($form, [
-            'errors' => flash()->display('error') ?? []
+            'errors' => flash()->display('error') ?? [],
         ]));
     }
 
@@ -19,7 +19,7 @@ class RegisterController extends Controller
             'name' => 'string',
             'email' => 'email',
             'password' => 'min:8',
-            'confirmPassword*' => 'matchesValueOf:password'
+            'confirmPassword*' => 'matchesValueOf:password',
         ]);
 
         if (!$credentials) {

@@ -58,14 +58,14 @@ class Installer
     {
         $parsedPackages = '';
 
-        foreach (explode(" ", $packages) as $package) {
+        foreach (explode(' ', $packages) as $package) {
             $package = str_replace(
-                ["composer require ", "@"],
-                ["", ":"],
+                ['composer require ', '@'],
+                ['', ':'],
                 $package
             );
 
-            if (strpos($package, "/") === false) {
+            if (strpos($package, '/') === false) {
                 $package = "leafs/$package";
             }
 

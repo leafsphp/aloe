@@ -3,7 +3,6 @@
 namespace Aloe\Command;
 
 use Aloe\Command;
-use Illuminate\Support\Str;
 
 class DatabaseRollbackCommand extends Command
 {
@@ -30,6 +29,7 @@ class DatabaseRollbackCommand extends Command
 
         if ($fileToRollback && !in_array($fileToRollback, $schemaFiles)) {
             $this->error("$fileToRollback not found!");
+
             return 1;
         }
 

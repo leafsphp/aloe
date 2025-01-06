@@ -9,7 +9,7 @@ class LoginController extends Controller
         $form = flash()->display('form') ?? [];
 
         echo view('pages.auth.login', array_merge($form, [
-            'errors' => flash()->display('error') ?? []
+            'errors' => flash()->display('error') ?? [],
         ]));
     }
 
@@ -17,7 +17,7 @@ class LoginController extends Controller
     {
         $data = request()->validate([
             'email' => 'email',
-            'password' => 'min:8'
+            'password' => 'min:8',
         ]);
 
         if (!$data) {

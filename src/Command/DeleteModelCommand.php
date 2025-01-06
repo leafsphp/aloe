@@ -23,6 +23,7 @@ class DeleteModelCommand extends Command
 
         if (!file_exists($file)) {
             $this->error("$model doesn't exist!");
+
             return 1;
         }
 

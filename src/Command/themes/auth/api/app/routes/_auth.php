@@ -3,7 +3,7 @@
 auth()->middleware('auth.required', function () {
     response()->exit([
         'message' => 'Unauthorized',
-        'data' => auth()->errors()
+        'data' => auth()->errors(),
     ], 401);
 });
 
@@ -20,5 +20,5 @@ app()->group('/user', [
     function () {
         app()->get('/', 'Auth\AccountController@index');
         app()->post('/update', 'Auth\AccountController@update');
-    }
+    },
 ]);

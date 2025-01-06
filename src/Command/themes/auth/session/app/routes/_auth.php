@@ -16,7 +16,7 @@ app()->group('/auth', [
         app()->get('/register', 'Auth\RegisterController@show');
         app()->post('/register', 'Auth\RegisterController@store');
         // Reset and recover account will be added later
-    }
+    },
 ]);
 
 app()->post('/auth/logout', ['middleware' => 'auth.required', 'Auth\LoginController@logout']);
@@ -31,5 +31,5 @@ app()->group('/dashboard', [
             app()->get('/update', 'Auth\AccountController@show_update');
             app()->post('/update', 'Auth\AccountController@update');
         });
-    }
+    },
 ]);

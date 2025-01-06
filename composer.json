@@ -2,7 +2,14 @@
     "name": "leafs/aloe",
     "version": "4.0-alpha",
     "description": "Overpowered command line tool for your leaf apps.",
-    "keywords": ["cli", "console", "cmd", "bash", "leaf", "php"],
+    "keywords": [
+        "cli",
+        "console",
+        "cmd",
+        "bash",
+        "leaf",
+        "php"
+    ],
     "homepage": "https://leafphp.dev/docs/mvc/console.html",
     "type": "library",
     "license": "MIT",
@@ -20,7 +27,7 @@
         }
     },
     "minimum-stability": "dev",
-	"prefer-stable": true,
+    "prefer-stable": true,
     "require": {
         "illuminate/support": "*",
         "leafs/fs": "2.0",
@@ -30,6 +37,19 @@
         "symfony/process": "^5.0|^6.0"
     },
     "require-dev": {
-        "leafs/leaf": "*"
+        "leafs/leaf": "*",
+        "leafs/alchemy": "^2.2",
+        "friendsofphp/php-cs-fixer": "^3.66"
+    },
+    "scripts": {
+        "alchemy": "./vendor/bin/alchemy setup",
+        "test": "./vendor/bin/alchemy setup --test",
+        "lint": "./vendor/bin/alchemy setup --lint",
+        "actions": "./vendor/bin/alchemy setup --actions"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }

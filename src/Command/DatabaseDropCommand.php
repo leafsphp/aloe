@@ -31,6 +31,7 @@ class DatabaseDropCommand extends Command
 
         if ($fileToDrop && !in_array($fileToDrop, $schemaFiles)) {
             $this->error("$fileToDrop not found!");
+
             return 1;
         }
 

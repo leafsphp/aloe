@@ -2,3 +2,7 @@ test
 vendor
 composer.lock
 AloeUninstallCommand.php
+
+# Alchemy
+.alchemy
+.phpunit.result.cache

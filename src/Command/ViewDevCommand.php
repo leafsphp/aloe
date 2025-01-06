@@ -26,18 +26,21 @@ class ViewDevCommand extends Command
         $npm = \Aloe\Core::findNpm();
 
         if (!is_dir("$directory/node_modules")) {
-            $output->writeln("<info>Installing dependencies...</info>");
+            $output->writeln('<info>Installing dependencies...</info>');
             $success = \Aloe\Core::run("$npm install", $output);
 
             if (!$success) {
-                $output->writeln("<error>❌  Failed to install dependencies.</error>");
+                $output->writeln('<error>❌  Failed to install dependencies.</error>');
+
                 return 1;
             }
         }
 
         $success = \Aloe\Core::run("$npm run dev", $output);
 
-        if (!$success) return 1;
+        if (!$success) {
+            return 1;
+        }
 
         return 0;
     }

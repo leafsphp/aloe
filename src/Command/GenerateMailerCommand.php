@@ -28,6 +28,7 @@ class GenerateMailerCommand extends Command
 
         if (file_exists($file)) {
             $this->error("$mailer already exists");
+
             return 1;
         }
 

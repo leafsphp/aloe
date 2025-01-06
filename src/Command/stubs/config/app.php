@@ -149,5 +149,5 @@ return [
     | This config tells leaf where to save cached and compiled views.
     |
     */
-    'views.cachePath' => StoragePath('framework/views')
+    'views.cachePath' => StoragePath('framework/views'),
 ];

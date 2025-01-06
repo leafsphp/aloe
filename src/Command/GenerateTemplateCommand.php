@@ -31,6 +31,7 @@ class GenerateTemplateCommand extends \Aloe\Command
         file_put_contents($template, $fileContents);
 
         $this->comment("$templateName generated successfully");
+
         return 0;
     }
 
@@ -38,9 +39,9 @@ class GenerateTemplateCommand extends \Aloe\Command
     {
         if ($this->option('type') === 'html') {
             $templateName .= '.html';
-        } else if ($this->option('type') === 'jsx') {
+        } elseif ($this->option('type') === 'jsx') {
             $templateName = \Illuminate\Support\Str::studly($templateName) . '.jsx';
-        } else if ($this->option('type') === 'vue') {
+        } elseif ($this->option('type') === 'vue') {
             $templateName = \Illuminate\Support\Str::studly($templateName) . '.vue';
         } else {
             $templateName .= '.blade.php';

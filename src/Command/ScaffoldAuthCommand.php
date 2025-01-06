@@ -3,7 +3,6 @@
 namespace Aloe\Command;
 
 use Aloe\Installer;
-use Illuminate\Support\Str;
 
 class ScaffoldAuthCommand extends \Aloe\Command
 {

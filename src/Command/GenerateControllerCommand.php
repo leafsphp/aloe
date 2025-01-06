@@ -41,6 +41,7 @@ class GenerateControllerCommand extends Command
 
         if (file_exists($controllerFile)) {
             $this->error("$controller already exists");
+
             return 1;
         }
 
@@ -59,13 +60,13 @@ class GenerateControllerCommand extends Command
 
         if ($this->option('resource')) {
             $stub = Config::$env === 'WEB' ? 'resourceController' : 'apiResourceController';
-        } else if ($this->option('web-resource')) {
+        } elseif ($this->option('web-resource')) {
             $stub = 'resourceController';
-        } else if ($this->option('api-resource')) {
+        } elseif ($this->option('api-resource')) {
             $stub = 'apiResourceController';
-        } else if ($this->option('web')) {
+        } elseif ($this->option('web')) {
             $stub = 'controller';
-        } else if ($this->option('api')) {
+        } elseif ($this->option('api')) {
             $stub = 'apiController';
         }
 
