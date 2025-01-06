@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class ViewInstallCommand extends Command
 {
@@ -20,17 +21,38 @@ class ViewInstallCommand extends Command
             ->setDescription('Run a script in your composer.json')
             ->addOption('react', null, InputOption::VALUE_NONE, 'Install react')
             ->addOption('tailwind', null, InputOption::VALUE_NONE, 'Install tailwind')
+            // ->addOption('pm', 'pm', InputOption::VALUE_OPTIONAL, 'Package manager to use', 'npm')
+            ->addOption('svelte', null, InputOption::VALUE_NONE, 'Install svelte')
             ->addOption('vue', null, InputOption::VALUE_NONE, 'Install vue');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if ($input->getOption('react')) {
-            $this->installReact($output);
+        if (!$input->getOption('react') && !$input->getOption('tailwind') && !$input->getOption('svelte') && !$input->getOption('vue')) {
+            $helper = $this->getHelper('question');
+
+            $options = $helper->ask(
+                $input,
+                $output,
+                (new ChoiceQuestion(
+                    '<info>? What do you want to install?</info>',
+                    ['react', 'vue', 'svelte', 'tailwind']
+                ))
+                    ->setMultiselect(true)
+                    ->setErrorMessage('❌ Invalid option selected!')
+            );
+
+            foreach ($options as $option) {
+                $input->setOption($option, true);
+            }
         }
 
-        if ($input->getOption('vue')) {
+        if ($input->getOption('react')) {
+            $this->installReact($output);
+        } else if ($input->getOption('vue')) {
             $this->installVue($output);
+        } else if ($input->getOption('svelte')) {
+            $this->installSvelte($output);
         }
 
         if ($input->getOption('tailwind')) {
@@ -82,6 +104,55 @@ class ViewInstallCommand extends Command
         file_put_contents("$directory/package.json", json_encode($package, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
         $output->writeln("\n⚛️   <info>React setup successfully</info>");
+        $output->writeln("👉  Get started with the following commands:\n");
+        $output->writeln('    php leaf view:dev <info>- start dev server</info>');
+        $output->writeln("    php leaf view:build <info>- build for production</info>");
+
+        return 0;
+    }
+
+    /**
+     * Install svelte
+     */
+    protected function installSvelte($output)
+    {
+        $output->writeln("📦  <info>Installing svelte...</info>\n");
+
+        $directory = getcwd();
+        $npm = \Aloe\Core::findNpm();
+        $composer = \Aloe\Core::findComposer();
+        $success = \Aloe\Core::run("$npm add @leafphp/vite-plugin svelte @sveltejs/vite-plugin-svelte @inertiajs/svelte", $output);
+
+        if (!$success) {
+            $output->writeln("❌  <error>Failed to install svelte</error>");
+            return 1;
+        }
+
+        $output->writeln("\n✅  <info>Svelte installed successfully</info>");
+        $output->writeln("🧱  <info>Setting up Leaf Svelte server bridge...</info>\n");
+
+        $success = \Aloe\Core::run("$composer require leafs/inertia leafs/vite", $output);
+
+        if (!$success) {
+            $output->writeln("❌  <error>Failed to setup Leaf Svelte server bridge</error>");
+            return 1;
+        }
+
+        $isBladeProject = $this->isBladeProject();
+
+        \Leaf\FS\Directory::copy(
+            __DIR__ . '/themes/svelte/' . ($isBladeProject ? 'blade' : 'bare-ui'),
+            $directory,
+            ['recursive' => true]
+        );
+
+        $package = json_decode(file_get_contents("$directory/package.json"), true);
+        $package['type'] = 'module';
+        $package['scripts']['dev'] = 'vite';
+        $package['scripts']['build'] = 'vite build';
+        file_put_contents("$directory/package.json", json_encode($package, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+        $output->writeln("\n⚛️   <info>Svelte setup successfully</info>");
         $output->writeln("👉  Get started with the following commands:\n");
         $output->writeln('    php leaf view:dev <info>- start dev server</info>');
         $output->writeln("    php leaf view:build <info>- build for production</info>");
