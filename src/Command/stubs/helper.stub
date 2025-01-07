@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Helpers;
 
 use App\Models\ModelName;
@@ -6,7 +6,7 @@ use App\Models\ModelName;
 /**
  * ModelName Helper
  * ----------------
- * Leaf API Helpers basically contain static methods
+ * Leaf MVC Helpers basically contain static methods
  * that you can call from your controllers
  */
 class ClassName
