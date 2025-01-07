@@ -11,9 +11,9 @@ class GenerateTemplateCommand extends \Aloe\Command
     protected function config()
     {
         $this
+            ->setAliases(['g:view'])
             ->setArgument('name', 'REQUIRED', 'The name of the template to create')
-            ->setOption('type', 't', 'OPTIONAL', 'The type of template to create: html, jsx, vue, blade', 'blade')
-            ->setOption('style', 's', 'OPTIONAL', 'The style framework to apply: bootstrap', 'bootstrap');
+            ->setOption('type', 't', 'OPTIONAL', 'The type of template to create: jsx, vue, svelte, blade', 'blade');
     }
 
     protected function handle()
@@ -22,13 +22,13 @@ class GenerateTemplateCommand extends \Aloe\Command
         $templateName = $this->getTemplateName($templateName);
         $template = Config::rootpath(ViewsPath($templateName));
 
-        $fileContents = str_replace(
-            'pagename',
-            \Illuminate\Support\Str::studly($this->argument('name')),
-            $this->generateTemplateData()
-        );
-
-        file_put_contents($template, $fileContents);
+        storage()->createFile($template, function () {
+            return str_replace(
+                'pagename',
+                \Illuminate\Support\Str::studly(basename($this->argument('name'))),
+                $this->generateTemplateData()
+            );
+        });
 
         $this->comment("$templateName generated successfully");
 
@@ -37,8 +37,8 @@ class GenerateTemplateCommand extends \Aloe\Command
 
     protected function getTemplateName($templateName)
     {
-        if ($this->option('type') === 'html') {
-            $templateName .= '.html';
+        if ($this->option('type') === 'svelte') {
+            $templateName = \Illuminate\Support\Str::studly($templateName) . '.svelte';
         } elseif ($this->option('type') === 'jsx') {
             $templateName = \Illuminate\Support\Str::studly($templateName) . '.jsx';
         } elseif ($this->option('type') === 'vue') {
@@ -53,8 +53,7 @@ class GenerateTemplateCommand extends \Aloe\Command
     protected function generateTemplateData()
     {
         $type = $this->option('type');
-        $style = $this->option('style');
-        $stub = \file_get_contents(__DIR__ . "/stubs/template/$type-$style.stub");
+        $stub = \file_get_contents(__DIR__ . "/stubs/template/$type.stub");
 
         return $stub;
     }
