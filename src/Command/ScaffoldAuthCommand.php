@@ -3,11 +3,10 @@
 namespace Aloe\Command;
 
 use Aloe\Installer;
-use Illuminate\Support\Str;
 
-class AuthScaffoldCommand extends \Aloe\Command
+class ScaffoldAuthCommand extends \Aloe\Command
 {
-    protected static $defaultName = 'auth:scaffold';
+    protected static $defaultName = 'scaffold:auth';
     public $description = 'Scaffold basic app authentication';
     public $help = 'Create basic views, routes and controllers for authentication';
 
@@ -32,6 +31,9 @@ class AuthScaffoldCommand extends \Aloe\Command
 
         $installablesDir = $this->installable($driver);
 
+        $this->comment('Installing leaf auth...');
+
+        Installer::installPackages('auth');
         Installer::magicCopy($installablesDir);
 
         $this->info('Authentication generated successfully.');
@@ -41,6 +43,6 @@ class AuthScaffoldCommand extends \Aloe\Command
 
     protected function installable($driver)
     {
-        return dirname(__DIR__) . '/Scaffold/' .  Str::studly("{$driver}Auth");
+        return __DIR__ . '/themes/auth/' . $driver;
     }
 }

@@ -4,9 +4,9 @@ namespace Aloe\Command;
 
 use Aloe\Installer;
 
-class ConfigMailCommand extends \Aloe\Command
+class ScaffoldMailCommand extends \Aloe\Command
 {
-    protected static $defaultName = 'config:mail';
+    protected static $defaultName = 'scaffold:mail';
     public $description = 'Install leaf mail and setup mail config';
     public $help = 'Install leaf mail and setup mail config';
 
@@ -16,7 +16,7 @@ class ConfigMailCommand extends \Aloe\Command
         Installer::installPackages('mail');
 
         $this->comment('Setting up leaf mail...');
-        Installer::magicCopy(dirname(__DIR__) . '/Scaffold/Mail');
+        Installer::magicCopy(dirname(__DIR__) . '/themes/mail');
 
         $this->info('Leaf mail installed successfully!');
 

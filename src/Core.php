@@ -140,6 +140,7 @@ class Core
         } else if (file_exists("$directory/composer.lock")) {
             $composerLock = json_decode(file_get_contents("$directory/composer.lock"), true);
             $packages = $composerLock['packages'] ?? [];
+
             foreach ($packages as $package) {
                 if ($package['name'] === 'leafs/blade') {
                     $isBladeProject = true;
