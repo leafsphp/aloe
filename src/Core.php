@@ -14,7 +14,7 @@ class Core
     public static function run(string $command, $output, string $cwd = null)
     {
         $process = Process::fromShellCommandline(
-            $command,
+            "$command --ansi",
             $cwd,
             null,
             null,

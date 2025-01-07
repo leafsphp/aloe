@@ -105,6 +105,24 @@ class ViewInstallCommand extends Command
         $package['scripts']['build'] = 'vite build';
         file_put_contents("$directory/package.json", json_encode($package, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
+        if (storage()->exists("$directory/vite.config.js")) {
+            storage()->writeFile("$directory/vite.config.js", function ($content) {
+                if (strpos($content, "@vitejs/plugin-react") === false) {
+                    $content = str_replace(
+                        ["import leaf from '@leafphp/vite-plugin';", 'import leaf from "@leafphp/vite-plugin";'],
+                        "import leaf from '@leafphp/vite-plugin';\nimport react from '@vitejs/plugin-react';",
+                        $content
+                    );
+                }
+
+                if (strpos($content, "react()") === false) {
+                    $content = str_replace("leaf({", "react(),\nleaf({", $content);
+                }
+
+                return $content;
+            });
+        }
+
         $output->writeln("\n⚛️   <info>React setup successfully</info>");
         $output->writeln("👉  Get started with the following commands:\n");
         $output->writeln('    php leaf view:dev <info>- start dev server</info>');
@@ -123,7 +141,7 @@ class ViewInstallCommand extends Command
         $directory = getcwd();
         $npm = \Aloe\Core::findNpm();
         $composer = \Aloe\Core::findComposer();
-        $success = \Aloe\Core::run("$npm add @leafphp/vite-plugin svelte @sveltejs/vite-plugin-svelte @inertiajs/svelte", $output);
+        $success = \Aloe\Core::run("$npm add @leafphp/vite-plugin svelte @sveltejs/vite-plugin-svelte @inertiajs/svelte@^1.0", $output);
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to install svelte</error>');
@@ -155,6 +173,24 @@ class ViewInstallCommand extends Command
         $package['scripts']['dev'] = 'vite';
         $package['scripts']['build'] = 'vite build';
         file_put_contents("$directory/package.json", json_encode($package, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+        if (storage()->exists("$directory/vite.config.js")) {
+            storage()->writeFile("$directory/vite.config.js", function ($content) {
+                if (strpos($content, "@sveltejs/vite-plugin-svelte") === false) {
+                    $content = str_replace(
+                        ["import leaf from '@leafphp/vite-plugin';", 'import leaf from "@leafphp/vite-plugin";'],
+                        "import leaf from '@leafphp/vite-plugin';\nimport { svelte } from '@sveltejs/vite-plugin-svelte'",
+                        $content
+                    );
+                }
+
+                if (strpos($content, "svelte()") === false) {
+                    $content = str_replace("leaf({", "svelte(),\nleaf({", $content);
+                }
+
+                return $content;
+            });
+        }
 
         $output->writeln("\n⚛️   <info>Svelte setup successfully</info>");
         $output->writeln("👉  Get started with the following commands:\n");
@@ -284,6 +320,31 @@ class ViewInstallCommand extends Command
         $package['scripts']['dev'] = 'vite';
         $package['scripts']['build'] = 'vite build';
         file_put_contents("$directory/package.json", json_encode($package, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+        if (storage()->exists("$directory/vite.config.js")) {
+            storage()->writeFile("$directory/vite.config.js", function ($content) {
+                if (strpos($content, "@vitejs/plugin-vue") === false) {
+                    $content = str_replace(
+                        ["import leaf from '@leafphp/vite-plugin';", 'import leaf from "@leafphp/vite-plugin";'],
+                        "import leaf from '@leafphp/vite-plugin';\nimport vue from '@vitejs/plugin-vue';",
+                        $content
+                    );
+                }
+
+                if (strpos($content, "vue(") === false) {
+                    $content = str_replace("leaf({", "vue({
+            template: {
+                transformAssetUrls: {
+                    base: null,
+                    includeAbsolute: false,
+                },
+            },
+        }),\nleaf({", $content);
+                }
+
+                return $content;
+            });
+        }
 
         $output->writeln("\n⚛️   <info>Vue setup successfully</info>");
         $output->writeln("👉  Get started with the following commands:\n");
