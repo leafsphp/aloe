@@ -14,6 +14,7 @@ class InteractCommand extends \Aloe\Command
     {
         $shell = new Shell();
         $this->writeln($shell->run());
+
         return 0;
     }
 }
