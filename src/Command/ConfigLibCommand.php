@@ -16,18 +16,6 @@ class ConfigLibCommand extends Command
             \Leaf\FS\Directory::create(LibPath());
         }
 
-        $publicIndex = trim(PublicPath('index.php'), '/');
-
-        \Leaf\FS\File::write($publicIndex, function ($content) {
-            $content = str_replace(
-                '// \Leaf\Core::loadLibs()',
-                '\Leaf\Core::loadLibs()',
-                $content
-            );
-
-            return $content;
-        });
-
         $this->comment('lib folder setup successfully!');
 
         return 0;

@@ -20,7 +20,9 @@ class GenerateTemplateCommand extends \Aloe\Command
     {
         $templateName = strtolower($this->argument('name'));
         $templateName = $this->getTemplateName($templateName);
-        $template = Config::rootpath(ViewsPath($templateName));
+        $template = Config::rootpath(ViewsPath(
+            $this->option('type') === 'blade' ? $templateName : "/js/$templateName"
+        ));
 
         storage()->createFile($template, function () {
             return str_replace(
@@ -28,7 +30,7 @@ class GenerateTemplateCommand extends \Aloe\Command
                 \Illuminate\Support\Str::studly(basename($this->argument('name'))),
                 $this->generateTemplateData()
             );
-        });
+        }, ['recursive' => true]);
 
         $this->comment("$templateName generated successfully");
 
@@ -37,17 +39,9 @@ class GenerateTemplateCommand extends \Aloe\Command
 
     protected function getTemplateName($templateName)
     {
-        if ($this->option('type') === 'svelte') {
-            $templateName = \Illuminate\Support\Str::studly($templateName) . '.svelte';
-        } elseif ($this->option('type') === 'jsx') {
-            $templateName = \Illuminate\Support\Str::studly($templateName) . '.jsx';
-        } elseif ($this->option('type') === 'vue') {
-            $templateName = \Illuminate\Support\Str::studly($templateName) . '.vue';
-        } else {
-            $templateName .= '.blade.php';
-        }
-
-        return $templateName;
+        return $this->option('type') === 'blade'
+            ? "$templateName.blade.php"
+            : (\Illuminate\Support\Str::studly($templateName) . '.' . $this->option('type'));
     }
 
     protected function generateTemplateData()
