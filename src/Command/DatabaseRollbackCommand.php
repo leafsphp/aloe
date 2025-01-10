@@ -30,7 +30,12 @@ class DatabaseRollbackCommand extends Command
 
             $this->writeln("> db rollback on <comment>$currentFileName</comment>");
 
-            if (!\Leaf\Schema::rollback($migration)) {
+            if (
+                !\Leaf\Schema::rollback(
+                    $migration,
+                    (int) $this->option('step')
+                )
+            ) {
                 $this->error("Could not rollback $currentFileName");
 
                 return 1;
