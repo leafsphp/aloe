@@ -47,10 +47,10 @@ class Console
             \Aloe\Command\EnvGenerateCommand::class,
 
             // Database Commands
-            \Aloe\Command\DatabaseDropCommand::class,
             \Aloe\Command\DatabaseMigrationCommand::class,
             \Aloe\Command\DatabaseResetCommand::class,
             \Aloe\Command\DatabaseRollbackCommand::class,
+            \Aloe\Command\DatabaseSeedCommand::class,
 
             // Delete Commands
             \Aloe\Command\DeleteModelCommand::class,
