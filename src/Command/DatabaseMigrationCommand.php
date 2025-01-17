@@ -21,6 +21,14 @@ class DatabaseMigrationCommand extends Command
         $fileToMigrate = $this->argument('file');
         $migrations = glob(Config::rootpath(AppPaths('database') . DIRECTORY_SEPARATOR . '*.yml'));
 
+        if (empty($migrations)) {
+            $this->error("No schema files found.");
+
+            return 1;
+        }
+
+        $this->createDatabase();
+
         foreach ($migrations as $migration) {
             $currentFileName = path($migration)->basename();
 
@@ -54,16 +62,29 @@ class DatabaseMigrationCommand extends Command
 
     public function createDatabase()
     {
+        $host = _env('DB_HOST');
+        $user = _env('DB_USERNAME');
+        $password = _env('DB_PASSWORD');
         $database = _env('DB_DATABASE');
+        $dbCharset = _env('DB_CHARSET', 'utf8');
+        $dbConnection = _env('DB_CONNECTION', 'mysql');
+        $port = empty(_env('DB_PORT')) ? 3306 : _env('DB_PORT');
+        $dbCollation = _env('DB_COLLATION', 'utf8_unicode_ci');
 
-        \Leaf\Database::initDb();
+        db()->connect([
+            'dbtype' => MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql',
+            'host' => $host,
+            'username' => $user,
+            'password' => $password,
+            'port' => $port,
+        ]);
 
-        if (db()->create($database)->execute()) {
-            $this->info("$database created successfully.");
+        if (db()->query("CREATE DATABASE IF NOT EXISTS $database CHARACTER SET $dbCharset COLLATE $dbCollation;")->execute()) {
+            $this->writeln("> Verifying database...");
 
             return 0;
         }
 
-        $this->error("$database could not be created.");
+        $this->error("$database could not be created.\n");
     }
 }
