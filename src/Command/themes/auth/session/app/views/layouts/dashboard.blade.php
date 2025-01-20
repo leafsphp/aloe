@@ -12,7 +12,7 @@
                     </svg>',
         ],
         [
-            'link' => '/pages',
+            'link' => '#',
             'name' => 'Pages',
             'icon' => '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -35,6 +35,10 @@
     <link rel="stylesheet" href="@assets('css/styles.css')">
 
     {{-- @vite('css/app.css') --}}
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap"
+        rel="stylesheet">
 
     @alpine
 </head>

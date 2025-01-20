@@ -8,6 +8,10 @@
     <link rel="shortcut icon" href="https://leafphp.dev/logo-circle.png" type="image/x-icon">
     <link rel="stylesheet" href="@assets('css/styles.css')">
 
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap"
+        rel="stylesheet">
+
     {{-- @vite('css/app.css') --}}
 </head>
 
