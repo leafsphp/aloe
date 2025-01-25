@@ -211,7 +211,7 @@ class ViewInstallCommand extends Command
 
         $output->writeln("📦  <info>Installing tailwind...</info>\n");
 
-        $success = \Aloe\Core::run("$npm install tailwindcss postcss autoprefixer @leafphp/vite-plugin vite", $output);
+        $success = \Aloe\Core::run("$npm install tailwindcss@3 postcss autoprefixer @leafphp/vite-plugin vite", $output);
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to install tailwind</error>');
