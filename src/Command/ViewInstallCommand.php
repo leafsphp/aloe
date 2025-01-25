@@ -211,7 +211,7 @@ class ViewInstallCommand extends Command
 
         $output->writeln("📦  <info>Installing tailwind...</info>\n");
 
-        $success = \Aloe\Core::run("$npm install tailwindcss@3 postcss autoprefixer @leafphp/vite-plugin vite", $output);
+        $success = \Aloe\Core::run("$npm install tailwindcss @tailwindcss/vite @leafphp/vite-plugin vite", $output);
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to install tailwind</error>');
@@ -228,6 +228,24 @@ class ViewInstallCommand extends Command
             $output->writeln('❌  <error>Failed to setup Leaf server bridge</error>');
 
             return 1;
+        }
+
+        if (\Leaf\FS\File::exists('vite.config.js')) {
+            \Leaf\FS\File::write('vite.config.js', function ($content) {
+                if (strpos($content, "@tailwindcss/vite") === false) {
+                    $content = str_replace(
+                        ["import leaf from '@leafphp/vite-plugin';", 'import leaf from "@leafphp/vite-plugin";'],
+                        "import leaf from '@leafphp/vite-plugin';\nimport tailwindcss from '@tailwindcss/vite';",
+                        $content
+                    );
+                }
+
+                if (strpos($content, "tailwindcss(") === false) {
+                    $content = str_replace("leaf({", "tailwindcss(),\nleaf({", $content);
+                }
+
+                return $content;
+            });
         }
 
         \Leaf\FS\Directory::copy(
@@ -256,8 +274,8 @@ class ViewInstallCommand extends Command
 
         if (file_exists("$directory/app/views/css/app.css")) {
             storage()->writeFile("$directory/app/views/css/app.css", function ($content) {
-                if (strpos($content, '@tailwind base;') === false) {
-                    return "@tailwind base;\n@tailwind components;\n@tailwind utilities;\n\n$content";
+                if (strpos($content, '@import "tailwindcss";') === false) {
+                    return "@import \"tailwindcss\";\n@source \"../\";\n\n$content";
                 }
 
                 return $content;
