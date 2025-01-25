@@ -230,6 +230,24 @@ class ViewInstallCommand extends Command
             return 1;
         }
 
+        if (\Leaf\FS\File::exists('vite.config.js')) {
+            \Leaf\FS\File::write('vite.config.js', function ($content) {
+                if (strpos($content, "@tailwindcss/vite") === false) {
+                    $content = str_replace(
+                        ["import leaf from '@leafphp/vite-plugin';", 'import leaf from "@leafphp/vite-plugin";'],
+                        "import leaf from '@leafphp/vite-plugin';\nimport tailwindcss from '@tailwindcss/vite';",
+                        $content
+                    );
+                }
+
+                if (strpos($content, "tailwindcss(") === false) {
+                    $content = str_replace("leaf({", "tailwindcss(),\nleaf({", $content);
+                }
+
+                return $content;
+            });
+        }
+
         \Leaf\FS\Directory::copy(
             __DIR__ . '/themes/tailwind/',
             $directory,
@@ -256,8 +274,8 @@ class ViewInstallCommand extends Command
 
         if (file_exists("$directory/app/views/css/app.css")) {
             storage()->writeFile("$directory/app/views/css/app.css", function ($content) {
-                if (strpos($content, '@tailwind base;') === false) {
-                    return "@tailwind base;\n@tailwind components;\n@tailwind utilities;\n\n$content";
+                if (strpos($content, '@import "tailwindcss";') === false) {
+                    return "@import \"tailwindcss\";\n@source \"../\";\n\n$content";
                 }
 
                 return $content;
