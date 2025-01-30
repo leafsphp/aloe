@@ -19,6 +19,14 @@ class DatabaseInstallCommand extends Command
         $dbConnection = _env('DB_CONNECTION', 'mysql');
         $port = empty(_env('DB_PORT')) ? 3306 : _env('DB_PORT');
 
+        if ($dbConnection === 'sqlite') {
+            if (!file_exists($database)) {
+                file_put_contents($database, '');
+            }
+            $this->info("$database created successfully.");
+            return 0;
+        }
+
         db()->connect([
             'dbtype' => MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql',
             'host' => $host,
