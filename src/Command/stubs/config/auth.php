@@ -12,7 +12,7 @@ return [
     | checks on and edit/retrieve users from.
     |
     */
-    'db.table' => 'users',
+    'db.table' => _env('AUTH_DB_TABLE', 'users'),
 
     /*
     |--------------------------------------------------------------------------
@@ -23,7 +23,7 @@ return [
     |  This setting allows you to quickly switch your key name
     |
     */
-    'id.key' => 'id',
+    'id.key' => _env('AUTH_DB_ID', 'id'),
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
     | and update methods
     |
     */
-    'timestamps' => true,
+    'timestamps' => _env('AUTH_TIMESTAMPS', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -45,7 +45,7 @@ return [
     | Be aware that auth uses the leafs/date module, so the accepted formats are listed in the leafs/date documentation
     |
     */
-    'timestamps.format' => 'YYYY-MM-DD HH:mm:ss',
+    'timestamps.format' => _env('AUTH_TIMESTAMPS_FORMAT', 'YYYY-MM-DD HH:mm:ss'),
 
     /*
     |--------------------------------------------------------------------------
