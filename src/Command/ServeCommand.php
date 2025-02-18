@@ -21,13 +21,16 @@ class ServeCommand extends Command
     protected function handle()
     {
         $useConcurrent = true;
+        $redisDetected = class_exists('Leaf\Redis');
+        $jobsDetected = class_exists('Leaf\Job') && file_exists(getcwd() . '/app/jobs');
+        $viteDetected = class_exists('Leaf\Vite') || file_exists(getcwd() . '/vite.config.js');
 
         $port = $this->option('port');
         $path = $this->option('path');
         $host = $this->option('host');
         $noConcurrent = $this->option('no-concurrent');
 
-        if ($noConcurrent || !class_exists('Leaf\Vite') || !file_exists(getcwd() . '/vite.config.js')) {
+        if ($noConcurrent || (!$redisDetected && !$jobsDetected && !$viteDetected)) {
             $useConcurrent = false;
         }
 
@@ -55,15 +58,36 @@ class ServeCommand extends Command
         }
 
         if ($useConcurrent) {
-            $this->writeln("\nVite detected, running Leaf server and Vite server concurrently\n");
-            $this->info("Happy gardening!!\n");
+            $commands = [
+                '#3eaf7c' => ['Leaf', "\"php -S $host:$port -t $path\""],
+            ];
 
-            if (!file_exists(getcwd() . '/node_modules')) {
-                $this->writeln(shell_exec('npm i'));
+            if (!file_exists(getcwd() . '/node_modules') && file_exists(getcwd() . '/package.json')) {
+                $this->writeln(shell_exec('npm install'));
             }
 
+            if ($viteDetected) {
+                $this->writeln("\nVite detected, starting Vite server concurrently\n");
+                $commands['#bd34fe'] = ['Vite', '"npm run dev"'];
+            }
+
+            if ($jobsDetected) {
+                $this->writeln("\nJobs detected, starting Queue workers concurrently\n");
+                $commands['#f9c851'] = ['Workers', '"php leaf queue:work"'];
+            }
+
+            $this->info("Happy gardening!!\n");
+
+            $colors = implode(',', array_keys($commands));
+            $commandNames = array_map(function ($cmd) {
+                return $cmd[0];
+            }, $commands);
+            $commandsToRun = array_map(function ($cmd) {
+                return $cmd[1];
+            }, $commands);
+
             \Aloe\Core::run(
-                "npx concurrently -c \"#3eaf7c,#bd34fe\" \"php -S $host:$port -t $path\" \"npm run dev\" --names=server,vite --colors",
+                "npx concurrently -c \"$colors\" " . implode(' ', $commandsToRun) . " --names=" . implode(',', $commandNames) . " --colors",
                 $this->output()
             );
         } else {
