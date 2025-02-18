@@ -36,7 +36,7 @@ class ConfigPublishCommand extends Command
             );
         }
 
-        $this->comment('lib folder setup successfully!');
+        $this->comment('Config published successfully!');
 
         return 0;
     }
