@@ -15,7 +15,7 @@ class ServeCommand extends Command
         $this->setOption('port', 'p', 'optional', 'Port to run Leaf app on', _env('SERVER_PORT', 5500));
         $this->setOption('path', 't', 'optional', 'Path to your app', getcwd() . '/public');
         $this->setOption('host', 's', 'optional', 'Your application host', 'localhost');
-        $this->setOption('no-concurrent', 'nc', 'optional', 'Run PHP server without Vite server', false);
+        $this->setOption('no-concurrent', 'c', 'none', 'Run PHP server without Vite server');
     }
 
     protected function handle()
@@ -72,17 +72,18 @@ class ServeCommand extends Command
             }
 
             if ($viteDetected) {
-                $this->writeln(asInfo(" > ") . "Vite detected, starting Vite server concurrently");
+                $this->writeln(asInfo(' > ') . 'Vite detected, starting Vite server concurrently');
                 $commands['#bd34fe'] = ['Vite', '"npm run dev"'];
             }
 
             if ($redisDetected) {
-                $this->writeln(asInfo(" > ") . "Redis detected, starting Redis server concurrently");
-                $commands['#ff4438'] = ['Redis', '"redis-server"'];
+                $this->writeln(asInfo(' > ') . 'Redis detected, starting Redis server concurrently');
+                \Leaf\FS\Directory::create(getcwd() . '/storage/database');
+                $commands['#ff4438'] = ['Redis', '"redis-server --dir storage/database"'];
             }
 
             if ($jobsDetected) {
-                $this->writeln(asInfo(" > ") . "Jobs detected, starting Queue workers concurrently");
+                $this->writeln(asInfo(' > ') . 'Jobs detected, starting Queue workers concurrently');
                 $commands['#f9c851'] = ['Workers', '"php leaf queue:work"'];
             }
 
@@ -101,6 +102,7 @@ class ServeCommand extends Command
                 $this->output()
             );
         } else {
+            $this->info("\nHappy gardening 🍁\n");
             $this->writeln(shell_exec("php -S $host:$port -t $path"));
         }
 
