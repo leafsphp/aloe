@@ -36,16 +36,21 @@ class ServeCommand extends Command
 
         if (!is_dir($path)) {
             $this->error("Directory $path does not exist");
-
             return 1;
         }
+
+        $this->writeln(asComment(" _                __   __  ____     ______
+| |    ___  __ _ / _| |  \/  \ \   / / ___|
+| |   / _ \/ _` | |_  | |\/| |\ \ / / |
+| |__|  __/ (_| |  _| | |  | | \ V /| |___
+|_____\___|\__,_|_|   |_|  |_|  \_/  \____|\n"));
 
         while (true) {
             $defSocket = @fsockopen($host, $port, $errno, $errstr, 1);
             $localSocket = @fsockopen('localhost', $port, $errno, $errstr, 1);
 
             if ($defSocket) {
-                $this->writeln("Port $port is already in use by $host, trying port " . ($port + 1) . '...');
+                $this->writeln(asInfo(" > ") . "Port $port is already in use by $host, trying port " . ($port + 1) . '...');
                 $port++;
             } elseif (!$localSocket) {
                 break;
@@ -67,16 +72,21 @@ class ServeCommand extends Command
             }
 
             if ($viteDetected) {
-                $this->writeln("\nVite detected, starting Vite server concurrently\n");
+                $this->writeln(asInfo(" > ") . "Vite detected, starting Vite server concurrently");
                 $commands['#bd34fe'] = ['Vite', '"npm run dev"'];
             }
 
+            if ($redisDetected) {
+                $this->writeln(asInfo(" > ") . "Redis detected, starting Redis server concurrently");
+                $commands['#ff4438'] = ['Redis', '"redis-server"'];
+            }
+
             if ($jobsDetected) {
-                $this->writeln("\nJobs detected, starting Queue workers concurrently\n");
+                $this->writeln(asInfo(" > ") . "Jobs detected, starting Queue workers concurrently");
                 $commands['#f9c851'] = ['Workers', '"php leaf queue:work"'];
             }
 
-            $this->info("Happy gardening!!\n");
+            $this->info("\nHappy gardening 🍁\n");
 
             $colors = implode(',', array_keys($commands));
             $commandNames = array_map(function ($cmd) {
