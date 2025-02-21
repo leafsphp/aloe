@@ -72,11 +72,10 @@ class ViewInstallCommand extends Command
         $directory = getcwd();
         $npm = \Aloe\Core::findNpm();
         $composer = \Aloe\Core::findComposer();
-        $success = \Aloe\Core::run("$npm install @leafphp/vite-plugin @vitejs/plugin-react @inertiajs/react@^1.0 react@^18.0 react-dom@^18.0 vite", $output);
+        $success = \Aloe\Core::run("$npm install @leafphp/vite-plugin @vitejs/plugin-react @inertiajs/react react react-dom vite tailwindcss @tailwindcss/vite", $output);
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to install react</error>');
-
             return 1;
         }
 
@@ -87,7 +86,6 @@ class ViewInstallCommand extends Command
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to setup Leaf React server bridge</error>');
-
             return 1;
         }
 
@@ -115,7 +113,7 @@ class ViewInstallCommand extends Command
                     );
                 }
 
-                if (strpos($content, "react()") === false) {
+                if (strpos($content, "react(") === false) {
                     $content = str_replace("leaf({", "react(),\nleaf({", $content);
                 }
 
@@ -125,7 +123,7 @@ class ViewInstallCommand extends Command
 
         $output->writeln("\n⚛️   <info>React setup successfully</info>");
         $output->writeln("👉  Get started with the following commands:\n");
-        $output->writeln('    php leaf view:dev <info>- start dev server</info>');
+        $output->writeln('    php leaf serve <info>- start dev server</info>');
         $output->writeln('    php leaf view:build <info>- build for production</info>');
 
         return 0;
@@ -141,11 +139,10 @@ class ViewInstallCommand extends Command
         $directory = getcwd();
         $npm = \Aloe\Core::findNpm();
         $composer = \Aloe\Core::findComposer();
-        $success = \Aloe\Core::run("$npm add @leafphp/vite-plugin svelte @sveltejs/vite-plugin-svelte @inertiajs/svelte@^1.0", $output);
+        $success = \Aloe\Core::run("$npm add @leafphp/vite-plugin svelte @sveltejs/vite-plugin-svelte @inertiajs/svelte vite tailwindcss @tailwindcss/vite", $output);
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to install svelte</error>');
-
             return 1;
         }
 
@@ -184,7 +181,7 @@ class ViewInstallCommand extends Command
                     );
                 }
 
-                if (strpos($content, "svelte()") === false) {
+                if (strpos($content, "svelte(") === false) {
                     $content = str_replace("leaf({", "svelte(),\nleaf({", $content);
                 }
 
@@ -194,7 +191,7 @@ class ViewInstallCommand extends Command
 
         $output->writeln("\n⚛️   <info>Svelte setup successfully</info>");
         $output->writeln("👉  Get started with the following commands:\n");
-        $output->writeln('    php leaf view:dev <info>- start dev server</info>');
+        $output->writeln('    php leaf serve <info>- start dev server</info>');
         $output->writeln('    php leaf view:build <info>- build for production</info>');
 
         return 0;
@@ -211,7 +208,7 @@ class ViewInstallCommand extends Command
 
         $output->writeln("📦  <info>Installing tailwind...</info>\n");
 
-        $success = \Aloe\Core::run("$npm install tailwindcss postcss autoprefixer @leafphp/vite-plugin vite", $output);
+        $success = \Aloe\Core::run("$npm install @leafphp/vite-plugin vite tailwindcss @tailwindcss/vite", $output);
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to install tailwind</error>');
@@ -290,7 +287,7 @@ class ViewInstallCommand extends Command
 
         $output->writeln("\n🎉  <info>Tailwind CSS setup successfully</info>");
         $output->writeln("👉  Get started with the following commands:\n");
-        $output->writeln('    php leaf view:dev <info>- start dev server</info>');
+        $output->writeln('    php leaf serve <info>- start dev server</info>');
         $output->writeln("    php leaf view:build <info>- build for production</info>\n");
 
         return 0;
@@ -306,7 +303,7 @@ class ViewInstallCommand extends Command
         $directory = getcwd();
         $npm = \Aloe\Core::findNpm();
         $composer = \Aloe\Core::findComposer();
-        $success = \Aloe\Core::run("$npm install @leafphp/vite-plugin @vitejs/plugin-vue @inertiajs/vue3@^1.0 vue", $output);
+        $success = \Aloe\Core::run("$npm install @leafphp/vite-plugin @vitejs/plugin-vue @inertiajs/vue3@^1.0 vue vite tailwindcss @tailwindcss/vite", $output);
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to install Vue</error>');
@@ -366,7 +363,7 @@ class ViewInstallCommand extends Command
 
         $output->writeln("\n⚛️   <info>Vue setup successfully</info>");
         $output->writeln("👉  Get started with the following commands:\n");
-        $output->writeln('    php leaf view:dev <info>- start dev server</info>');
+        $output->writeln('    php leaf serve <info>- start dev server</info>');
         $output->writeln("    php leaf view:build <info>- build for production</info>\n");
 
         return 0;
@@ -377,7 +374,7 @@ class ViewInstallCommand extends Command
     protected function isBladeProject($directory = null)
     {
         $isBladeProject = false;
-        $directory = $directory ?? getcwd();
+        $directory ??= getcwd();
 
         if (file_exists("$directory/config/view.php")) {
             $viewConfig = require "$directory/config/view.php";
