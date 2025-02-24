@@ -89,10 +89,8 @@ class ViewInstallCommand extends Command
             return 1;
         }
 
-        $isBladeProject = $this->isBladeProject();
-
         \Leaf\FS\Directory::copy(
-            __DIR__ . '/themes/react/' . ($isBladeProject ? 'blade' : 'bare-ui'),
+            __DIR__ . '/themes/react/',
             $directory,
             ['recursive' => true]
         );
@@ -153,14 +151,11 @@ class ViewInstallCommand extends Command
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to setup Leaf Svelte server bridge</error>');
-
             return 1;
         }
 
-        $isBladeProject = $this->isBladeProject();
-
         \Leaf\FS\Directory::copy(
-            __DIR__ . '/themes/svelte/' . ($isBladeProject ? 'blade' : 'bare-ui'),
+            __DIR__ . '/themes/svelte/',
             $directory,
             ['recursive' => true]
         );
@@ -212,7 +207,6 @@ class ViewInstallCommand extends Command
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to install tailwind</error>');
-
             return 1;
         }
 
@@ -223,7 +217,6 @@ class ViewInstallCommand extends Command
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to setup Leaf server bridge</error>');
-
             return 1;
         }
 
@@ -307,7 +300,6 @@ class ViewInstallCommand extends Command
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to install Vue</error>');
-
             return 1;
         }
 
@@ -318,14 +310,11 @@ class ViewInstallCommand extends Command
 
         if (!$success) {
             $output->writeln('❌  <error>Failed to setup Leaf Vue server bridge</error>');
-
             return 1;
         }
 
-        $isBladeProject = $this->isBladeProject();
-
         \Leaf\FS\Directory::copy(
-            __DIR__ . '/themes/vue/' . ($isBladeProject ? 'blade' : 'bare-ui'),
+            __DIR__ . '/themes/vue/',
             $directory,
             ['recursive' => true]
         );
@@ -367,31 +356,5 @@ class ViewInstallCommand extends Command
         $output->writeln("    php leaf view:build <info>- build for production</info>\n");
 
         return 0;
-    }
-
-    // ------------------------ utils ------------------------ //
-
-    protected function isBladeProject($directory = null)
-    {
-        $isBladeProject = false;
-        $directory ??= getcwd();
-
-        if (file_exists("$directory/config/view.php")) {
-            $viewConfig = require "$directory/config/view.php";
-            $isBladeProject = strpos(strtolower($viewConfig['viewEngine'] ?? $viewConfig['view_engine'] ?? ''), 'blade') !== false;
-        } elseif (file_exists("$directory/composer.lock")) {
-            $composerLock = json_decode(file_get_contents("$directory/composer.lock"), true);
-            $packages = $composerLock['packages'] ?? [];
-
-            foreach ($packages as $package) {
-                if ($package['name'] === 'leafs/blade') {
-                    $isBladeProject = true;
-
-                    break;
-                }
-            }
-        }
-
-        return $isBladeProject;
     }
 }
