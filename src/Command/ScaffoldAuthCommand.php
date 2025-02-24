@@ -45,6 +45,32 @@ class ScaffoldAuthCommand extends \Aloe\Command
         Installer::installPackages('auth');
         Installer::magicCopy(__DIR__ . '/themes/auth/' . $scaffold);
 
+        if (\Leaf\FS\File::exists("$directory/app/views/js/Pages/Welcome.jsx")) {
+            \Leaf\FS\File::write("$directory/app/views/js/Pages/Welcome.jsx", function ($content) {
+                return str_replace(
+                    ['{/* <Navbar auth={auth} /> */}', '// import Navbar from'],
+                    ['<Navbar auth={auth} />', 'import Navbar from'],
+                    $content
+                );
+            });
+        } else if (\Leaf\FS\File::exists("$directory/app/views/js/Pages/Welcome.svelte")) {
+            \Leaf\FS\File::write("$directory/app/views/js/Pages/Welcome.svelte", function ($content) {
+                return str_replace(
+                    ['<!-- <Navbar /> -->', '// import Navbar from'],
+                    ['<Navbar auth={auth} />', 'import Navbar from'],
+                    $content
+                );
+            });
+        } else if (\Leaf\FS\File::exists("$directory/app/views/js/Pages/Welcome.vue")) {
+            \Leaf\FS\File::write("$directory/app/views/js/Pages/Welcome.vue", function ($content) {
+                return str_replace(
+                    ['<!-- <Navbar /> -->', '// import Navbar from'],
+                    ['<Navbar :auth="$page.props.auth" />', 'import Navbar from'],
+                    $content
+                );
+            });
+        }
+
         $this->info('Authentication generated successfully.');
 
         return 0;
