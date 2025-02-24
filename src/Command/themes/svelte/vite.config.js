@@ -12,4 +12,9 @@ export default defineConfig({
         }),
         svelte(),
     ],
+    resolve: {
+        alias: {
+            '@': '/app/views/js',
+        },
+    },
 });

@@ -12,4 +12,9 @@ export default defineConfig({
         }),
         react(),
     ],
+    resolve: {
+        alias: {
+            '@': '/app/views/js',
+        },
+    },
 });

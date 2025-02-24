@@ -19,4 +19,9 @@ export default defineConfig({
             },
         }),
     ],
+    resolve: {
+        alias: {
+            '@': '/app/views/js',
+        },
+    },
 });
