@@ -157,7 +157,7 @@ class Core
      */
     public static function isMVCProject($directory = null)
     {
-        $directory = $directory ?? getcwd();
+        $directory ??= getcwd();
 
         return is_dir("$directory/app/views") && file_exists("$directory/config/paths.php") && is_dir("$directory/public");
     }
