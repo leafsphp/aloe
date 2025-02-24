@@ -32,7 +32,6 @@ class GenerateSchemaCommand extends Command
 
         if (file_exists($schemaFile)) {
             $this->error("$schema already exists");
-
             return 1;
         }
 
@@ -43,7 +42,7 @@ class GenerateSchemaCommand extends Command
         ) {
             $this->comment("$schema schema file created successfully!");
 
-            // $this->generateExtraFiles($schema);
+            $this->generateExtraFiles($schema);
         }
 
         return 0;
@@ -60,7 +59,7 @@ class GenerateSchemaCommand extends Command
                 asError('Couldn\'t generate files')
             );
 
-            if (Config::$env === 'WEB') {
+            if (\Leaf\Core::mode() === 'web') {
                 $process = $this->runProcess(['php', 'leaf', 'g:template', $modelName]);
                 $this->comment(
                     $process === 0 ?

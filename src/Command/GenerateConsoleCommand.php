@@ -24,7 +24,6 @@ class GenerateConsoleCommand extends Command
 
         if (file_exists($file)) {
             $this->error("$className already exists!");
-
             return 1;
         }
 

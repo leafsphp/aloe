@@ -31,18 +31,15 @@ class GenerateModelCommand extends Command
 
         if (file_exists($file)) {
             $this->error('Model already exists');
-
             return 1;
         }
 
-        $fileContent = \file_get_contents(__DIR__ . '/stubs/model.stub');
-        $fileContent = str_replace('ClassName', $className, $fileContent);
+        \Leaf\FS\File::create($file, function () use ($className) {
+            $fileContent = \file_get_contents(__DIR__ . '/stubs/model.stub');
+            $fileContent = str_replace('ClassName', $className, $fileContent);
 
-        if (!is_dir(dirname($file))) {
-            mkdir(dirname($file));
-        }
-
-        file_put_contents($file, $fileContent);
+            return $fileContent;
+        }, ['recursive' => true]);
 
         $this->info(asComment($model) . ' model generated');
 

@@ -28,7 +28,6 @@ class GenerateMailerCommand extends Command
 
         if (file_exists($file)) {
             $this->error("$mailer already exists");
-
             return 1;
         }
 
@@ -36,15 +35,16 @@ class GenerateMailerCommand extends Command
             mkdir(dirname($file), 0777, true);
         }
 
-        touch($file);
+        \Leaf\FS\File::create($file, function () use ($mailer) {
+            $fileContent = \file_get_contents(__DIR__ . '/stubs/mailer.stub');
+            $fileContent = str_replace(
+                'ClassName',
+                $mailer,
+                $fileContent
+            );
 
-        $fileContent = \file_get_contents(__DIR__ . '/stubs/mailer.stub');
-        $fileContent = str_replace(
-            'ClassName',
-            $mailer,
-            $fileContent
-        );
-        file_put_contents($file, $fileContent);
+            return $fileContent;
+        }, ['recursive' => true]);
 
         $this->comment("$mailer generated successfully");
 

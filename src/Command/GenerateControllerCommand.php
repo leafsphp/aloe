@@ -36,12 +36,11 @@ class GenerateControllerCommand extends Command
 
         $controllerFile = Config::rootpath(ControllersPath("$controller.php"));
         $modelName = Str::singular(Str::studly(
-            str_replace('Controller', '', $this->argument('controller'))
+            str_replace('Controller', '', basename($this->argument('controller')))
         ));
 
         if (file_exists($controllerFile)) {
             $this->error("$controller already exists");
-
             return 1;
         }
 
@@ -54,8 +53,6 @@ class GenerateControllerCommand extends Command
 
     protected function generateController($controllerFile, $controller, $modelName)
     {
-        touch($controllerFile);
-
         $stub = Config::$env === 'WEB' ? 'controller' : 'apiController';
 
         if ($this->option('resource')) {
@@ -70,15 +67,20 @@ class GenerateControllerCommand extends Command
             $stub = 'apiController';
         }
 
-        $fileContent = file_get_contents(__DIR__ . "/stubs/$stub.stub");
-        $fileContent = str_replace(
-            ['ClassName', 'ModelName', 'viewFile'],
-            [$controller, $modelName, Str::singular(strtolower(str_replace('Controller', '', $controller)))],
-            $fileContent
-        );
-        file_put_contents($controllerFile, $fileContent);
+        \Leaf\FS\File::create($controllerFile, function () use ($stub, $controller, $modelName) {
+            $fileContent = file_get_contents(__DIR__ . "/stubs/$stub.stub");
+            $fileContent = str_replace(
+                ['ClassName', 'ModelName', 'viewFile'],
+                [$controller, $modelName, Str::singular(strtolower(str_replace('Controller', '', $controller)))],
+                $fileContent
+            );
+
+            return $fileContent;
+        }, ['recursive' => true]);
 
         $this->comment("$controller created successfully");
+
+        return 0;
     }
 
     protected function generateExtraFiles($modelName)

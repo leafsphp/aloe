@@ -30,11 +30,12 @@ class GenerateHelperCommand extends Command
             unlink(Config::rootpath(HelpersPath('.gitkeep')));
         }
 
-        touch($file);
+        \Leaf\FS\File::create($file, function () use ($helper, $modelName) {
+            $fileContent = \file_get_contents(__DIR__ . '/stubs/helper.stub');
+            $fileContent = str_replace(['ClassName', 'ModelName'], [$helper, $modelName], $fileContent);
 
-        $fileContent = \file_get_contents(__DIR__ . '/stubs/helper.stub');
-        $fileContent = str_replace(['ClassName', 'ModelName'], [$helper, $modelName], $fileContent);
-        \file_put_contents($file, $fileContent);
+            return $fileContent;
+        }, ['recursive' => true]);
 
         return $this->comment("$helper generated successfully");
     }
