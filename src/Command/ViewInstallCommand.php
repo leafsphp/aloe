@@ -111,8 +111,48 @@ class ViewInstallCommand extends Command
                     );
                 }
 
+                if (strpos($content, "@tailwindcss/vite") === false) {
+                    $content = str_replace(
+                        ["import leaf from '@leafphp/vite-plugin';", 'import leaf from "@leafphp/vite-plugin";'],
+                        "import leaf from '@leafphp/vite-plugin';\nimport tailwindcss from '@tailwindcss/vite';",
+                        $content
+                    );
+                }
+
+                if (strpos($content, "tailwindcss(") === false) {
+                    $content = str_replace("leaf({", "tailwindcss(),\nleaf({", $content);
+                }
+
                 if (strpos($content, "react(") === false) {
                     $content = str_replace("leaf({", "react(),\nleaf({", $content);
+                }
+
+                return $content;
+            });
+        }
+
+        if (storage()->exists("$directory/app/routes/_app.php")) {
+            storage()->writeFile("$directory/app/routes/_app.php", function ($content) {
+                if (strpos($content, 'inertia(') === false) {
+                    return str_replace(
+                        "app()->view('/', 'index');",
+                        "app()->get('/', function () {
+    inertia('Welcome', [
+        'phpVersion' => PHP_VERSION
+    ]);
+});",
+                        $content
+                    );
+                }
+
+                return $content;
+            });
+        }
+
+        if (file_exists("$directory/app/views/css/app.css")) {
+            storage()->writeFile("$directory/app/views/css/app.css", function ($content) {
+                if (strpos($content, '@import "tailwindcss";') === false) {
+                    return "@import \"tailwindcss\";\n@source \"../\";\n\n$content";
                 }
 
                 return $content;
@@ -176,8 +216,48 @@ class ViewInstallCommand extends Command
                     );
                 }
 
+                if (strpos($content, "@tailwindcss/vite") === false) {
+                    $content = str_replace(
+                        ["import leaf from '@leafphp/vite-plugin';", 'import leaf from "@leafphp/vite-plugin";'],
+                        "import leaf from '@leafphp/vite-plugin';\nimport tailwindcss from '@tailwindcss/vite';",
+                        $content
+                    );
+                }
+
+                if (strpos($content, "tailwindcss(") === false) {
+                    $content = str_replace("leaf({", "tailwindcss(),\nleaf({", $content);
+                }
+
                 if (strpos($content, "svelte(") === false) {
                     $content = str_replace("leaf({", "svelte(),\nleaf({", $content);
+                }
+
+                return $content;
+            });
+        }
+
+        if (storage()->exists("$directory/app/routes/_app.php")) {
+            storage()->writeFile("$directory/app/routes/_app.php", function ($content) {
+                if (strpos($content, 'inertia(') === false) {
+                    return str_replace(
+                        "app()->view('/', 'index');",
+                        "app()->get('/', function () {
+    inertia('Welcome', [
+        'phpVersion' => PHP_VERSION
+    ]);
+});",
+                        $content
+                    );
+                }
+
+                return $content;
+            });
+        }
+
+        if (file_exists("$directory/app/views/css/app.css")) {
+            storage()->writeFile("$directory/app/views/css/app.css", function ($content) {
+                if (strpos($content, '@import "tailwindcss";') === false) {
+                    return "@import \"tailwindcss\";\n@source \"../\";\n\n$content";
                 }
 
                 return $content;
@@ -335,6 +415,18 @@ class ViewInstallCommand extends Command
                     );
                 }
 
+                if (strpos($content, "@tailwindcss/vite") === false) {
+                    $content = str_replace(
+                        ["import leaf from '@leafphp/vite-plugin';", 'import leaf from "@leafphp/vite-plugin";'],
+                        "import leaf from '@leafphp/vite-plugin';\nimport tailwindcss from '@tailwindcss/vite';",
+                        $content
+                    );
+                }
+
+                if (strpos($content, "tailwindcss(") === false) {
+                    $content = str_replace("leaf({", "tailwindcss(),\nleaf({", $content);
+                }
+
                 if (strpos($content, "vue(") === false) {
                     $content = str_replace("leaf({", "vue({
             template: {
@@ -344,6 +436,34 @@ class ViewInstallCommand extends Command
                 },
             },
         }),\nleaf({", $content);
+                }
+
+                return $content;
+            });
+        }
+
+        if (storage()->exists("$directory/app/routes/_app.php")) {
+            storage()->writeFile("$directory/app/routes/_app.php", function ($content) {
+                if (strpos($content, 'inertia(') === false) {
+                    return str_replace(
+                        "app()->view('/', 'index');",
+                        "app()->get('/', function () {
+    inertia('Welcome', [
+        'phpVersion' => PHP_VERSION
+    ]);
+});",
+                        $content
+                    );
+                }
+
+                return $content;
+            });
+        }
+
+        if (file_exists("$directory/app/views/css/app.css")) {
+            storage()->writeFile("$directory/app/views/css/app.css", function ($content) {
+                if (strpos($content, '@import "tailwindcss";') === false) {
+                    return "@import \"tailwindcss\";\n@source \"../\";\n\n$content";
                 }
 
                 return $content;
