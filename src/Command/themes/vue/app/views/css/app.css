@@ -1,0 +1,7 @@
+@import 'tailwindcss';
+@source '../';
+
+body {
+    font-family: "Bricolage Grotesque", serif;
+    font-size: 14px;
+}
