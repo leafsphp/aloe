@@ -13,7 +13,10 @@ app()->group('/auth', function () {
     // Reset and recover account will be added later
 });
 
-app()->post('/auth/logout', ['middleware' => 'auth.required', 'Auth\LoginController@logout']);
+app()->post('/auth/logout', [
+    'middleware' => 'auth.required',
+    'Auth\LoginController@logout'
+]);
 
 app()->group('/user', [
     'middleware' => 'auth.required',

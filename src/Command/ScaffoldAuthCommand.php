@@ -13,36 +13,40 @@ class ScaffoldAuthCommand extends \Aloe\Command
     protected function config()
     {
         $this
-            ->setOption('session', 's', 'NONE', 'Use session/session + JWT instead of just JWT')
-            ->setOption('api', 'a', 'NONE', 'Use JWT for authentication');
+            ->setOption('scaffold', 's', 'optional', 'Which scaffold to use for authentication (default/api/react/vue/svelte)', 'default');
     }
 
     protected function handle()
     {
-        $driver = 'session';
+        $directory = getcwd();
+        $scaffold = $this->option('scaffold');
 
-        if ($this->option('api')) {
-            $driver = 'api';
+        if (!in_array($scaffold, ['default', 'api', 'react', 'vue', 'svelte'])) {
+            $this->error("Invalid scaffold $scaffold. Available scaffolds are default, api, react, vue, svelte.");
+            return 1;
         }
 
-        if (Config::$env === 'API' && !$this->option('session')) {
-            $driver = 'api';
+        if (\Leaf\Core::mode() === 'api') {
+            $scaffold = 'api';
+        } else if (\Leaf\FS\File::exists("$directory/app/views/_inertia.blade.php")) {
+            $content = \Leaf\FS\File::read("$directory/app/views/_inertia.blade.php");
+
+            if (strpos($content, '.jsx') !== false) {
+                $scaffold = 'react';
+            } else if (strpos($content, '.svelte') !== false) {
+                $scaffold = 'svelte';
+            } else if (strpos($content, '.vue') !== false) {
+                $scaffold = 'vue';
+            }
         }
 
-        $installablesDir = $this->installable($driver);
-
-        $this->comment('Installing leaf auth...');
+        $this->comment("Installing leaf auth using $scaffold scaffold...");
 
         Installer::installPackages('auth');
-        Installer::magicCopy($installablesDir);
+        Installer::magicCopy(__DIR__ . '/themes/auth/' . $scaffold);
 
         $this->info('Authentication generated successfully.');
 
         return 0;
-    }
-
-    protected function installable($driver)
-    {
-        return __DIR__ . '/themes/auth/' . $driver;
     }
 }

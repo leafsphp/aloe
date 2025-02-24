@@ -19,7 +19,10 @@ app()->group('/auth', [
     },
 ]);
 
-app()->post('/auth/logout', ['middleware' => 'auth.required', 'Auth\LoginController@logout']);
+app()->post('/auth/logout', [
+    'middleware' => 'auth.required',
+    'Auth\LoginController@logout'
+]);
 
 app()->group('/dashboard', [
     'middleware' => 'auth.required',
