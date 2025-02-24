@@ -136,11 +136,9 @@ class ViewInstallCommand extends Command
                 if (strpos($content, 'inertia(') === false) {
                     return str_replace(
                         "app()->view('/', 'index');",
-                        "app()->get('/', function () {
-    inertia('Welcome', [
-        'phpVersion' => PHP_VERSION
-    ]);
-});",
+                        "app()->inertia('/', 'Welcome', [
+    'phpVersion' => PHP_VERSION
+]);",
                         $content
                     );
                 }
@@ -241,11 +239,9 @@ class ViewInstallCommand extends Command
                 if (strpos($content, 'inertia(') === false) {
                     return str_replace(
                         "app()->view('/', 'index');",
-                        "app()->get('/', function () {
-    inertia('Welcome', [
-        'phpVersion' => PHP_VERSION
-    ]);
-});",
+                        "app()->inertia('/', 'Welcome', [
+    'phpVersion' => PHP_VERSION
+]);",
                         $content
                     );
                 }
@@ -447,11 +443,9 @@ class ViewInstallCommand extends Command
                 if (strpos($content, 'inertia(') === false) {
                     return str_replace(
                         "app()->view('/', 'index');",
-                        "app()->get('/', function () {
-    inertia('Welcome', [
-        'phpVersion' => PHP_VERSION
-    ]);
-});",
+                        "app()->inertia('/', 'Welcome', [
+    'phpVersion' => PHP_VERSION
+]);",
                         $content
                     );
                 }
