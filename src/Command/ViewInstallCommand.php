@@ -73,11 +73,13 @@ class ViewInstallCommand extends Command
         $npm = \Aloe\Core::findNpm();
         $composer = \Aloe\Core::findComposer();
         $success = \Aloe\Core::run("$npm install @leafphp/vite-plugin @vitejs/plugin-react @inertiajs/react react react-dom vite tailwindcss @tailwindcss/vite", $output);
-
+        
         if (!$success) {
             $output->writeln('❌  <error>Failed to install react</error>');
             return 1;
         }
+
+        \Aloe\Core::run("$npm install -D prettier prettier-plugin-organize-imports prettier-plugin-tailwindcss eslint eslint-config-prettier eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks", $output);
 
         $output->writeln("\n✅  <info>React installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf React server bridge...</info>\n");
