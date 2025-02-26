@@ -1,24 +1,26 @@
-<script>
-    // import Navbar from '@/Components/Navbar.svelte';
+<script setup>
+import { Head } from '@inertiajs/vue3';
+// import Navbar from '@/components/navbar.vue';
 
-    let { phpVersion } = $props();
+defineProps({
+    phpVersion: String,
+});
 
-    function handleImageError() {
-        document.getElementById('screenshot-container')?.classList.add('!hidden');
-        document.getElementById('docs-card')?.classList.add('!row-span-1');
-        document.getElementById('docs-card-content')?.classList.add('!flex-row');
-        document.getElementById('background')?.classList.add('!hidden');
-    }
+function handleImageError() {
+    document.getElementById('screenshot-container')?.classList.add('!hidden');
+    document.getElementById('docs-card')?.classList.add('!row-span-1');
+    document.getElementById('docs-card-content')?.classList.add('!flex-row');
+    document.getElementById('background')?.classList.add('!hidden');
+}
 </script>
 
-<svelte:head>
-  <title>Welcome</title>
-</svelte:head>
+<template>
 
-<div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
-    <div
-        class="relative flex min-h-screen flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
-        <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
+    <Head title="Welcome" />
+
+    <main
+        class="antialiased bg-gradient-to-br from-transparent via-white to-green-100 dark:from-[#102e36] dark:via-[#001318] dark:to-[#001318] dark:text-white/50">
+        <div class="text-black/50 dark:text-white/50 flex flex-col justify-between items-center min-h-screen">
             <!-- <Navbar /> -->
 
             <div class="-mt-10"></div>
@@ -31,8 +33,7 @@
                             <img src="https://staging.leafphp.dev/leaf-docs-light.svg"
                                 alt="Leaf documentation screenshot"
                                 class="aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.06)] dark:hidden"
-                                onerror={handleImageError}
-                            />
+                                @error="handleImageError" />
                             <img src="https://staging.leafphp.dev/leaf-docs-dark.svg"
                                 alt="Leaf documentation screenshot"
                                 class="hidden aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.25)] dark:block" />
@@ -64,8 +65,8 @@
                                 </div>
                             </div>
 
-                            <svg class="size-6 shrink-0 stroke-[#3eaf7c]" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+                            <svg class="size-6 shrink-0 stroke-[#3eaf7c]" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
                             </svg>
@@ -75,25 +76,24 @@
                     <div
                         class="gradient-border flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-[#647eff]/50 focus:outline-none focus-visible:ring-[#3eaf7c] lg:pb-10 dark:bg-[#001e26] dark:ring-gray-800 dark:hover:text-white/70 dark:focus-visible:ring-[#3eaf7c]">
                         <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#647eff]/10">
-                            <svg class="size-5 sm:size-6 text-[#647eff]" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <svg class="size-5 sm:size-6 text-[#647eff]" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
                             </svg>
                         </div>
 
                         <div class="pt-3">
-                            <h2 class="text-xl font-semibold text-black dark:text-white">Let's build your next big
-                                app</h2>
+                            <h2 class="text-xl font-semibold text-black dark:text-white">Let's build your next big app
+                            </h2>
 
                             <p class="mt-4 text-sm/relaxed">
-                                Harness the power of Leaf and powerful integrations like Tailwind and Vite to
-                                quickly move
+                                Harness the power of Leaf and powerful integrations like Tailwind and Vite to quickly
+                                move
                                 from leaf create to a full-blown application.
                             </p>
 
-                            <p
-                                class="text-xs/relaxed rounded-xl border border-[rgba(172,175,176,0.3)] py-2 px-4 mt-4">
+                            <p class="text-xs/relaxed rounded-xl border border-[rgba(172,175,176,0.3)] py-2 px-4 mt-4">
                                 Get started by
                                 editing<code class="text-[#5e79c7]"> app/views/index.blade.php</code>
                             </p>
@@ -103,8 +103,8 @@
                     <a href="https://bento.me/leafphp" target="_blank"
                         class="gradient-border flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-red-500/40 focus:outline-none focus-visible:ring-[#3eaf7c] lg:pb-10 dark:bg-[#001e26] dark:ring-gray-800 dark:hover:text-white/70 dark:focus-visible:ring-[#3eaf7c]">
                         <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-red-500/10">
-                            <svg class="size-5 sm:size-6 text-red-500" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <svg class="size-5 sm:size-6 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
                             </svg>
@@ -115,8 +115,8 @@
 
                             <p class="mt-4 text-sm/relaxed">
                                 Keep up with everything new on Leaf through our blog, twitter and YouTube. We host
-                                weekly hangouts on YouTube every Friday, so join in with your questions and
-                                suggestions, ...
+                                weekly hangouts on YouTube every Friday, so join in with your questions and suggestions,
+                                ...
                             </p>
                         </div>
 
@@ -129,10 +129,9 @@
 
                     <a href="https://leafphp.dev/docs/modules/" target="_blank"
                         class="gradient-border flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-yellow-400/50 focus:outline-none focus-visible:ring-[#3eaf7c] lg:pb-10 dark:bg-[#001e26] dark:ring-gray-800 dark:hover:text-white/70 dark:focus-visible:ring-[#3eaf7c]">
-                        <div
-                            class="flex size-12 shrink-0 items-center justify-center rounded-full bg-yellow-400/10">
-                            <svg class="size-5 sm:size-6 text-yellow-400" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-yellow-400/10">
+                            <svg class="size-5 sm:size-6 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="m21 7.5-2.25-1.313M21 7.5v2.25m0-2.25-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3 2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75 2.25-1.313M12 21.75V19.5m0 2.25-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25" />
                             </svg>
@@ -148,8 +147,8 @@
                             </p>
                         </div>
 
-                        <svg class="size-6 shrink-0 self-center stroke-yellow-400"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+                        <svg class="size-6 shrink-0 self-center stroke-yellow-400" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24" stroke-width="1.5">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
                         </svg>
@@ -167,7 +166,7 @@
                 <div class="mx-auto sm:px-6 lg:px-8 px-4 w-full">
                     <div class="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
                         <div class="flex flex-col-reverse items-center gap-3 sm:flex-row"><span
-                                class="text-sm text-gray-700 dark:text-gray-300">Leaf MVC v4.0-BETA - PHP
+                                class="text-sm text-gray-700 dark:text-gray-300">Leaf MVC v4.x-Beta - PHP
                                 v{{ phpVersion }}</span>
                         </div>
                         <ul class="flex items-center justify-end gap-3">
@@ -212,5 +211,5 @@
                 </div>
             </footer>
         </div>
-    </div>
-</div>
+    </main>
+</template>

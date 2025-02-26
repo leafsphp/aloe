@@ -1,8 +1,8 @@
+import '../css/app.css';
+
 import { createInertiaApp } from '@inertiajs/svelte';
 import { resolvePageComponent } from '@leafphp/vite-plugin/inertia-helpers';
 import { mount } from 'svelte';
-
-import '../css/app.css';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Leaf PHP';
 
@@ -10,8 +10,8 @@ createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) =>
         resolvePageComponent(
-            `./Pages/${name}.svelte`,
-            import.meta.glob('./Pages/**/*.svelte', { eager: true })
+            `./pages/${name}.svelte`,
+            import.meta.glob('./pages/**/*.svelte', { eager: true })
         ),
         // or with persistent layouts
         // {

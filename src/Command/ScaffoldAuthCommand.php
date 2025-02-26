@@ -45,24 +45,26 @@ class ScaffoldAuthCommand extends \Aloe\Command
         Installer::installPackages('auth');
         Installer::magicCopy(__DIR__ . '/themes/auth/' . $scaffold);
 
-        if (\Leaf\FS\File::exists("$directory/app/views/js/Pages/Welcome.jsx")) {
-            \Leaf\FS\File::write("$directory/app/views/js/Pages/Welcome.jsx", function ($content) {
+        if (\Leaf\FS\File::exists("$directory/app/views/js/pages/welcome.jsx")) {
+            \Aloe\Core::run("npm install class-variance-authority clsx tailwind-merge lucide-react @radix-ui/react-separator @radix-ui/react-tooltip @radix-ui/react-dialog @radix-ui/react-avatar @radix-ui/react-dropdown-menu @radix-ui/react-navigation-menu", $this->output);
+
+            \Leaf\FS\File::write("$directory/app/views/js/pages/welcome.jsx", function ($content) {
                 return str_replace(
                     ['{/* <Navbar auth={auth} /> */}', '// import Navbar from'],
                     ['<Navbar auth={auth} />', 'import Navbar from'],
                     $content
                 );
             });
-        } else if (\Leaf\FS\File::exists("$directory/app/views/js/Pages/Welcome.svelte")) {
-            \Leaf\FS\File::write("$directory/app/views/js/Pages/Welcome.svelte", function ($content) {
+        } else if (\Leaf\FS\File::exists("$directory/app/views/js/pages/welcome.svelte")) {
+            \Leaf\FS\File::write("$directory/app/views/js/pages/welcome.svelte", function ($content) {
                 return str_replace(
                     ['<!-- <Navbar /> -->', '// import Navbar from'],
                     ['<Navbar auth={auth} />', 'import Navbar from'],
                     $content
                 );
             });
-        } else if (\Leaf\FS\File::exists("$directory/app/views/js/Pages/Welcome.vue")) {
-            \Leaf\FS\File::write("$directory/app/views/js/Pages/Welcome.vue", function ($content) {
+        } else if (\Leaf\FS\File::exists("$directory/app/views/js/pages/welcome.vue")) {
+            \Leaf\FS\File::write("$directory/app/views/js/pages/welcome.vue", function ($content) {
                 return str_replace(
                     ['<!-- <Navbar /> -->', '// import Navbar from'],
                     ['<Navbar :auth="$page.props.auth" />', 'import Navbar from'],
