@@ -15,7 +15,6 @@ app()->group('/auth', [
         app()->post('/login', 'Auth\LoginController@store');
         app()->get('/register', 'Auth\RegisterController@show');
         app()->post('/register', 'Auth\RegisterController@store');
-        // Reset and recover account will be added later
     },
 ]);
 
@@ -28,11 +27,10 @@ app()->group('/dashboard', [
     'middleware' => 'auth.required',
     function () {
         app()->get('/', 'Auth\DashboardController@index');
-
-        app()->group('/user', function () {
-            app()->get('/', 'Auth\AccountController@user');
-            app()->get('/update', 'Auth\AccountController@show_update');
-            app()->post('/update', 'Auth\AccountController@update');
-        });
     },
 ]);
+
+app()->group('/settings', function () {
+    app()->get('/profile', 'Profile\AccountController@show_update');
+    app()->patch('/profile', 'Profile\AccountController@update');
+});

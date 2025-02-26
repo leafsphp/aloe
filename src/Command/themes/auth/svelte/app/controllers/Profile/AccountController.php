@@ -1,27 +1,14 @@
 <?php
 
-namespace App\Controllers\Auth;
+namespace App\Controllers\Profile;
 
 class AccountController extends Controller
 {
-    public function user()
-    {
-        $user = auth()->user(['password']);
-
-        if (!$user) {
-            return auth()->logout('GUARD_LOGIN');
-        }
-
-        echo view('pages.auth.account', [
-            'user' => $user,
-        ]);
-    }
-
     public function show_update()
     {
         $user = auth()->user();
 
-        echo view('pages.auth.update', [
+        response()->inertia('profile/update', [
             'errors' => flash()->display('errors') ?? [],
             'name' => $user->name ?? null,
             'email' => $user->email ?? null,
@@ -38,7 +25,7 @@ class AccountController extends Controller
         if (!$data) {
             return response()
                 ->withFlash('errors', request()->errors())
-                ->redirect('/dashboard/user/update');
+                ->redirect('/settings/profile', 303);
         }
 
         $success = auth()->update($data);
@@ -46,9 +33,9 @@ class AccountController extends Controller
         if (!$success) {
             return response()
                 ->withFlash('errors', auth()->errors())
-                ->redirect('/dashboard/user/update');
+                ->redirect('/settings/profile', 303);
         }
 
-        response()->redirect('/dashboard/user');
+        response()->redirect('/dashboard', 303);
     }
 }

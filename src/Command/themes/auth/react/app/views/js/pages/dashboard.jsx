@@ -4,7 +4,7 @@ import { Head } from "@inertiajs/react";
 export default function Dashboard() {
     return (
         <Layout
-            variant="header"
+            variant="sidebar"
             breadcrumbs={[
                 {
                     title: "Dashboard",

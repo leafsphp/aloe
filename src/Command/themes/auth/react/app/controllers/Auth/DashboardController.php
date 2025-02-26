@@ -6,6 +6,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        echo view('pages.auth.home');
+        response()->inertia('dashboard');
     }
 }

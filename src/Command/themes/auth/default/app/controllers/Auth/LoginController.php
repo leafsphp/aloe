@@ -8,7 +8,7 @@ class LoginController extends Controller
     {
         $form = flash()->display('form') ?? [];
 
-        echo view('pages.auth.login', array_merge($form, [
+        response()->inertia('auth/login', array_merge($form, [
             'errors' => flash()->display('error') ?? [],
         ]));
     }
@@ -36,7 +36,7 @@ class LoginController extends Controller
                 ->redirect('/auth/login');
         }
 
-        response()->redirect('/dashboard');
+        response()->inertia('dashboard');
     }
 
     public function logout()

@@ -8,7 +8,7 @@ class RegisterController extends Controller
     {
         $form = flash()->display('form') ?? [];
 
-        echo view('pages.auth.register', array_merge($form, [
+        response()->inertia('auth/register', array_merge($form, [
             'errors' => flash()->display('error') ?? [],
         ]));
     }
@@ -26,7 +26,7 @@ class RegisterController extends Controller
             return response()
                 ->withFlash('form', request()->body())
                 ->withFlash('error', request()->errors())
-                ->redirect('/auth/register');
+                ->redirect('/auth/register', 303);
         }
 
         $success = auth()->register($credentials);
@@ -38,6 +38,6 @@ class RegisterController extends Controller
                 ->redirect('/auth/register');
         }
 
-        return response()->redirect('/dashboard');
+        return response()->redirect('/dashboard', 303);
     }
 }
