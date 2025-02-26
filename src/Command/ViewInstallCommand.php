@@ -184,6 +184,8 @@ class ViewInstallCommand extends Command
             return 1;
         }
 
+        \Aloe\Core::run("$npm install -D tailwindcss-animate prettier prettier-plugin-organize-imports prettier-plugin-tailwindcss eslint eslint-config-prettier eslint-plugin-svelte", $output);
+
         $output->writeln("\n✅  <info>Svelte installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf Svelte server bridge...</info>\n");
 
@@ -288,6 +290,8 @@ class ViewInstallCommand extends Command
             return 1;
         }
 
+        \Aloe\Core::run("$npm install -D tailwindcss-animate", $output);
+
         $output->writeln("\n✅  <info>Tailwind CSS installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf server bridge...</info>\n");
 
@@ -381,8 +385,7 @@ class ViewInstallCommand extends Command
             return 1;
         }
 
-        // \Aloe\Core::run("$npm install class-variance-authority clsx tailwind-merge lucide-react @radix-ui/react-separator @radix-ui/react-tooltip @radix-ui/react-dialog @radix-ui/react-avatar @radix-ui/react-dropdown-menu @radix-ui/react-navigation-menu", $output);
-        \Aloe\Core::run("$npm install -D tailwindcss-animate prettier prettier-plugin-organize-imports prettier-plugin-tailwindcss eslint eslint-config-prettier eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks", $output);
+        \Aloe\Core::run("$npm install -D tailwindcss-animate prettier prettier-plugin-organize-imports prettier-plugin-tailwindcss eslint eslint-config-prettier eslint-plugin-vue", $output);
 
         $output->writeln("\n✅  <info>Vue installed successfully</info>");
         $output->writeln("🧱  <info>Setting up Leaf Vue server bridge...</info>\n");
