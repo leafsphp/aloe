@@ -79,6 +79,7 @@ class ViewInstallCommand extends Command
             return 1;
         }
 
+        \Aloe\Core::run("$npm install class-variance-authority clsx tailwind-merge lucide-react @radix-ui/react-separator @radix-ui/react-tooltip @radix-ui/react-dialog @radix-ui/react-avatar @radix-ui/react-dropdown-menu @radix-ui/react-navigation-menu", $output);
         \Aloe\Core::run("$npm install -D prettier prettier-plugin-organize-imports prettier-plugin-tailwindcss eslint eslint-config-prettier eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks", $output);
 
         $output->writeln("\n✅  <info>React installed successfully</info>");
