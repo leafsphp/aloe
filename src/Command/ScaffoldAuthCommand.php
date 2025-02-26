@@ -56,7 +56,7 @@ class ScaffoldAuthCommand extends \Aloe\Command
                 );
             });
         } else if (\Leaf\FS\File::exists("$directory/app/views/js/pages/welcome.svelte")) {
-            \Aloe\Core::run("npm install class-variance-authority clsx tailwind-merge lucide-svelte @headlessui/vue @tailwindcss/forms @vueuse/core radix-vue", $this->output);
+            \Aloe\Core::run("npm install class-variance-authority clsx tailwind-merge lucide-svelte @tailwindcss/forms", $this->output);
 
             \Leaf\FS\File::write("$directory/app/views/js/pages/welcome.svelte", function ($content) {
                 return str_replace(
