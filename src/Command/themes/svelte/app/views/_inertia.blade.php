@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title inertia>{{ _env('APP_NAME', 'Leaf MVC') }}</title>
-    @vite(['/js/app.js', "/js/Pages/{$page['component']}.svelte"])
+    @vite(['/js/app.js', "/js/pages/{$page['component']}.svelte"])
     @inertiaHead
 </head>
 

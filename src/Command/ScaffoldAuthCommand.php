@@ -56,6 +56,8 @@ class ScaffoldAuthCommand extends \Aloe\Command
                 );
             });
         } else if (\Leaf\FS\File::exists("$directory/app/views/js/pages/welcome.svelte")) {
+            \Aloe\Core::run("npm install class-variance-authority clsx tailwind-merge lucide-svelte @headlessui/vue @tailwindcss/forms @vueuse/core radix-vue", $this->output);
+
             \Leaf\FS\File::write("$directory/app/views/js/pages/welcome.svelte", function ($content) {
                 return str_replace(
                     ['<!-- <Navbar /> -->', '// import Navbar from'],
@@ -64,6 +66,8 @@ class ScaffoldAuthCommand extends \Aloe\Command
                 );
             });
         } else if (\Leaf\FS\File::exists("$directory/app/views/js/pages/welcome.vue")) {
+            \Aloe\Core::run("npm install class-variance-authority clsx tailwind-merge lucide-vue-next @headlessui/vue @tailwindcss/forms @vueuse/core radix-vue", $this->output);
+
             \Leaf\FS\File::write("$directory/app/views/js/pages/welcome.vue", function ($content) {
                 return str_replace(
                     ['<!-- <Navbar /> -->', '// import Navbar from'],

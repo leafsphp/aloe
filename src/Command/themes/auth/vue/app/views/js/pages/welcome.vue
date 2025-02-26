@@ -1,6 +1,6 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
-// import Navbar from '@/components/navbar.vue';
+// import Navbar from '@/components/welcome/navbar.vue';
 
 defineProps({
     phpVersion: String,
@@ -15,7 +15,6 @@ function handleImageError() {
 </script>
 
 <template>
-
     <Head title="Welcome" />
 
     <main
@@ -25,7 +24,7 @@ function handleImageError() {
 
             <div class="-mt-10"></div>
 
-            <main class="py-10 max-w-7xl mx-auto px-4 xl:px-0">
+            <section class="py-10 max-w-7xl mx-auto px-4 xl:px-0">
                 <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
                     <a href="https://leafphp.dev/docs/" id="docs-card"
                         class="gradient-border flex flex-col items-start gap-6 overflow-hidden rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-[#42d392]/40 focus:outline-none focus-visible:ring-[#3eaf7c] md:row-span-3 lg:p-10 lg:pb-10 dark:bg-[#001e26] dark:ring-gray-800 dark:hover:text-white/70 dark:focus-visible:ring-[#3eaf7c]">
@@ -154,7 +153,7 @@ function handleImageError() {
                         </svg>
                     </a>
                 </div>
-            </main>
+            </section>
 
             <footer
                 class="relative bg-transparent dark:bg-[#001318] w-full h-[70px] flex items-center border-t border-gray-700/10 dark:border-[#001e26]">
