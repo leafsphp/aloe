@@ -95,7 +95,7 @@ function handleImageError() {
 
                             <p class="text-xs/relaxed rounded-xl border border-[rgba(172,175,176,0.3)] py-2 px-4 mt-4">
                                 Get started by
-                                editing<code class="text-[#5e79c7]"> app/views/index.blade.php</code>
+                                editing <code class="text-[#5e79c7]"> app/views/js/pages/welcome.vue</code>
                             </p>
                         </div>
                     </div>

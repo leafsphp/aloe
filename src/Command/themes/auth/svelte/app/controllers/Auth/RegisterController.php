@@ -35,7 +35,7 @@ class RegisterController extends Controller
             return response()
                 ->withFlash('form', request()->body())
                 ->withFlash('error', auth()->errors())
-                ->redirect('/auth/register');
+                ->redirect('/auth/register', 303);
         }
 
         return response()->redirect('/dashboard', 303);

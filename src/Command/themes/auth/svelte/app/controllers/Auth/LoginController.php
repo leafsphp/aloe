@@ -36,7 +36,7 @@ class LoginController extends Controller
                 ->redirect('/auth/login', 303);
         }
 
-        response()->inertia('dashboard');
+        response()->redirect('/dashboard', 303);
     }
 
     public function logout()

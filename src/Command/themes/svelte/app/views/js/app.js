@@ -3,7 +3,7 @@ import '../css/app.css';
 import { createInertiaApp } from '@inertiajs/svelte';
 import { resolvePageComponent } from '@leafphp/vite-plugin/inertia-helpers';
 import { mount } from 'svelte';
-// import { initializeTheme } from './utils/app-mode';
+import { initializeTheme } from './utils/app-mode';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Leaf PHP';
 
@@ -29,4 +29,4 @@ createInertiaApp({
 });
 
 // This will set light / dark mode on page load...
-// initializeTheme();
+initializeTheme();

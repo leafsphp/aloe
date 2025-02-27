@@ -30,7 +30,7 @@ const submit = () => {
             href: '/settings/profile',
         },
     ]">
-        <div className="space-y-6 px-4 py-4">
+        <div class="space-y-6 px-4 py-4">
             <HeadingSmall title="Profile information" description="Update your name and email address" />
 
             <form @submit.prevent="submit" class="space-y-6 max-w-xl">

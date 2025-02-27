@@ -1,4 +1,4 @@
-import { onMounted, ref } from 'vue';
+import { onMount } from 'svelte';
 
 export function updateTheme(value) {
     if (value === 'system') {
@@ -26,20 +26,20 @@ export function initializeTheme() {
 }
 
 export function useAppearance() {
-    const appearance = ref('system');
+    let appearance = 'system';
 
-    onMounted(() => {
+    onMount(() => {
         initializeTheme();
 
         const savedAppearance = localStorage.getItem('appearance');
 
         if (savedAppearance) {
-            appearance.value = savedAppearance;
+            appearance = savedAppearance;
         }
     });
 
     function updateAppearance(value) {
-        appearance.value = value;
+        appearance = value;
         localStorage.setItem('appearance', value);
         updateTheme(value);
     }
