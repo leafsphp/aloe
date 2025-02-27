@@ -1,4 +1,4 @@
-import { usePage } from "@inertiajs/react";
+import { usePage } from "@inertiajs/vue3";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 

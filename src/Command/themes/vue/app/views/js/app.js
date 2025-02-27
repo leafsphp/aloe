@@ -3,6 +3,7 @@ import '../css/app.css';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from '@leafphp/vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
+import { initializeTheme } from './utils/app-mode';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Leaf PHP';
 
@@ -22,3 +23,6 @@ createInertiaApp({
         color: '#3eaf7c',
     },
 });
+
+// This will set light / dark mode on page load...
+initializeTheme();

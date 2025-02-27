@@ -39,7 +39,7 @@ export default function Login() {
                     <h2 className="text-sm">Sign in to your account</h2>
                 </div>
 
-                <form onSubmit={submit}>
+                <form onSubmit={submit}  class="space-y-4 w-full">
                     <div>
                         <Input
                             id="email"
@@ -59,7 +59,7 @@ export default function Login() {
                         />
                     </div>
 
-                    <div className="mt-4">
+                    <div>
                         <Input
                             id="password"
                             type="password"
@@ -80,7 +80,7 @@ export default function Login() {
                     </div>
 
                     <Button
-                        className="mt-4 w-full bg-primary hover:bg-primary-light text-white"
+                        className="w-full bg-primary hover:bg-primary-light text-white"
                         disabled={processing}
                     >
                         Log in

@@ -23,7 +23,7 @@ export default function Register() {
 
     return (
         <div className="bg-background flex relative z-30 flex-col justify-center w-screen min-h-screen items-stretch sm:items-center sm:py-10">
-            <Head title="Log in" />
+            <Head title="Sign up" />
 
             <div className="flex relative top-0 z-20 flex-col justify-center items-stretch px-10 py-8 w-full h-screen bg-white border-gray-200 sm:top-auto sm:h-full sm:border sm:rounded-xl sm:max-w-md text-black">
                 <div className="flex flex-col sm:mx-auto sm:w-full mb-5 sm:max-w-md items-center text-black">
@@ -40,7 +40,7 @@ export default function Register() {
                     <h2 className="text-sm">Create your account</h2>
                 </div>
 
-                <form onSubmit={submit}>
+                <form onSubmit={submit}  class="space-y-4 w-full">
                     <div>
                         <Input
                             id="name"
@@ -57,7 +57,7 @@ export default function Register() {
                         <InputError message={errors.name} className="mt-2" />
                     </div>
 
-                    <div className="mt-4">
+                    <div>
                         <Input
                             id="email"
                             type="email"
@@ -76,7 +76,7 @@ export default function Register() {
                         />
                     </div>
 
-                    <div className="mt-4">
+                    <div>
                         <Input
                             id="password"
                             type="password"
@@ -96,7 +96,7 @@ export default function Register() {
                         />
                     </div>
 
-                    <div className="mt-4">
+                    <div>
                         <Input
                             id="confirmPassword"
                             type="password"
@@ -117,7 +117,7 @@ export default function Register() {
                     </div>
 
                     <Button
-                        className="mt-4 w-full bg-primary hover:bg-primary-light text-white"
+                        className="w-full bg-primary hover:bg-primary-light text-white"
                         disabled={processing}
                     >
                         Sign Up
