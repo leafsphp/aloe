@@ -56,7 +56,7 @@
         </div>
         <a
             class="flex items-center gap-x-2"
-            href="http://127.0.0.1:8001/dashboard"
+            href="/dashboard"
         >
             LOGO
         </a>

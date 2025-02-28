@@ -8,7 +8,7 @@ class RegisterController extends Controller
     {
         $form = flash()->display('form') ?? [];
 
-        response()->inertia('auth/register', array_merge($form, [
+        response()->view('pages.auth.register', array_merge($form, [
             'errors' => flash()->display('error') ?? [],
         ]));
     }

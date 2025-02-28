@@ -8,7 +8,7 @@ class AccountController extends Controller
     {
         $user = auth()->user();
 
-        response()->inertia('profile/update', [
+        response()->view('pages.profile.update', [
             'errors' => flash()->display('errors') ?? [],
             'name' => $user->name ?? null,
             'email' => $user->email ?? null,

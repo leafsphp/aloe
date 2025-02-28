@@ -30,7 +30,7 @@
                                             aria-disabled="true"
                                             aria-current="page"
                                             class="font-normal text-foreground"
-                                            >Dashboard</span
+                                            >{breadcrumb.title}</span
                                         >
                                     </li>
                                 {:else}
@@ -38,14 +38,12 @@
                                         class="inline-flex items-center gap-1.5"
                                     >
                                         <a
-                                            href="/dashboard"
+                                            href={breadcrumb.title}
                                             class="transition-colors hover:text-foreground"
-                                            >Dashboard</a
+                                            >{breadcrumb.title}</a
                                         >
                                     </li>
-                                {/if}
 
-                                {#if i < breadcrumbs.length - 1}
                                     <li
                                         role="presentation"
                                         aria-hidden="true"

@@ -6,19 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - {{ getenv('APP_NAME') ?? 'Leaf MVC' }}</title>
     <link rel="shortcut icon" href="https://leafphp.dev/logo-circle.png" type="image/x-icon">
-    <link rel="stylesheet" href="@assets('css/styles.css')">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap"
         rel="stylesheet">
 
-    {{-- @vite('css/app.css') --}}
+    @vite('css/app.css')
 </head>
 
-<body>
-    <main class="flex justify-center items-center h-screen dark:bg-[#001318] dark:text-white md:px-20 md:py-16">
-        @yield('content')
-    </main>
+<body class="bg-background">
+    <div class="flex relative z-30 flex-col justify-center w-screen min-h-screen items-stretch sm:items-center sm:py-10">
+        <div class="relative w-full sm:max-w-md sm:mx-auto">
+            @yield('content')
+        </div>
+    </div>
 </body>
 
 </html>
