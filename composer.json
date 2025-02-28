@@ -30,7 +30,7 @@
     "prefer-stable": true,
     "require": {
         "illuminate/support": "*",
-        "leafs/fs": "2.0",
+        "leafs/fs": "*",
         "leafs/mvc-core": "*",
         "psy/psysh": "^0.10.9|^0.11",
         "symfony/console": "^5.0|^6.0",
@@ -38,7 +38,7 @@
     },
     "require-dev": {
         "leafs/leaf": "*",
-        "leafs/alchemy": "^2.2",
+        "leafs/alchemy": "*",
         "friendsofphp/php-cs-fixer": "^3.66"
     },
     "scripts": {
