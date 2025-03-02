@@ -90,6 +90,10 @@ class Command extends BaseCommand
         $this->input = $input;
         $this->output = $output;
 
+        if (storage()->exists(LibPath())) {
+            \Leaf\Core::loadLibs();
+        }
+
         $this->handle();
     }
 
