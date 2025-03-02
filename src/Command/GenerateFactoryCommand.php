@@ -33,15 +33,16 @@ class GenerateFactoryCommand extends Command
             return 1;
         }
 
-        touch($file);
+        \Leaf\FS\File::create($file, function () use ($factory, $modelName) {
+            $fileContent = \file_get_contents(__DIR__ . '/stubs/factory.stub');
+            $fileContent = str_replace(
+                ['ClassName', 'ModelName'],
+                [$factory, $modelName],
+                $fileContent
+            );
 
-        $fileContent = \file_get_contents(__DIR__ . '/stubs/factory.stub');
-        $fileContent = str_replace(
-            ['ClassName', 'ModelName'],
-            [$factory, $modelName],
-            $fileContent
-        );
-        file_put_contents($file, $fileContent);
+            return $fileContent;
+        }, ['recursive' => true]);
 
         $this->comment("$factory generated successfully");
         return 0;
