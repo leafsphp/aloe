@@ -11,11 +11,6 @@ use Symfony\Component\Console\Application;
  * -----
  * Smart and interactive console/generator
  * for your leaf MVC applications
- *
- * @author Michael Darko <mychi.darko@gmail.com>
- * @copyright 2019-2022 Michael Darko
- * @link https://leafphp.dev/aloe-cli/
- * @license MIT
  */
 class Console
 {
@@ -56,6 +51,7 @@ class Console
             \Aloe\Command\DeleteModelCommand::class,
             \Aloe\Command\DeleteControllerCommand::class,
             \Aloe\Command\DeleteConsoleCommand::class,
+            \Aloe\Command\DeleteSchemaCommand::class,
 
             // Generate Commands
             \Aloe\Command\GenerateConsoleCommand::class,
