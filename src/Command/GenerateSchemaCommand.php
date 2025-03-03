@@ -15,8 +15,9 @@ class GenerateSchemaCommand extends Command
     {
         $this
             ->setArgument('schema', 'required', 'schema name')
-            ->setOption('all', 'a', 'none', 'Create a model and controller for schema file')
+            ->setOption('all', 'a', 'none', 'Create a model, controller, and view file for your schema')
             ->setOption('model', 'm', 'none', 'Create a model for your schema file')
+            ->setOption('view', 'view', 'none', 'Create a view for your schema file')
             ->setOption('controller', 'c', 'none', 'Create a controller for your schema file');
     }
 
@@ -41,7 +42,6 @@ class GenerateSchemaCommand extends Command
             })
         ) {
             $this->comment("$schema schema file created successfully!");
-
             $this->generateExtraFiles($schema);
         }
 
@@ -50,47 +50,34 @@ class GenerateSchemaCommand extends Command
 
     protected function generateExtraFiles($modelName)
     {
-        if ($this->option('all')) {
-            $process = $this->runProcess(['php', 'leaf', 'g:model', $modelName, '-m']);
+        if ($this->option('model') || $this->option('all')) {
+            $process = $this->runProcess(['php', 'leaf', 'g:model', $modelName]);
 
             $this->comment(
                 $process === 0 ?
-                'Model & Migration generated successfully!' :
-                asError('Couldn\'t generate files')
+                'Model generated successfully!' :
+                asError('Couldn\'t generate model')
             );
+        }
 
-            if (\Leaf\Core::mode() === 'web') {
-                $process = $this->runProcess(['php', 'leaf', 'g:template', $modelName]);
-                $this->comment(
-                    $process === 0 ?
-                    'Template generated successfully!' :
-                    asError('Couldn\'t generate template')
-                );
-            }
+        if ($this->option('view') || $this->option('all')) {
+            $process = $this->runProcess(['php', 'leaf', 'g:template', $modelName]);
 
-            return $process;
-        } else {
-            if ($this->option('model')) {
-                $process = $this->runProcess(['php', 'leaf', 'g:model', $modelName]);
-                $this->comment(
-                    $process === 0 ?
-                    'Model generated successfully!' :
-                    asError('Couldn\'t generate model')
-                );
+            $this->comment(
+                $process === 0 ?
+                'View file generated successfully!' :
+                asError('Couldn\'t generate view file')
+            );
+        }
 
-                return $process;
-            }
+        if ($this->option('controller') || $this->option('all')) {
+            $process = $this->runProcess(['php', 'leaf', 'g:controller', $modelName]);
 
-            if ($this->option('template')) {
-                $process = $this->runProcess(['php', 'leaf', 'g:template', $modelName]);
-                $this->comment(
-                    $process === 0 ?
-                    'Template generated successfully!' :
-                    asError('Couldn\'t generate template')
-                );
-
-                return $process;
-            }
+            $this->comment(
+                $process === 0 ?
+                'Controller generated successfully!' :
+                asError('Couldn\'t generate controller')
+            );
         }
     }
 }
