@@ -26,27 +26,17 @@ class DeleteConsoleCommand extends Command
 
         $file = Config::rootpath(CommandsPath("$command.php"));
 
-        if (!file_exists($file)) {
+        if (!\Leaf\FS\File::exists($file)) {
             $this->error("$command doesn't exist!");
-
             return 1;
         }
 
-        if (!unlink($file)) {
+        if (!\Leaf\FS\File::delete($file)) {
             $this->error("Couldn't delete $command, you might need to remove it manually.");
-
             return 1;
         }
 
         $this->comment("$command deleted successfully");
-
-        $aloe = Config::rootpath('leaf');
-        $aloeContents = file_get_contents($aloe);
-        $search = "\$console->register(\App\Console\\$command::class);";
-        $aloeContents = str_replace(["$search\n", $search], '', $aloeContents);
-        \file_put_contents($aloe, $aloeContents);
-
-        $this->comment("$command command unregistered");
 
         return 0;
     }

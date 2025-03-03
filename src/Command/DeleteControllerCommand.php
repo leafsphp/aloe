@@ -27,15 +27,13 @@ class DeleteControllerCommand extends Command
 
         $controllerFile = Config::rootpath(ControllersPath("$controller.php"));
 
-        if (!file_exists($controllerFile)) {
+        if (!\Leaf\FS\File::exists($controllerFile)) {
             $this->error("$controller doesn't exist!");
-
             return 1;
         }
 
-        if (!unlink($controllerFile)) {
-            $this->error("Couldn't delete $controller, you might need to remove it manually.");
-
+        if (!\Leaf\FS\File::delete($controllerFile)) {
+            $this->error("Couldn't delete $controllerFile, you might need to remove it manually.");
             return 1;
         }
 
