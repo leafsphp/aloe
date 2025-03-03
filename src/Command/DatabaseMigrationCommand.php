@@ -23,7 +23,6 @@ class DatabaseMigrationCommand extends Command
 
         if (empty($migrations)) {
             $this->error("No schema files found.");
-
             return 1;
         }
 
@@ -71,17 +70,18 @@ class DatabaseMigrationCommand extends Command
         $port = empty(_env('DB_PORT')) ? 3306 : _env('DB_PORT');
         $dbCollation = _env('DB_COLLATION', 'utf8_unicode_ci');
 
-        db()->connect([
-            'dbtype' => MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql',
-            'host' => $host,
-            'username' => $user,
-            'password' => $password,
-            'port' => $port,
+        db()->addConnections([
+            'precheck' => [
+                'dbtype' => MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql',
+                'host' => $host,
+                'username' => $user,
+                'password' => $password,
+                'port' => $port,
+            ]
         ]);
 
-        if (db()->query("CREATE DATABASE IF NOT EXISTS $database CHARACTER SET $dbCharset COLLATE $dbCollation;")->execute()) {
+        if (db('precheck')->query("CREATE DATABASE IF NOT EXISTS $database CHARACTER SET $dbCharset COLLATE $dbCollation;")->execute()) {
             $this->writeln("> Verifying database...");
-
             return 0;
         }
 
