@@ -15,7 +15,8 @@ class GenerateTemplateCommand extends \Aloe\Command
         $this
             ->setAliases(['g:view'])
             ->setArgument('name', 'REQUIRED', 'The name of the template to create')
-            ->setOption('type', 't', 'OPTIONAL', 'The type of template to create: jsx, vue, svelte, blade');
+            ->setOption('type', 't', 'OPTIONAL', 'The type of template to create: jsx, vue, svelte, blade')
+            ->setOption('route', 'r', 'NONE', 'Generate a route for the template');
     }
 
     protected function handle()
@@ -54,15 +55,24 @@ class GenerateTemplateCommand extends \Aloe\Command
 
         $this->comment("$templateName generated successfully");
 
+        if (
+            $this->option('route') && \Leaf\FS\File::write("$directory/app/routes/_app.php", function ($content) use ($templateName) {
+                $templateName = str_replace(['.blade.php', '.jsx', '.vue', '.svelte'], '', basename($templateName));
+                $routeToAdd = ($this->type === 'blade')
+                    ? "\napp()->view('/$templateName', '$templateName');"
+                    : "\napp()->inertia('/$templateName', '$templateName');";
+
+                return "$content\n\n$routeToAdd";
+            })
+        ) {
+            $this->comment("Route added successfully");
+        }
+
         return 0;
     }
 
     protected function getTemplateName($templateName)
     {
-        if ($this->type !== 'blade') {
-            $templateName = implode('/', array_map('ucfirst', explode('/', $templateName)));
-        }
-
         return $this->type === 'blade'
             ? "$templateName.blade.php"
             : ($this->type === 'react'
