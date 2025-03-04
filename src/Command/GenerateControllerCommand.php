@@ -53,10 +53,10 @@ class GenerateControllerCommand extends Command
 
     protected function generateController($controllerFile, $controller, $modelName)
     {
-        $stub = Config::$env === 'WEB' ? 'controller' : 'apiController';
+        $stub = \Leaf\Core::mode() === 'web' ? 'controller' : 'apiController';
 
         if ($this->option('resource')) {
-            $stub = Config::$env === 'WEB' ? 'resourceController' : 'apiResourceController';
+            $stub = \Leaf\Core::mode() === 'web' ? 'resourceController' : 'apiResourceController';
         } elseif ($this->option('web-resource')) {
             $stub = 'resourceController';
         } elseif ($this->option('api-resource')) {
@@ -68,10 +68,17 @@ class GenerateControllerCommand extends Command
         }
 
         \Leaf\FS\File::create($controllerFile, function () use ($stub, $controller, $modelName) {
+            $className = basename($controller);
+            $viewRender = 'response()->render(';
+
+            if (\Leaf\FS\File::exists(Config::rootpath("/app/views/_inertia.blade.php"))) {
+                $viewRender = 'response()->inertia(';
+            }
+
             $fileContent = file_get_contents(__DIR__ . "/stubs/$stub.stub");
             $fileContent = str_replace(
-                ['ClassName', 'ModelName', 'viewFile'],
-                [$controller, $modelName, Str::singular(strtolower(str_replace('Controller', '', $controller)))],
+                ['ClassName', 'ModelName', 'viewFile', 'render('],
+                [$className, $modelName, Str::singular(strtolower(str_replace('Controller', '', $controller))), $viewRender],
                 $fileContent
             );
 
@@ -89,16 +96,16 @@ class GenerateControllerCommand extends Command
             $process = $this->runProcess(['php', 'leaf', 'g:model', $modelName, '-m']);
             $this->comment(
                 $process === 0 ?
-                    'Model & Migration generated successfully!' :
-                    asError('Couldn\'t generate files')
+                'Model & Migration generated successfully!' :
+                asError('Couldn\'t generate files')
             );
 
             if (Config::$env === 'WEB') {
                 $process = $this->runProcess(['php', 'leaf', 'g:template', $modelName]);
                 $this->comment(
                     $process === 0 ?
-                        'Template generated successfully!' :
-                        asError('Couldn\'t generate template')
+                    'Template generated successfully!' :
+                    asError('Couldn\'t generate template')
                 );
             }
 
@@ -108,8 +115,8 @@ class GenerateControllerCommand extends Command
                 $process = $this->runProcess(['php', 'leaf', 'g:model', $modelName]);
                 $this->comment(
                     $process === 0 ?
-                        'Model generated successfully!' :
-                        asError('Couldn\'t generate model')
+                    'Model generated successfully!' :
+                    asError('Couldn\'t generate model')
                 );
 
                 return $process;
@@ -119,8 +126,8 @@ class GenerateControllerCommand extends Command
                 $process = $this->runProcess(['php', 'leaf', 'g:template', $modelName]);
                 $this->comment(
                     $process === 0 ?
-                        'Template generated successfully!' :
-                        asError('Couldn\'t generate template')
+                    'Template generated successfully!' :
+                    asError('Couldn\'t generate template')
                 );
 
                 return $process;
