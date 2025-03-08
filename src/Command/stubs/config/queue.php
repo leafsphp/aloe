@@ -34,7 +34,7 @@ return [
         'redis' => [
             'driver' => 'redis',
             'connection' => _env('REDIS_QUEUE_CONNECTION', 'default'),
-            'queue' => _env('REDIS_QUEUE', 'default'),
+            'table' => _env('REDIS_QUEUE', 'leaf_php_jobs'),
         ],
     ],
 ];
