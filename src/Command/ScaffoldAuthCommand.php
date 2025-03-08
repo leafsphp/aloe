@@ -42,7 +42,7 @@ class ScaffoldAuthCommand extends \Aloe\Command
 
         $this->comment("Installing leaf auth using $scaffold scaffold...");
 
-        Installer::installPackages('auth@v4.x-dev');
+        Installer::installPackages('auth');
         Installer::magicCopy(__DIR__ . '/themes/auth/' . $scaffold);
 
         if (\Leaf\FS\File::exists("$directory/app/views/js/pages/welcome.jsx")) {

@@ -266,7 +266,7 @@ export default function Welcome({ auth, phpVersion }) {
                             <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
                                 <div className="flex flex-col-reverse items-center gap-3 sm:flex-row">
                                     <span className="text-sm text-gray-700 dark:text-gray-300">
-                                        Leaf MVC v4.x-Beta - PHP v{phpVersion}
+                                        Leaf MVC v4.0 - PHP v{phpVersion}
                                     </span>
                                 </div>
                                 <ul className="flex items-center justify-end gap-3">

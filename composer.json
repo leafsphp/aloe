@@ -1,6 +1,6 @@
 {
     "name": "leafs/aloe",
-    "version": "4.0-beta.2",
+    "version": "4.0",
     "description": "Overpowered command line tool for your leaf apps.",
     "keywords": [
         "cli",
