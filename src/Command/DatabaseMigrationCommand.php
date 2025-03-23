@@ -80,6 +80,18 @@ class DatabaseMigrationCommand extends Command
             ]
         ]);
 
+        if (MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql' === 'sqlite') {
+            $this->writeln("> Verifying database...");
+
+            if (!file_exists($database)) {
+                \Leaf\FS\File::create($database, null, [
+                    'recursive' => true
+                ]);
+            }
+
+            return 0;
+        }
+
         if (db('precheck')->query("CREATE DATABASE IF NOT EXISTS $database CHARACTER SET $dbCharset COLLATE $dbCollation;")->execute()) {
             $this->writeln("> Verifying database...");
             return 0;
