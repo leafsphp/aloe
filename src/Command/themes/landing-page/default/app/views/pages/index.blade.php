@@ -38,12 +38,12 @@
                     class="my-16 rounded-full p-[6px] max-w-[508px] bg-background w-full border border-gray500 mx-auto flex items-center"
                     method="get" action="/auth/register">
                     <div class="flex items-center h-full flex-1 px-3 gap-3">
-                        <label for="email" class="h-6 w-6 grid place-content-center">
-                            <MailCheckIcon class="text-gray-400 dark:text-gray-500" />
+                        <label for="email" class="size-4 grid place-content-center">
+                            <MailCheckIcon class="text-gray-400 dark:text-gray-500 size-4" />
                         </label>
                         <input type="text" id="email" name="email"
-                            class="flex-1 placeholder:text-gray-400 dark:placeholder:text-gray-500 text-black dark:text-gray-300 h-full border-none outline-none text-lg"
-                            placeholder="Enter email to claim your free store" />
+                            class="flex-1 placeholder:text-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-black dark:text-gray-300 h-full border-none outline-none text-lg"
+                            placeholder="Enter email to claim your free account" />
                     </div>
                     <Button
                         class="p-4 font-medium rounded-full active:scale-95 transition-all duration-150 ease-in-out border-none bg-chart-2 hover:bg-accent/80 text-white flex-shrink-0">

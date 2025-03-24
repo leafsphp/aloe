@@ -44,18 +44,18 @@
                     <div class="flex items-center h-full flex-1 px-3 gap-3">
                         <label
                             for="email"
-                            class="h-6 w-6 grid place-content-center"
+                            class="size-4 grid place-content-center"
                         >
                             <MailCheckIcon
-                                class="text-gray-400 dark:text-gray-500"
+                                class="text-gray-400 dark:text-gray-500 size-4"
                             />
                         </label>
                         <input
                             type="text"
                             id="email"
                             name="email"
-                            class="flex-1 placeholder:text-gray-400 dark:placeholder:text-gray-500 text-black dark:text-gray-300 h-full border-none outline-none text-lg"
-                            placeholder="Enter email to claim your free store"
+                            class="flex-1 placeholder:text-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-black dark:text-gray-300 h-full border-none outline-none text-lg"
+                            placeholder="Enter email to claim your free account"
                         />
                     </div>
                     <Button
