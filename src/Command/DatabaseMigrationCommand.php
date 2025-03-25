@@ -72,7 +72,7 @@ class DatabaseMigrationCommand extends Command
 
         db()->addConnections([
             'precheck' => [
-                'dbtype' => MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql',
+                'dbtype' => (MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql'),
                 'host' => $host,
                 'username' => $user,
                 'password' => $password,
@@ -80,7 +80,7 @@ class DatabaseMigrationCommand extends Command
             ]
         ]);
 
-        if (MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql' === 'sqlite') {
+        if ((MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql') === 'sqlite') {
             $this->writeln("> Verifying database...");
 
             if (!file_exists($database)) {
@@ -89,6 +89,10 @@ class DatabaseMigrationCommand extends Command
                 ]);
             }
 
+            return 0;
+        }
+
+        if ($host !== 'localhost' && $host !== '127.0.0.1') {
             return 0;
         }
 
