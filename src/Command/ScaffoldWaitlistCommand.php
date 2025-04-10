@@ -98,6 +98,19 @@ class ScaffoldWaitlistCommand extends \Aloe\Command
             });
         }
 
+        \Leaf\FS\File::write("$directory/app/routes/index.php", function ($content) {
+            if (strpos($content, 'waitlist') !== false) {
+                return $content;
+            }
+
+            return str_replace(
+                '// app()->use(ExampleMiddleware::class);',
+                "app()->use(\App\Middleware\WaitlistMiddleware::class);
+// app()->use(ExampleMiddleware::class);",
+                $content
+            );
+        });
+
         \Leaf\FS\File::write("$directory/app/routes/_app.php", function ($content) {
             $content = str_replace(
                 "inertia('/', 'welcome', [
