@@ -15,13 +15,17 @@ class JoinController extends Controller
         }
 
         if (WaitlistEmail::where('email', $data['email'])->exists()) {
-            return response()->redirect('/', 303);
+            return response()
+                ->withFlash('waitlist.success', true)
+                ->redirect('/', 303);
         }
 
         $waitlistEmail = new WaitlistEmail();
         $waitlistEmail->email = $data['email'];
         $waitlistEmail->save();
 
-        return response()->redirect('/', 303);
+        return response()
+            ->withFlash('waitlist.success', true)
+            ->redirect('/', 303);
     }
 }

@@ -120,7 +120,11 @@ class ScaffoldWaitlistCommand extends \Aloe\Command
                 $content
             );
 
-            return $content;
+            return str_replace(
+                "app()->view('/', 'index');",
+                "app()->view('/', 'pages.waitlist');",
+                $content
+            );
         });
 
         $this->info('Waitlist generated successfully.');
