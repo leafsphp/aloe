@@ -63,9 +63,9 @@ class ScaffoldWaitlistCommand extends \Aloe\Command
                     '$success = auth()->register($credentials);',
                     "// update waitlist with registration date
         if (isset(\$credentials['invite'])) {
-            \$decodedToken = (array) JWT::decode(
+            \$decodedToken = (array) \Firebase\JWT\JWT::decode(
                 \$credentials['invite'],
-                new Key(Config::get('token.secret') . '-waitlist', 'HS256')
+                new \Firebase\JWT\Key(\Leaf\Auth\Config::get('token.secret') . '-waitlist', 'HS256')
             );
 
             if (isset(\$decodedToken['user.email'])) {

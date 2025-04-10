@@ -7,15 +7,15 @@ export default function Welcome({ auth }) {
         <>
             <Head title="Welcome" />
 
-            <main class="min-h-screen flex flex-col items-center justify-start p-4 relative text-primary overflow-x-hidden bg-gradient-to-br from-background to-purple-200 dark:to-[#1A1A2E]">
+            <main className="min-h-screen flex flex-col items-center justify-start p-4 relative text-primary overflow-x-hidden bg-gradient-to-br from-background to-purple-200 dark:to-[#1A1A2E]">
                 <Navbar auth={auth} />
                 <WaitlistForm />
 
-                <div class="relative z-10 max-w-6xl w-full mx-auto text-center pt-32 pb-24">
-                    <div class="mb-16">
-                        <div class="inline-flex items-center justify-center space-x-3">
+                <div className="relative z-10 max-w-6xl w-full mx-auto text-center pt-32 pb-24">
+                    <div className="mb-16">
+                        <div className="inline-flex items-center justify-center space-x-3">
                             <svg
-                                class="w-10 h-10"
+                                className="w-10 h-10"
                                 viewBox="0 0 40 40"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -32,35 +32,35 @@ export default function Welcome({ auth }) {
                                     stroke-linejoin="round"
                                 />
                             </svg>
-                            <span class="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                                 My App
                             </span>
                         </div>
                     </div>
 
-                    <div class="space-y-8 mb-16 max-w-5xl mx-auto text-center">
-                        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
+                    <div className="space-y-8 mb-16 max-w-5xl mx-auto text-center">
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
                             Get ready to do this & that
-                            <span class="block mt-2">with My App</span>
+                            <span className="block mt-2">with My App</span>
                         </h1>
-                        <p class="text-lg md:text-xl text-primary/70 max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-lg md:text-xl text-primary/70 max-w-2xl mx-auto leading-relaxed">
                             Say goodbye to doing this & that with greedy
                             expenses, My App is here to help you save money and
                             time, while making your life easier.
                         </p>
                     </div>
 
-                    <div class="mt-16 mb-12">
-                        <div class="relative rounded-2xl shadow-lg border border-white/10 flex flex-col overflow-hidden bg-[#0B0B1A] w-full max-w-6xl mx-auto">
-                            <div class="w-full px-4 py-3 border-b border-white/10 flex items-center gap-2">
-                                <div class="w-3 h-3 bg-white/10 rounded-full"></div>
-                                <div class="w-3 h-3 bg-white/10 rounded-full"></div>
-                                <div class="w-3 h-3 bg-white/10 rounded-full"></div>
+                    <div className="mt-16 mb-12">
+                        <div className="relative rounded-2xl shadow-lg border border-white/10 flex flex-col overflow-hidden bg-[#0B0B1A] w-full max-w-6xl mx-auto">
+                            <div className="w-full px-4 py-3 border-b border-white/10 flex items-center gap-2">
+                                <div className="w-3 h-3 bg-white/10 rounded-full"></div>
+                                <div className="w-3 h-3 bg-white/10 rounded-full"></div>
+                                <div className="w-3 h-3 bg-white/10 rounded-full"></div>
                             </div>
 
-                            <div class="p-1">
-                                <div class="w-full aspect-video rounded-lg overflow-hidden gradient-border bg-black/20">
-                                    <div class="w-full h-full flex items-center justify-center text-white/20 text-sm">
+                            <div className="p-1">
+                                <div className="w-full aspect-video rounded-lg overflow-hidden gradient-border bg-black/20">
+                                    <div className="w-full h-full flex items-center justify-center text-white/20 text-sm">
                                         Preview coming soon
                                     </div>
                                 </div>
@@ -68,13 +68,13 @@ export default function Welcome({ auth }) {
                         </div>
                     </div>
 
-                    <div class="mt-12 flex justify-center space-x-6 pb-8">
+                    <div className="mt-12 flex justify-center space-x-6 pb-8">
                         <a
                             href="#"
-                            class="text-gray-500 hover:text-gray-400 transition-colors"
+                            className="text-gray-500 hover:text-gray-400 transition-colors"
                         >
                             <svg
-                                class="w-6 h-6"
+                                className="w-6 h-6"
                                 fill="currentColor"
                                 viewBox="0 0 24 24"
                                 aria-hidden="true"
@@ -84,10 +84,10 @@ export default function Welcome({ auth }) {
                         </a>
                         <a
                             href="#"
-                            class="text-gray-500 hover:text-gray-400 transition-colors"
+                            className="text-gray-500 hover:text-gray-400 transition-colors"
                         >
                             <svg
-                                class="w-6 h-6"
+                                className="w-6 h-6"
                                 fill="currentColor"
                                 viewBox="0 0 24 24"
                                 aria-hidden="true"
