@@ -38,7 +38,7 @@ class ScaffoldWaitlistCommand extends \Aloe\Command
             }
         }
 
-        $this->comment("Scaffolding landing page using $scaffold scaffold...");
+        $this->comment("Scaffolding Waitlist using $scaffold scaffold...");
 
         Installer::magicCopy(__DIR__ . '/themes/waitlist/' . $scaffold);
 
@@ -110,7 +110,7 @@ class ScaffoldWaitlistCommand extends \Aloe\Command
             return $content;
         });
 
-        $this->info('Landing page generated successfully.');
+        $this->info('Waitlist generated successfully.');
 
         return 0;
     }
