@@ -62,6 +62,12 @@ class ServeCommand extends Command
             }
         }
 
+        if (\Leaf\FS\File::exists(getcwd() . '/.env')) {
+            \Leaf\FS\File::write(getcwd() . '/.env', function ($content) use ($port) {
+                return preg_replace('/APP_URL=(.*)/', 'APP_URL=http://' . $this->option('host') . ':' . $port, $content);
+            });
+        }
+
         if ($useConcurrent) {
             $commands = [
                 '#3eaf7c' => ['Leaf', "\"php -S $host:$port -t $path\""],
