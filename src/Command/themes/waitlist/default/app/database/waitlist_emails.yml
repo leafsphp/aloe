@@ -1,0 +1,7 @@
+columns:
+  email:
+    type: string
+    unique: true
+  registered_at:
+    type: timestamp
+    nullable: true
