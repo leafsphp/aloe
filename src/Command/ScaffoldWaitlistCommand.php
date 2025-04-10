@@ -127,6 +127,9 @@ class ScaffoldWaitlistCommand extends \Aloe\Command
             );
         });
 
+        \Aloe\Core::run('php leaf db:migrate waitlist_emails', $this->output);
+        \Aloe\Core::run('php leaf db:migrate waitlist_invites', $this->output);
+
         $this->info('Waitlist generated successfully.');
 
         return 0;
