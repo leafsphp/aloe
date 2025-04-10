@@ -1,0 +1,4 @@
+columns:
+  token:
+    type: text
+    unique: true
