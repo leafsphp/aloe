@@ -3,11 +3,16 @@ import { useForm, Link, Head } from '@inertiajs/vue3';
 import { Button } from '@/components/form/button';
 import { Input, InputError } from '@/components/form/input';
 
+const props = defineProps({
+    request: Object,
+});
+
 const form = useForm({
     name: "",
-    email: "",
+    email: request.email || "",
     password: "",
     confirmPassword: "",
+    invite: request.invite || "",
 });
 
 const submit = (e) => {

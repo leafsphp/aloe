@@ -5,12 +5,13 @@ import InputError from "@/components/form/input-error";
 import Button from "@/components/form/button";
 // import Label from "@/components/form/label";
 
-export default function Register() {
+export default function Register({ request }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
-        email: "",
+        email: request?.email || "",
         password: "",
         confirmPassword: "",
+        invite: request?.invite || "",
     });
 
     const submit = (e) => {

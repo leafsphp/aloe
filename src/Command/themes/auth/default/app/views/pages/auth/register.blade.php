@@ -42,6 +42,8 @@
                 <small class="text-red-900 text-sm">{{ $errors['confirmPassword'] ?? null }}</small>
             </div>
 
+            <input type="hidden" name="invite" value="{{ request()->get('invite') ?? '' }}">
+
             <button type="submit"
                 class="transition-all inline-flex justify-center rounded-lg text-sm font-semibold py-3 px-4 bg-green-600 hover:bg-green-500 text-white w-full"
                 data-zero-component="Button">

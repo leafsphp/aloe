@@ -6,11 +6,14 @@
     import Button from "@/components/form/button.svelte";
     // import Label from "@/components/form/label.svelte";
 
+    const { request } = $props();
+
     const form = useForm({
         name: "",
-        email: "",
+        email: request?.email || "",
         password: "",
         confirmPassword: "",
+        invite: request?.invite || "",
     });
 
     const submit = (e) => {
