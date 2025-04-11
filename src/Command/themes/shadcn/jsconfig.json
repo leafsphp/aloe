@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@/*": ["./app/views/js/*"]
+        },
+        "jsx": "react-jsx",
+    },
+    "include": [
+        "./app/views/js/**/*",
+    ],
+}

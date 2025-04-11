@@ -76,6 +76,7 @@ class Console
             \Aloe\Command\ScaffoldMailCommand::class,
             \Aloe\Command\ScaffoldLandingPageCommand::class,
             \Aloe\Command\ScaffoldWaitlistCommand::class,
+            \Aloe\Command\ScaffoldShadcnCommand::class,
         ]);
     }
 
