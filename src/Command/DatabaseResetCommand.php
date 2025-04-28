@@ -31,7 +31,7 @@ class DatabaseResetCommand extends Command
 
             $this->writeln("> db reset on <comment>$currentFileName</comment>");
 
-            if (!\Leaf\Schema::reset(fileToReset: $migration)) {
+            if (!\Leaf\Schema::reset($migration)) {
                 $this->error("Could not reset $currentFileName");
                 return 1;
             }
