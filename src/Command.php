@@ -130,7 +130,7 @@ class Command extends BaseCommand
      * @see setCode()
      * @see execute()
      */
-    public function run(InputInterface $input, OutputInterface $output)
+    public function run(InputInterface $input, OutputInterface $output): int
     {
         // add the application arguments and options
         $this->mergeApplicationDefinition();
