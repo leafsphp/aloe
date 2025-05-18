@@ -11,7 +11,6 @@ return [
     | may use many connections at once using the Database library.
     |
     */
-
     'default' => _env('BILLING_PROVIDER', 'stripe'),
 
     /*
@@ -24,7 +23,6 @@ return [
     | that is supported by Leaf's billing module.
     |
     */
-
     'connections' => [
         'stripe' => [
             'driver' => 'stripe',

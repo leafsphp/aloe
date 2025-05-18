@@ -12,7 +12,6 @@ return [
     | you may use many connections at once using the Database library.
     |
     */
-
     'default' => _env('DB_CONNECTION', 'mysql'),
 
     /*
@@ -30,7 +29,6 @@ return [
     | choice installed on your machine before you begin development.
     |
     */
-
     'connections' => [
         'sqlite' => [
             'driver' => 'sqlite',
