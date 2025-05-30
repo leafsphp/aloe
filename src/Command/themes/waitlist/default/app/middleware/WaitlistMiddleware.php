@@ -13,18 +13,26 @@ class WaitlistMiddleware extends Middleware
             '/auth/login',
             '/waitlist',
             '/waitlist/invite',
+            '/billing/callback',
             '/billing/webhook'
         ];
 
         $path = request()->getPathInfo();
+
+        if (strpos($path, '/billing/') === 0) {
+            return;
+        }
+
+        if (in_array($path, $allowedPaths)) {
+            return;
+        }
 
         if (
             !auth()->user() &&
             (!(
                 ($inviteCode = request()->get('invite')) &&
                 db()->select('waitlist_invites')->where('token', $inviteCode)->first()
-            ) &&
-                !in_array($path, $allowedPaths))
+            ))
         ) {
             response()->redirect('/', 303);
         }
