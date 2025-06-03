@@ -70,9 +70,11 @@ class DatabaseMigrationCommand extends Command
         $port = empty(_env('DB_PORT')) ? 3306 : _env('DB_PORT');
         $dbCollation = _env('DB_COLLATION', 'utf8_unicode_ci');
 
+        $dbDriver = MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql';
+
         db()->addConnections([
             'precheck' => [
-                'dbtype' => (MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql'),
+                'dbtype' => $dbDriver,
                 'host' => $host,
                 'username' => $user,
                 'password' => $password,
@@ -80,27 +82,39 @@ class DatabaseMigrationCommand extends Command
             ]
         ]);
 
-        if ((MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql') === 'sqlite') {
-            $this->writeln("> Verifying database...");
+        try {
+            if ($dbDriver === 'sqlite') {
+                $this->writeln("> Verifying database...");
 
-            if (!file_exists($database)) {
-                \Leaf\FS\File::create($database, null, [
-                    'recursive' => true
-                ]);
+                if (!file_exists($database)) {
+                    \Leaf\FS\File::create($database, null, [
+                        'recursive' => true
+                    ]);
+                }
+
+                return 0;
             }
 
-            return 0;
-        }
+            if ($host !== 'localhost' && $host !== '127.0.0.1') {
+                return 0;
+            }
 
-        if ($host !== 'localhost' && $host !== '127.0.0.1') {
-            return 0;
-        }
+            if ($dbDriver === 'pgsql') {
+                $this->writeln("> Verifying database...");
 
-        if (db('precheck')->query("CREATE DATABASE IF NOT EXISTS $database CHARACTER SET $dbCharset COLLATE $dbCollation;")->execute()) {
-            $this->writeln("> Verifying database...");
-            return 0;
-        }
+                $dbExists = db('precheck')->query("SELECT 1 FROM pg_database WHERE datname = '$database';")->execute()->fetchColumn();
 
-        $this->error("$database could not be created.\n");
+                if (!$dbExists && db('precheck')->query("CREATE DATABASE $database;")->execute()) {
+                    return 0;
+                }
+            }
+
+            if ($dbDriver === 'mysql' && db('precheck')->query("CREATE DATABASE IF NOT EXISTS `$database` CHARACTER SET $dbCharset COLLATE $dbCollation;")->execute()) {
+                $this->writeln("> Verifying database...");
+                return 0;
+            }
+        } catch (\Throwable $th) {
+            $this->error("$database could not be created.\n {$th->getMessage()}");
+        }
     }
 }
