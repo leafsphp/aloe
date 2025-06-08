@@ -275,7 +275,9 @@ class Command extends BaseCommand
             $mode = InputOption::VALUE_IS_ARRAY;
         }
 
-        return $this->addOption($name, $shortcut, $mode, $description, $default);
+        $this->addOption($name, $shortcut, $mode, $description, $default);
+
+        return $this;
     }
 
     /**
@@ -289,9 +291,9 @@ class Command extends BaseCommand
     /**
      * Get all input options
      */
-    public function options(string $name)
+    public function options()
     {
-        return $this->input->getOptions($name);
+        return $this->input->getOptions();
     }
 
     /**
