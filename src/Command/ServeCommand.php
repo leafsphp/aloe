@@ -12,10 +12,12 @@ class ServeCommand extends Command
 
     protected function config()
     {
-        $this->setOption('port', 'p', 'optional', 'Port to run Leaf app on', _env('SERVER_PORT', 5500));
-        $this->setOption('path', 't', 'optional', 'Path to your app', getcwd() . '/public');
-        $this->setOption('host', 's', 'optional', 'Your application host', 'localhost');
-        $this->setOption('no-concurrent', 'c', 'none', 'Run PHP server without Vite server');
+        $this
+            ->setOption('port', 'p', 'optional', 'Port to run Leaf app on', _env('SERVER_PORT', 5500))
+            ->setOption('path', 't', 'optional', 'Path to your app', getcwd() . '/public')
+            ->setOption('host', 's', 'optional', 'Your application host', 'localhost')
+            ->setOption('no-concurrent', 'c', 'none', 'Run PHP server without Vite server')
+            ->setOption('no-env-watch', 'w', 'none', 'Run PHP server without automatic .env file watching');
     }
 
     protected function handle()
@@ -70,7 +72,12 @@ class ServeCommand extends Command
 
         if ($useConcurrent) {
             $commands = [
-                '#3eaf7c' => ['Leaf', "\"php -S $host:$port -t $path\""],
+                '#3eaf7c' => [
+                    'Leaf',
+                    $this->option('no-env-watch')
+                    ? "\"php -S $host:$port -t $path\""
+                    : "\"npx @leafphp/watcher --watch .env --exec \\\"php -S $host:$port -t $path\\\"\""
+                ],
             ];
 
             if (!file_exists(getcwd() . '/node_modules') && file_exists(getcwd() . '/package.json')) {
@@ -109,7 +116,11 @@ class ServeCommand extends Command
             );
         } else {
             $this->info("\nHappy gardening 🍁\n");
-            $this->writeln(shell_exec("php -S $host:$port -t $path"));
+            $this->writeln(shell_exec(
+                $this->option('no-env-watch')
+                ? "php -S $host:$port -t $path"
+                : "npx @leafphp/watcher --watch .env --exec \\\"php -S $host:$port -t $path\\\""
+            ));
         }
 
         return 0;
