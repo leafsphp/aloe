@@ -47,6 +47,7 @@ class Console
             \Aloe\Command\DatabaseResetCommand::class,
             \Aloe\Command\DatabaseRollbackCommand::class,
             \Aloe\Command\DatabaseSeedCommand::class,
+            \Aloe\Command\DatabaseDropCommand::class,
 
             // Delete Commands
             \Aloe\Command\DeleteModelCommand::class,
