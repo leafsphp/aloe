@@ -1,0 +1,22 @@
+<?php
+
+app()->get('/route-name', 'routeName@index');
+
+app()->group('/route-name', [
+    'middleware' => ['auth.required', 'auth.verified'],
+    function () {
+        app()->get('/', 'routeName@index');
+    },
+]);
+
+app()->view('/route-name', 'route-name', [
+    'route-name' => []
+]);
+
+app()->inertia('/route-name', 'route-name', [
+    'route-name' => []
+]);
+
+app()->get('/route-name', function () {
+    // Your code here
+});
