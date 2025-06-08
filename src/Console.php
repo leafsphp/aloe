@@ -40,6 +40,7 @@ class Console
 
             // Env Commands
             \Aloe\Command\EnvGenerateCommand::class,
+            \Aloe\Command\EnvSetCommand::class,
 
             // Database Commands
             \Aloe\Command\DatabaseMigrationCommand::class,
@@ -62,6 +63,7 @@ class Console
             \Aloe\Command\GenerateModelCommand::class,
             \Aloe\Command\GenerateSchemaCommand::class,
             \Aloe\Command\GenerateTemplateCommand::class,
+            \Aloe\Command\GenerateRouteCommand::class,
 
             // View commands
             \Aloe\Command\ViewBuildCommand::class,

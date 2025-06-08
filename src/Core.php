@@ -114,7 +114,7 @@ class Core
             return $watcherPath;
         }
 
-        return 'leaf-watcher';
+        return '@leafphp/watcher';
     }
 
     /**
