@@ -10,7 +10,7 @@ class LinkCommand extends \Aloe\Command
 
     protected function handle()
     {
-        $this->info('Creating symbolic link for storage directory...');
+        $this->info('==> Creating symbolic link for storage directory...');
 
         $publicPath = Config::rootpath('/public');
         $storagePath = Config::rootpath(StoragePath('app/public'));
@@ -36,9 +36,14 @@ class LinkCommand extends \Aloe\Command
             $this->writeln(shell_exec("mklink /J $publicPath\\storage $storagePath"));
 
         } else {
-            $this->writeln(shell_exec("ln -s $storagePath $publicPath/storage"));
+            try {
+                shell_exec("ln -s $storagePath $publicPath/storage");
+            } catch (\Throwable $th) {
+                $this->error('Failed to create symbolic link: ' . $th->getMessage());
+                return 1;
+            }
         }
 
-        $this->info(PHP_EOL . 'Symbolic link created successfully');
+        $this->writeln(asInfo('✔') . ' Symbolic link created successfully');
     }
 }
