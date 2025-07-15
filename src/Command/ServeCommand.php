@@ -13,7 +13,7 @@ class ServeCommand extends Command
     protected function config()
     {
         $this
-            ->setOption('port', 'p', 'optional', 'Port to run Leaf app on', _env('SERVER_PORT', 5500))
+            ->setOption('port', 'p', 'optional', 'Port to run Leaf app on', _env('APP_PORT', 5500))
             ->setOption('path', 't', 'optional', 'Path to your app', getcwd() . '/public')
             ->setOption('host', 's', 'optional', 'Your application host', 'localhost')
             ->setOption('no-concurrent', 'c', 'none', 'Run PHP server without Vite server')
@@ -59,14 +59,15 @@ class ServeCommand extends Command
             } else {
                 $this->error('WARNING:');
                 $this->writeln(asComment("While port $port is available on $host, it is already in use by localhost"));
-
                 break;
             }
         }
 
         if (\Leaf\FS\File::exists(getcwd() . '/.env')) {
             \Leaf\FS\File::write(getcwd() . '/.env', function ($content) use ($port) {
-                return preg_replace('/APP_URL=(.*)/', 'APP_URL=http://' . $this->option('host') . ':' . $port, $content);
+                $content = preg_replace('/APP_URL=(.*)/', 'APP_URL=http://' . $this->option('host') . ':' . $port, $content);
+                $content = preg_replace('/APP_PORT=(.*)/', "APP_PORT=$port", $content);
+                return $content;
             });
         }
 
@@ -74,7 +75,7 @@ class ServeCommand extends Command
             $commands = [
                 '#3eaf7c' => [
                     'Leaf',
-                    $this->option('no-env-watch')
+                    $this->option('no-env-watch') || !file_exists(getcwd() . '/.env')
                     ? "\"php -S $host:$port -t $path\""
                     : "\"npx @leafphp/watcher --watch .env --exec \\\"php -S $host:$port -t $path\\\"\""
                 ],
@@ -117,10 +118,10 @@ class ServeCommand extends Command
         } else {
             $this->info("\nHappy gardening 🍁\n");
             $this->writeln(shell_exec(
-                $this->option('no-env-watch')
+                $this->option('no-env-watch') || !file_exists(getcwd() . '/.env')
                 ? "php -S $host:$port -t $path"
-                : "npx @leafphp/watcher --watch .env --exec \\\"php -S $host:$port -t $path\\\""
-            ));
+                : "npx @leafphp/watcher --watch .env --exec \"php -S $host:$port -t $path\""
+            ) ?? "");
         }
 
         return 0;
