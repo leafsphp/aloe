@@ -42,6 +42,7 @@ class ScaffoldLandingPageCommand extends \Aloe\Command
 
         if ($scaffold === 'default') {
             Installer::installPackages('zero');
+            $this->writeln(shell_exec('php leaf view:install --tailwind'));
         }
 
         Installer::magicCopy(__DIR__ . '/themes/landing-page/' . $scaffold);
@@ -74,8 +75,8 @@ app()->inertia('/pricing', 'pricing'",
 
             return str_replace(
                 "app()->view('/', 'index');",
-                "app()->view('/', 'index');
-app()->view('/pricing', 'pricing');",
+                "app()->view('/', 'pages.index');
+app()->view('/pricing', 'pages.pricing');",
                 $content
             );
         });
