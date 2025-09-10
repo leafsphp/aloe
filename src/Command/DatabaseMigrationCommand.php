@@ -26,8 +26,6 @@ class DatabaseMigrationCommand extends Command
             return 1;
         }
 
-        $this->createDatabase();
-
         foreach ($migrations as $migration) {
             $currentFileName = path($migration)->basename();
 
@@ -37,16 +35,16 @@ class DatabaseMigrationCommand extends Command
 
             $this->writeln("> db migration on <comment>$currentFileName</comment>");
 
+            $this->createDatabase($migration);
+
             if (!\Leaf\Schema::migrate($migration)) {
                 $this->error("Could not migrate $currentFileName");
-
                 return 1;
             }
 
             if ($this->option('seed')) {
                 if (!\Leaf\Schema::seed($migration)) {
                     $this->error("Could not seed $currentFileName");
-
                     return 1;
                 }
 
@@ -59,35 +57,16 @@ class DatabaseMigrationCommand extends Command
         return 0;
     }
 
-    public function createDatabase()
+    public function createDatabase(string $migration)
     {
-        $host = _env('DB_HOST');
-        $user = _env('DB_USERNAME');
-        $password = _env('DB_PASSWORD');
-        $database = _env('DB_DATABASE');
-        $dbCharset = _env('DB_CHARSET', 'utf8');
-        $dbConnection = _env('DB_CONNECTION', 'mysql');
-        $port = empty(_env('DB_PORT')) ? 3306 : _env('DB_PORT');
-        $dbCollation = _env('DB_COLLATION', 'utf8_unicode_ci');
-
-        $dbDriver = MvcConfig('database')['connections'][$dbConnection]['driver'] ?? 'mysql';
-
-        db()->addConnections([
-            'precheck' => [
-                'dbtype' => $dbDriver,
-                'host' => $host,
-                'username' => $user,
-                'password' => $password,
-                'port' => $port,
-            ]
-        ]);
+        $connection = MvcConfig('database')['connections'][
+            \Leaf\Schema::getConnection($migration) ?? MvcConfig('database')['default']
+        ];
 
         try {
-            if ($dbDriver === 'sqlite') {
-                $this->writeln("> Verifying database...");
-
-                if (!file_exists($database)) {
-                    \Leaf\FS\File::create($database, null, [
+            if ($connection['driver'] === 'sqlite') {
+                if (!file_exists($connection['database'])) {
+                    \Leaf\FS\File::create($connection['database'], null, [
                         'recursive' => true
                     ]);
                 }
@@ -95,26 +74,33 @@ class DatabaseMigrationCommand extends Command
                 return 0;
             }
 
-            if ($host !== 'localhost' && $host !== '127.0.0.1') {
+            if ($connection['host'] !== 'localhost' && $connection['host'] !== '127.0.0.1') {
                 return 0;
             }
 
-            if ($dbDriver === 'pgsql') {
-                $this->writeln("> Verifying database...");
+            db()->addConnections([
+                'precheck' => [
+                    'dbtype' => $connection['driver'],
+                    'host' => $connection['host'],
+                    'username' => $connection['username'],
+                    'password' => $connection['password'],
+                    'port' => $connection['port'],
+                ]
+            ]);
 
-                $dbExists = db('precheck')->query("SELECT 1 FROM pg_database WHERE datname = '$database';")->execute()->fetchColumn();
+            if ($connection['driver'] === 'pgsql') {
+                $connectionExists = db('precheck')->query("SELECT 1 FROM pg_database WHERE datname = '{$connection['database']}';")->execute()->fetchColumn();
 
-                if (!$dbExists && db('precheck')->query("CREATE DATABASE $database;")->execute()) {
+                if (!$connectionExists && db('precheck')->query("CREATE DATABASE {$connection['database']};")->execute()) {
                     return 0;
                 }
             }
 
-            if ($dbDriver === 'mysql' && db('precheck')->query("CREATE DATABASE IF NOT EXISTS `$database` CHARACTER SET $dbCharset COLLATE $dbCollation;")->execute()) {
-                $this->writeln("> Verifying database...");
+            if ($connection['driver'] === 'mysql' && db('precheck')->query("CREATE DATABASE IF NOT EXISTS `{$connection['database']}` CHARACTER SET {$connection['charset']} COLLATE {$connection['collation']};")->execute()) {
                 return 0;
             }
         } catch (\Throwable $th) {
-            $this->error("$database could not be created.\n {$th->getMessage()}");
+            $this->error("{$connection['database']} could not be created.\n {$th->getMessage()}");
         }
     }
 }
