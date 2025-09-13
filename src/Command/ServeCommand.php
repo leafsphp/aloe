@@ -82,22 +82,36 @@ class ServeCommand extends Command
             ];
 
             if (!file_exists(getcwd() . '/node_modules') && file_exists(getcwd() . '/package.json')) {
+                $this->writeln(asInfo(' > ') . "Installing Node.js dependencies (this may take a while)...");
                 $this->writeln(shell_exec('npm install'));
             }
 
             if ($viteDetected) {
-                $this->writeln(asInfo(' > ') . 'Vite detected, starting Vite server concurrently');
+                $this->writeln(asInfo(' > ') . 'Vite detected → starting Vite server concurrently');
                 $commands['#bd34fe'] = ['Vite', '"npm run dev"'];
             }
 
             if ($redisDetected) {
-                $this->writeln(asInfo(' > ') . 'Redis detected, starting Redis server concurrently');
-                \Leaf\FS\Directory::create(getcwd() . '/storage/database');
-                $commands['#ff4438'] = ['Redis', '"redis-server --dir storage/database"'];
+                $redisHost = _env('REDIS_HOST', '127.0.0.1');
+                $redisPort = _env('REDIS_PORT', 6379);
+
+                if (strpos($redisHost, 'tls://') !== false || strpos($redisHost, 'rediss://') !== false) {
+                    $this->writeln(asInfo(' > ') . 'Managed Redis detected (TLS) → skipping embedded server startup');
+                } else {
+                    exec("redis-cli -h $redisHost -p $redisPort ping 2>/dev/null", $output, $status);
+
+                    if ($status === 0 && isset($output[0]) && $output[0] === 'PONG') {
+                        $this->writeln(asInfo(' > ') . "Redis detected at $redisHost:$redisPort → already running, skipping embedded server startup");
+                    } else {
+                        $this->writeln(asInfo(' > ') . "Redis detected (local) → starting embedded Redis server");
+                        \Leaf\FS\Directory::create(getcwd() . '/storage/database');
+                        $commands['#ff4438'] = ['Redis', '"redis-server --dir storage/database"'];
+                    }
+                }
             }
 
             if ($jobsDetected) {
-                $this->writeln(asInfo(' > ') . 'Jobs detected, starting Queue workers concurrently');
+                $this->writeln(asInfo(' > ') . 'Jobs detected → starting queue workers concurrently');
                 $commands['#f9c851'] = ['Workers', '"php leaf queue:work"'];
             }
 
