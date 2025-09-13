@@ -1,4 +1,4 @@
-# schema files add auto-increments and timestamps by default
+# schema files add auto-increments and timestamps automatically
 
 # you can add all the columns you want under the columns key
 columns:
@@ -14,11 +14,7 @@ columns:
 relationships:
   - User
 
-# seeds are optional and can be used to populate the database with dummy data
+# seeds are optional and can be used to populate the database with dummy data from models
 seeds:
   count: 5
   truncate: true
-  data:
-    name: '@faker.name'
-    identifier: '@faker.uuid'
-    verified_at: '@tick.format:YYYY-MM-DD HH:mm:ss'
