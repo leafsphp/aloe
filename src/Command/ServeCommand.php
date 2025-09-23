@@ -177,13 +177,14 @@ class ServeCommand extends Command
      */
     protected function hasInternetConnection()
     {
-        $output = shell_exec(
-            $this->isWindows()
-            ? 'ping -n 1 registry.npmjs.org >nul 2>&1'
-            : 'ping -c 1 registry.npmjs.org >/dev/null 2>&1'
-        ) ?? '';
+        $connected = @fsockopen("registry.npmjs.org", 443, $errno, $errstr, 1);
 
-        return strpos($output, 'TTL') !== false || strpos($output, 'bytes from') !== false;
+        if ($connected) {
+            fclose($connected);
+            return true;
+        }
+
+        return false;
     }
 
     /**
