@@ -10,6 +10,10 @@ class ServeCommand extends Command
     public $description = 'Start the leaf development server';
     public $help = 'Run your Leaf app on PHP\'s local development server';
 
+    protected $host;
+    protected $port;
+    protected $path;
+
     protected function config()
     {
         $this
@@ -24,20 +28,21 @@ class ServeCommand extends Command
     {
         $useConcurrent = true;
         $redisDetected = class_exists('Leaf\Redis');
-        $jobsDetected = class_exists('Leaf\Job') && file_exists(getcwd() . '/app/jobs');
-        $viteDetected = class_exists('Leaf\Vite') || file_exists(getcwd() . '/vite.config.js');
+        $jobsDetected = class_exists('Leaf\Job') && file_exists(getcwd() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'jobs');
+        $viteDetected = class_exists('Leaf\Vite') || file_exists(getcwd() . DIRECTORY_SEPARATOR . 'vite.config.js');
 
-        $port = $this->option('port');
-        $path = $this->option('path');
-        $host = $this->option('host');
+        $this->port = $this->option('port');
+        $this->path = $this->option('path');
+        $this->host = $this->option('host');
+
         $noConcurrent = $this->option('no-concurrent');
 
         if ($noConcurrent || (!$redisDetected && !$jobsDetected && !$viteDetected)) {
             $useConcurrent = false;
         }
 
-        if (!is_dir($path)) {
-            $this->error("Directory $path does not exist");
+        if (!is_dir($this->path)) {
+            $this->error("Directory {$this->path} does not exist");
             return 1;
         }
 
@@ -47,48 +52,68 @@ class ServeCommand extends Command
 | |__|  __/ (_| |  _| | |  | | \ V /| |___
 |_____\___|\__,_|_|   |_|  |_|  \_/  \____|\n"));
 
-        while (true) {
-            $defSocket = @fsockopen($host, $port, $errno, $errstr, 1);
-            $localSocket = @fsockopen('localhost', $port, $errno, $errstr, 1);
+        $maxPortsToCheck = 50;
+        $portsChecked = 0;
 
-            if ($defSocket) {
-                $this->writeln(asInfo(" > ") . "Port $port is already in use by $host, trying port " . ($port + 1) . '...');
-                $port++;
-            } elseif (!$localSocket) {
-                break;
+        while ($portsChecked < $maxPortsToCheck) {
+            $portsChecked++;
+
+            $socket = @fsockopen($this->host, $this->port, $errno, $errstr, 0.1);
+
+            if ($socket) {
+                fclose($socket);
+                $this->writeln(asInfo(" > ") . "Port {$this->port} is already in use, trying port " . ($this->port + 1) . '...');
+                $this->port++;
             } else {
-                $this->error('WARNING:');
-                $this->writeln(asComment("While port $port is available on $host, it is already in use by localhost"));
                 break;
             }
         }
 
+        if ($portsChecked >= $maxPortsToCheck) {
+            $this->error("Could not find an available port after $maxPortsToCheck attempts");
+            return 1;
+        }
+
         if (\Leaf\FS\File::exists(getcwd() . '/.env')) {
-            \Leaf\FS\File::write(getcwd() . '/.env', function ($content) use ($port) {
-                $content = preg_replace('/APP_URL=(.*)/', 'APP_URL=http://' . $this->option('host') . ':' . $port, $content);
-                $content = preg_replace('/APP_PORT=(.*)/', "APP_PORT=$port", $content);
+            \Leaf\FS\File::write(getcwd() . '/.env', function ($content) {
+                $content = preg_replace('/APP_URL=(.*)/', "APP_URL=http://{$this->host}:{$this->port}", $content);
+                $content = preg_replace('/APP_PORT=(.*)/', "APP_PORT={$this->port}", $content);
+
                 return $content;
             });
+        }
+
+        if ($useConcurrent && !$this->hasInternetConnection()) {
+            $this->writeln(asInfo(' > ') . 'No internet connection detected. Falling back to simple server mode.');
+
+            if ($viteDetected) {
+                $this->writeln(asInfo(' > ') . 'Vite detected → remember to start the Vite server separately with "npm run dev"');
+            }
+
+            if ($redisDetected) {
+                $this->writeln(asInfo(' > ') . 'Redis detected → remember to start your Redis server separately');
+            }
+
+            if ($jobsDetected) {
+                $this->writeln(asInfo(' > ') . 'Jobs detected → remember to start your queue workers separately with "php leaf queue:work"');
+            }
+
+            $useConcurrent = false;
         }
 
         if ($useConcurrent) {
             $commands = [
                 '#3eaf7c' => [
                     'Leaf',
-                    $this->option('no-env-watch') || !file_exists(getcwd() . '/.env')
-                    ? "\"php -S $host:$port -t $path\""
-                    : "\"npx @leafphp/watcher --watch .env --exec \\\"php -S $host:$port -t $path\\\"\""
+                    $this->option('no-env-watch') || !file_exists(getcwd() . DIRECTORY_SEPARATOR . '.env')
+                    ? $this->buildPhpServerCommand()
+                    : $this->buildWatcherCommand()
                 ],
             ];
 
-            if (!file_exists(getcwd() . '/node_modules') && file_exists(getcwd() . '/package.json')) {
-                $this->writeln(asInfo(' > ') . "Installing Node.js dependencies (this may take a while)...");
-                $this->writeln(shell_exec('npm install'));
-            }
-
             if ($viteDetected) {
                 $this->writeln(asInfo(' > ') . 'Vite detected → starting Vite server concurrently');
-                $commands['#bd34fe'] = ['Vite', '"npm run dev"'];
+                $commands['#bd34fe'] = ['Vite', $this->buildNpmRunCommand('dev')];
             }
 
             if ($redisDetected) {
@@ -98,14 +123,19 @@ class ServeCommand extends Command
                 if (strpos($redisHost, 'tls://') !== false || strpos($redisHost, 'rediss://') !== false) {
                     $this->writeln(asInfo(' > ') . 'Managed Redis detected (TLS) → skipping embedded server startup');
                 } else {
-                    exec("redis-cli -h $redisHost -p $redisPort ping 2>/dev/null", $output, $status);
+                    $redisPingCommand = $this->isWindows() ?
+                        "redis-cli -h $redisHost -p $redisPort ping 2>nul" :
+                        "redis-cli -h $redisHost -p $redisPort ping 2>/dev/null";
+
+                    exec($redisPingCommand, $output, $status);
 
                     if ($status === 0 && isset($output[0]) && $output[0] === 'PONG') {
                         $this->writeln(asInfo(' > ') . "Redis detected at $redisHost:$redisPort → already running, skipping embedded server startup");
                     } else {
                         $this->writeln(asInfo(' > ') . "Redis detected (local) → starting embedded Redis server");
-                        \Leaf\FS\Directory::create(getcwd() . '/storage/database');
-                        $commands['#ff4438'] = ['Redis', '"redis-server --dir storage/database"'];
+
+                        \Leaf\FS\Directory::create(getcwd() . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'database');
+                        $commands['#ff4438'] = ['Redis', '"redis-server --dir storage' . DIRECTORY_SEPARATOR . 'database"'];
                     }
                 }
             }
@@ -131,13 +161,74 @@ class ServeCommand extends Command
             );
         } else {
             $this->info("\nHappy gardening 🍁\n");
-            $this->writeln(shell_exec(
-                $this->option('no-env-watch') || !file_exists(getcwd() . '/.env')
-                ? "php -S $host:$port -t $path"
-                : "npx @leafphp/watcher --watch .env --exec \"php -S $host:$port -t $path\""
-            ) ?? "");
+
+            if ($this->option('no-env-watch') || !file_exists(getcwd() . DIRECTORY_SEPARATOR . '.env') || !$this->hasInternetConnection()) {
+                $this->writeln(shell_exec($this->buildPhpServerCommand()) ?? "");
+            } else {
+                $this->writeln(shell_exec($this->buildWatcherCommand()) ?? "");
+            }
         }
 
         return 0;
+    }
+
+    /**
+     * Check if there's an internet connection
+     */
+    protected function hasInternetConnection()
+    {
+        $output = shell_exec(
+            $this->isWindows()
+            ? 'ping -n 1 registry.npmjs.org >nul 2>&1'
+            : 'ping -c 1 registry.npmjs.org >/dev/null 2>&1'
+        ) ?? '';
+
+        return strpos($output, 'TTL') !== false || strpos($output, 'bytes from') !== false;
+    }
+
+    /**
+     * Check if running on Windows
+     */
+    protected function isWindows()
+    {
+        return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+    }
+
+    /**
+     * Build PHP server command with proper escaping for the platform
+     */
+    protected function buildPhpServerCommand()
+    {
+        if ($this->isWindows()) {
+            return "php -S {$this->host}:{$this->port} -t " . escapeshellarg($this->path);
+        } else {
+            return "php -S {$this->host}:{$this->port} -t \"{$this->path}\"";
+        }
+    }
+
+    /**
+     * Build watcher command with proper escaping for the platform
+     */
+    protected function buildWatcherCommand()
+    {
+        $phpCommand = $this->buildPhpServerCommand();
+
+        if ($this->isWindows()) {
+            return "npx @leafphp/watcher --watch .env --exec " . escapeshellarg($phpCommand);
+        } else {
+            return "\"npx @leafphp/watcher --watch .env --exec \\\"$phpCommand\\\"\"";
+        }
+    }
+
+    /**
+     * Build npm run command with proper escaping for the platform
+     */
+    protected function buildNpmRunCommand($script)
+    {
+        if ($this->isWindows()) {
+            return "npm run $script";
+        } else {
+            return "\"npm run $script\"";
+        }
     }
 }
