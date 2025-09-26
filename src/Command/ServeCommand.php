@@ -27,7 +27,7 @@ class ServeCommand extends Command
         $viteDetected = class_exists('Leaf\Vite') || file_exists(getcwd() . DIRECTORY_SEPARATOR . 'vite.config.js');
 
         $this->port = $this->option('port');
-        $this->path = $this->option('path');
+        $this->path = $this->option('path') ?? getcwd() . DIRECTORY_SEPARATOR . 'public';
         $this->host = $this->option('host');
 
         $noConcurrent = $this->option('no-concurrent');

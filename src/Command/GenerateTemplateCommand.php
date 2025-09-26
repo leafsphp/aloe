@@ -9,7 +9,7 @@ class GenerateTemplateCommand extends Command
     protected $signature = 'g:template
         {name : The name of the template to create}
         {--t|type=blade : The type of template to create: jsx, vue, svelte, blade}
-        {--r|route : Generate a route for the template}';
+        {--r|route? : Generate a route for the template}';
     protected $description = 'Create a new view file';
     protected $help = 'Create a new basic view file';
 

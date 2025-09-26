@@ -10,7 +10,7 @@ class InstallCommand extends Command
 {
     protected $signature = 'install
         {packages?* : package(s) to install. Can also include a version constraint, e.g. foo/bar or foo/bar@1.0.0}
-        {--d|dev : Install package as a dev dependency}';
+        {--d|dev? : Install package as a dev dependency}';
     protected $description = 'Add a new package to your leaf app';
     protected $help = 'Install a new package';
 
