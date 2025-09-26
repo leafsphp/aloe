@@ -2,10 +2,6 @@
 
 namespace Aloe;
 
-require __DIR__ . '/helpers.php';
-
-use Symfony\Component\Console\Application;
-
 /**
  * Aloe CLI
  * -----
@@ -21,7 +17,10 @@ class Console
 
     public function __construct($version = 'v1.0')
     {
-        static::$app = new Application(asComment('Leaf MVC'), $version);
+        static::$app = sprout()->createApp([
+            'name' => 'Leaf MVC',
+            'version' => $version,
+        ]);
 
         static::register([
             // Random Commands
@@ -42,18 +41,10 @@ class Console
             \Aloe\Command\EnvGenerateCommand::class,
             \Aloe\Command\EnvSetCommand::class,
 
-            // Database Commands
-            \Aloe\Command\DatabaseMigrationCommand::class,
-            \Aloe\Command\DatabaseResetCommand::class,
-            \Aloe\Command\DatabaseRollbackCommand::class,
-            \Aloe\Command\DatabaseSeedCommand::class,
-            \Aloe\Command\DatabaseDropCommand::class,
-
             // Delete Commands
             \Aloe\Command\DeleteModelCommand::class,
             \Aloe\Command\DeleteControllerCommand::class,
             \Aloe\Command\DeleteConsoleCommand::class,
-            \Aloe\Command\DeleteSchemaCommand::class,
 
             // Generate Commands
             \Aloe\Command\GenerateConsoleCommand::class,
@@ -62,7 +53,6 @@ class Console
             \Aloe\Command\GenerateMailerCommand::class,
             \Aloe\Command\GenerateMiddlewareCommand::class,
             \Aloe\Command\GenerateModelCommand::class,
-            \Aloe\Command\GenerateSchemaCommand::class,
             \Aloe\Command\GenerateTemplateCommand::class,
             \Aloe\Command\GenerateRouteCommand::class,
 
@@ -86,7 +76,7 @@ class Console
     /**
      * Register a custom command
      *
-     * @param array|\Symfony\Component\Console\Command\Command $command: Command(s) to run
+     * @param array|\Leaf\Sprout\Command $command: Command(s) to run
      *
      * @return void
      */
@@ -97,7 +87,7 @@ class Console
                 static::register($item);
             }
         } else {
-            static::$app->add(new $command());
+            static::$app->register($command);
         }
     }
 
