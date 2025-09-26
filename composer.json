@@ -1,6 +1,6 @@
 {
     "name": "leafs/aloe",
-    "version": "4.5.4",
+    "version": "4.7.0",
     "description": "Overpowered command line tool for your leaf apps.",
     "keywords": [
         "cli",
@@ -31,9 +31,8 @@
         "illuminate/support": "*",
         "leafs/fs": "*",
         "leafs/mvc-core": "*",
-        "psy/psysh": "^0.12",
-        "symfony/console": "^5.0|^6.0",
-        "symfony/process": "^5.0|^6.0"
+        "leafs/sprout": "*",
+        "psy/psysh": "^0.12"
     },
     "require-dev": {
         "leafs/leaf": "*",
