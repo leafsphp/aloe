@@ -18,7 +18,11 @@ class Console
     public function __construct($version = 'v1.0')
     {
         static::$app = sprout()->createApp([
-            'name' => 'Leaf MVC',
+            'name' => '<comment> _                __   __  ____     ______
+| |    ___  __ _ / _| |  \/  \ \   / / ___|
+| |   / _ \/ _` | |_  | |\/| |\ \ / / |
+| |__|  __/ (_| |  _| | |  | | \ V /| |___
+|_____\___|\__,_|_|   |_|  |_|  \_/  \____| by Leaf PHP</comment>',
             'version' => $version,
         ]);
 
