@@ -4,43 +4,25 @@ declare(strict_types=1);
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Leaf\Sprout\Command;
 
 class ViewBuildCommand extends Command
 {
-    protected static $defaultName = 'view:build';
+    protected $signature = 'view:build';
+    protected $description = 'Run your frontend build command';
+    protected $help = 'Run your frontend build server';
 
-    protected function configure()
+    protected function handle()
     {
-        $this
-            ->setHelp('Run your frontend dev command')
-            ->setDescription('Run your frontend dev server');
-    }
+        if (!is_dir(getcwd() . '/node_modules')) {
+            $this->writeln('<info>Installing dependencies...</info>');
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $directory = getcwd();
-        $npm = \Aloe\Core::findNpm();
-
-        if (!is_dir("$directory/node_modules")) {
-            $output->writeln('<info>Installing dependencies...</info>');
-            $success = \Aloe\Core::run("$npm install", $output);
-
-            if (!$success) {
-                $output->writeln('<error>❌  Failed to install dependencies.</error>');
-
+            if (!sprout()->npm()->install()) {
+                $this->writeln('<error>❌  Failed to install dependencies.</error>');
                 return 1;
             }
         }
 
-        $success = \Aloe\Core::run("$npm run build", $output);
-
-        if (!$success) {
-            return 1;
-        }
-
-        return 0;
+        return sprout()->npm()->runScript('build')->getExitCode();
     }
 }

@@ -2,28 +2,23 @@
 
 namespace Aloe\Command;
 
-use Aloe\Command;
+use Leaf\Sprout\Command;
 use Illuminate\Support\Str;
 
 class GenerateControllerCommand extends Command
 {
-    protected static $defaultName = 'g:controller';
-    public $description = 'Create a new controller class';
-    public $help = 'Create a new controller class';
-
-    protected function config()
-    {
-        $this
-            ->setArgument('controller', 'required', 'controller name')
-            ->setOption('all', 'a', 'none', 'Create a model and migration for controller')
-            ->setOption('model', 'm', 'none', 'Create a model for controller')
-            ->setOption('template', 't', 'none', 'Create a template for controller')
-            ->setOption('resource', 'r', 'none', 'Create a resource controller')
-            ->setOption('api-resource', 'ar', 'none', 'Create an API resource controller')
-            ->setOption('web-resource', 'wr', 'none', 'Create a web resource controller')
-            ->setOption('web', 'w', 'none', 'Create a web(ordinary) controller')
-            ->setOption('api', null, 'none', 'Create an API controller');
-    }
+    protected $signature = 'g:controller
+        {controller : The name of the controller}
+        {--a|all? : Create a model and migration for controller}
+        {--m|model? : Create a model for controller}
+        {--t|template? : Create a template for controller}
+        {--r|resource? : Create a resource controller}
+        {--ar|api-resource? : Create an API resource controller}
+        {--wr|web-resource? : Create a web resource controller}
+        {--w|web? : Create a web(ordinary) controller}
+        {--api? : Create an API controller}';
+    protected $description = 'Create a new controller class';
+    protected $help = 'Create a new controller class';
 
     protected function handle()
     {
@@ -34,7 +29,8 @@ class GenerateControllerCommand extends Command
             $controller .= 'Controller';
         }
 
-        $controllerFile = Config::rootpath(ControllersPath("$controller.php"));
+        $controllerFile = getcwd() . ControllersPath("$controller.php");
+
         $modelName = Str::singular(Str::studly(
             str_replace('Controller', '', basename($this->argument('controller')))
         ));
@@ -71,7 +67,7 @@ class GenerateControllerCommand extends Command
             $className = basename($controller);
             $viewRender = 'response()->render(';
 
-            if (\Leaf\FS\File::exists(Config::rootpath("/app/views/_inertia.blade.php"))) {
+            if (\Leaf\FS\File::exists(getcwd() . '/app/views/_inertia.blade.php')) {
                 $viewRender = 'response()->inertia(';
             }
 
@@ -93,41 +89,45 @@ class GenerateControllerCommand extends Command
     protected function generateExtraFiles($modelName)
     {
         if ($this->option('all')) {
-            $process = $this->runProcess(['php', 'leaf', 'g:model', $modelName, '-m']);
+            $process = sprout()->process("php leaf g:model $modelName -m")->run();
+
             $this->comment(
                 $process === 0 ?
                 'Model & Migration generated successfully!' :
-                asError('Couldn\'t generate files')
+                '<error>Couldn\'t generate files</error>'
             );
 
             if (Config::$env === 'WEB') {
-                $process = $this->runProcess(['php', 'leaf', 'g:template', $modelName]);
+                $process = sprout()->process("php leaf g:template $modelName")->run();
+
                 $this->comment(
                     $process === 0 ?
                     'Template generated successfully!' :
-                    asError('Couldn\'t generate template')
+                    '<error>Couldn\'t generate template</error>'
                 );
             }
 
             return $process;
         } else {
             if ($this->option('model')) {
-                $process = $this->runProcess(['php', 'leaf', 'g:model', $modelName]);
+                $process = sprout()->process("php leaf g:model $modelName")->run();
+
                 $this->comment(
                     $process === 0 ?
                     'Model generated successfully!' :
-                    asError('Couldn\'t generate model')
+                    '<error>Couldn\'t generate model</error>'
                 );
 
                 return $process;
             }
 
             if ($this->option('template')) {
-                $process = $this->runProcess(['php', 'leaf', 'g:template', $modelName]);
+                $process = sprout()->process("php leaf g:template $modelName")->run();
+
                 $this->comment(
                     $process === 0 ?
                     'Template generated successfully!' :
-                    asError('Couldn\'t generate template')
+                    '<error>Couldn\'t generate template</error>'
                 );
 
                 return $process;

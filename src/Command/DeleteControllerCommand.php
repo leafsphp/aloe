@@ -2,19 +2,15 @@
 
 namespace Aloe\Command;
 
-use Aloe\Command;
+use Leaf\Sprout\Command;
 use Illuminate\Support\Str;
 
 class DeleteControllerCommand extends Command
 {
-    protected static $defaultName = 'd:controller';
-    public $description = 'Delete a controller';
-    public $help = 'Delete a controller';
-
-    protected function config()
-    {
-        $this->setArgument('controller', 'required', 'controller name');
-    }
+    protected $signature = 'd:controller
+        {controller : The name of the controller}';
+    protected $description = 'Delete a controller';
+    protected $help = 'Delete a controller';
 
     protected function handle()
     {
@@ -25,7 +21,7 @@ class DeleteControllerCommand extends Command
             $controller .= 'Controller';
         }
 
-        $controllerFile = Config::rootpath(ControllersPath("$controller.php"));
+        $controllerFile = getcwd() . ControllersPath("$controller.php");
 
         if (!\Leaf\FS\File::exists($controllerFile)) {
             $this->error("$controller doesn't exist!");

@@ -4,59 +4,53 @@ declare(strict_types=1);
 
 namespace Aloe\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
+use Leaf\Sprout\Command;
 
 class ViewInstallCommand extends Command
 {
-    protected static $defaultName = 'view:install';
+    protected $signature = 'view:install
+        {--react? : Install react}
+        {--tailwind? : Install tailwind}
+        {--svelte? : Install svelte}
+        {--vue? : Install vue}';
+    protected $description = 'Install frontend scaffolding';
+    protected $help = 'Install frontend scaffolding';
 
-    protected function configure()
+    protected function handle()
     {
-        $this
-            ->setHelp('Run a composer script')
-            ->setDescription('Run a script in your composer.json')
-            ->addOption('react', null, InputOption::VALUE_NONE, 'Install react')
-            ->addOption('tailwind', null, InputOption::VALUE_NONE, 'Install tailwind')
-            // ->addOption('pm', 'pm', InputOption::VALUE_OPTIONAL, 'Package manager to use', 'npm')
-            ->addOption('svelte', null, InputOption::VALUE_NONE, 'Install svelte')
-            ->addOption('vue', null, InputOption::VALUE_NONE, 'Install vue');
-    }
+        $engine = $this->option('react')
+            ? 'react'
+            : ($this->option('svelte')
+                ? 'svelte'
+                : ($this->option('vue')
+                    ? 'vue'
+                    : ($this->option('tailwind')
+                        ? 'tailwind'
+                        : null)));
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        if (!$input->getOption('react') && !$input->getOption('tailwind') && !$input->getOption('svelte') && !$input->getOption('vue')) {
-            $helper = $this->getHelper('question');
-
-            $options = $helper->ask(
-                $input,
-                $output,
-                (new ChoiceQuestion(
-                    '<info>? What do you want to install?</info>',
-                    ['react', 'vue', 'svelte', 'tailwind']
-                ))
-                    ->setMultiselect(true)
-                    ->setErrorMessage('❌ Invalid option selected!')
-            );
-
-            foreach ($options as $option) {
-                $input->setOption($option, true);
-            }
+        if (!$engine) {
+            $engine = sprout()->prompt([
+                'type' => 'select',
+                'message' => 'What do you want to install?',
+                'options' => [
+                    ['title' => 'React JS', 'value' => 'react'],
+                    ['title' => 'Vue JS', 'value' => 'vue'],
+                    ['title' => 'Svelte', 'value' => 'svelte'],
+                    ['title' => 'Blade + Tailwind', 'value' => 'tailwind'],
+                ],
+            ]);
         }
 
-        if ($input->getOption('react')) {
-            $this->installReact($output);
-        } elseif ($input->getOption('vue')) {
-            $this->installVue($output);
-        } elseif ($input->getOption('svelte')) {
-            $this->installSvelte($output);
+        if ($engine === 'react') {
+            $this->installReact();
+        } elseif ($engine === 'vue') {
+            $this->installVue();
+        } elseif ($engine === 'svelte') {
+            $this->installSvelte();
         }
 
-        if ($input->getOption('tailwind')) {
-            $this->installTailwind($output);
+        if ($engine === 'tailwind') {
+            $this->installTailwind();
         }
 
         return 0;
@@ -65,29 +59,26 @@ class ViewInstallCommand extends Command
     /**
      * Install react
      */
-    protected function installReact($output)
+    protected function installReact()
     {
-        $output->writeln("📦  <info>Installing react...</info>\n");
+        $this->writeln("📦  <info>Installing react...</info>\n");
 
         $directory = getcwd();
-        $npm = \Aloe\Core::findNpm();
-        $composer = \Aloe\Core::findComposer();
-        $success = \Aloe\Core::run("$npm install @leafphp/vite-plugin @vitejs/plugin-react @inertiajs/react react react-dom vite tailwindcss @tailwindcss/vite", $output);
 
-        if (!$success) {
-            $output->writeln('❌  <error>Failed to install react</error>');
+        if (!sprout()->npm()->install('npm install @leafphp/vite-plugin @vitejs/plugin-react @inertiajs/react react react-dom vite tailwindcss @tailwindcss/vite')) {
+            $this->writeln('❌  <error>Failed to install react</error>');
             return 1;
         }
 
-        \Aloe\Core::run("$npm install -D tailwindcss-animate prettier prettier-plugin-organize-imports prettier-plugin-tailwindcss eslint eslint-config-prettier eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks", $output);
+        sprout()
+            ->process('npm install -D tailwindcss-animate prettier prettier-plugin-organize-imports prettier-plugin-tailwindcss eslint eslint-config-prettier eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks')
+            ->run();
 
-        $output->writeln("\n✅  <info>React installed successfully</info>");
-        $output->writeln("🧱  <info>Setting up Leaf React server bridge...</info>\n");
+        $this->writeln("\n✅  <info>React installed successfully</info>");
+        $this->writeln("🧱  <info>Setting up Leaf React server bridge...</info>\n");
 
-        $success = \Aloe\Core::run("$composer require leafs/inertia leafs/vite", $output);
-
-        if (!$success) {
-            $output->writeln('❌  <error>Failed to setup Leaf React server bridge</error>');
+        if (!sprout()->composer()->install('leafs/inertia leafs/vite')) {
+            $this->writeln('❌  <error>Failed to setup Leaf React server bridge</error>');
             return 1;
         }
 
@@ -103,8 +94,8 @@ class ViewInstallCommand extends Command
         $package['scripts']['build'] = 'vite build';
         file_put_contents("$directory/package.json", json_encode($package, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-        if (storage()->exists("$directory/vite.config.js")) {
-            storage()->writeFile("$directory/vite.config.js", function ($content) {
+        if (\Leaf\FS\File::exists("$directory/vite.config.js")) {
+            \Leaf\FS\File::write("$directory/vite.config.js", function ($content) {
                 if (strpos($content, "@vitejs/plugin-react") === false) {
                     $content = str_replace(
                         ["import leaf from '@leafphp/vite-plugin';", 'import leaf from "@leafphp/vite-plugin";'],
@@ -133,8 +124,8 @@ class ViewInstallCommand extends Command
             });
         }
 
-        if (storage()->exists("$directory/app/routes/_app.php")) {
-            storage()->writeFile("$directory/app/routes/_app.php", function ($content) {
+        if (\Leaf\FS\File::exists("$directory/app/routes/_app.php")) {
+            \Leaf\FS\File::write("$directory/app/routes/_app.php", function ($content) {
                 if (strpos($content, 'inertia(') === false) {
                     return str_replace(
                         "app()->view('/', 'index');",
@@ -150,7 +141,7 @@ class ViewInstallCommand extends Command
         }
 
         if (file_exists("$directory/app/views/css/app.css")) {
-            storage()->writeFile("$directory/app/views/css/app.css", function ($content) {
+            \Leaf\FS\File::write("$directory/app/views/css/app.css", function ($content) {
                 if (strpos($content, '@import "tailwindcss";') === false) {
                     return "@import \"tailwindcss\";\n@source \"../\";\n\n$content";
                 }
@@ -159,10 +150,10 @@ class ViewInstallCommand extends Command
             });
         }
 
-        $output->writeln("\n⚛️   <info>React setup successfully</info>");
-        $output->writeln("👉  Get started with the following commands:\n");
-        $output->writeln('    php leaf serve <info>- start dev server</info>');
-        $output->writeln('    php leaf view:build <info>- build for production</info>');
+        $this->writeln("\n⚛️   <info>React setup successfully</info>");
+        $this->writeln("👉  Get started with the following commands:\n");
+        $this->writeln('    php leaf serve <info>- start dev server</info>');
+        $this->writeln('    php leaf view:build <info>- build for production</info>');
 
         return 0;
     }
@@ -170,29 +161,23 @@ class ViewInstallCommand extends Command
     /**
      * Install svelte
      */
-    protected function installSvelte($output)
+    protected function installSvelte()
     {
-        $output->writeln("📦  <info>Installing svelte...</info>\n");
+        $this->writeln("📦  <info>Installing svelte...</info>\n");
 
         $directory = getcwd();
-        $npm = \Aloe\Core::findNpm();
-        $composer = \Aloe\Core::findComposer();
-        $success = \Aloe\Core::run("$npm add @leafphp/vite-plugin svelte @sveltejs/vite-plugin-svelte @inertiajs/svelte vite tailwindcss @tailwindcss/vite", $output);
-
-        if (!$success) {
-            $output->writeln('❌  <error>Failed to install svelte</error>');
+        if (!sprout()->npm()->install('@leafphp/vite-plugin svelte @sveltejs/vite-plugin-svelte @inertiajs/svelte vite tailwindcss @tailwindcss/vite')) {
+            $this->writeln('❌  <error>Failed to install svelte</error>');
             return 1;
         }
 
-        \Aloe\Core::run("$npm install -D tailwindcss-animate prettier prettier-plugin-organize-imports prettier-plugin-tailwindcss eslint eslint-config-prettier eslint-plugin-svelte", $output);
+        sprout()->npm()->install('tailwindcss-animate prettier prettier-plugin-organize-imports prettier-plugin-tailwindcss eslint eslint-config-prettier eslint-plugin-svelte');
 
-        $output->writeln("\n✅  <info>Svelte installed successfully</info>");
-        $output->writeln("🧱  <info>Setting up Leaf Svelte server bridge...</info>\n");
+        $this->writeln("\n✅  <info>Svelte installed successfully</info>");
+        $this->writeln("🧱  <info>Setting up Leaf Svelte server bridge...</info>\n");
 
-        $success = \Aloe\Core::run("$composer require leafs/inertia leafs/vite", $output);
-
-        if (!$success) {
-            $output->writeln('❌  <error>Failed to setup Leaf Svelte server bridge</error>');
+        if (!sprout()->composer()->install('leafs/inertia leafs/vite')) {
+            $this->writeln('❌  <error>Failed to setup Leaf Svelte server bridge</error>');
             return 1;
         }
 
@@ -208,8 +193,8 @@ class ViewInstallCommand extends Command
         $package['scripts']['build'] = 'vite build';
         file_put_contents("$directory/package.json", json_encode($package, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-        if (storage()->exists("$directory/vite.config.js")) {
-            storage()->writeFile("$directory/vite.config.js", function ($content) {
+        if (\Leaf\FS\File::exists("$directory/vite.config.js")) {
+            \Leaf\FS\File::write("$directory/vite.config.js", function ($content) {
                 if (strpos($content, "@sveltejs/vite-plugin-svelte") === false) {
                     $content = str_replace(
                         ["import leaf from '@leafphp/vite-plugin';", 'import leaf from "@leafphp/vite-plugin";'],
@@ -238,8 +223,8 @@ class ViewInstallCommand extends Command
             });
         }
 
-        if (storage()->exists("$directory/app/routes/_app.php")) {
-            storage()->writeFile("$directory/app/routes/_app.php", function ($content) {
+        if (\Leaf\FS\File::exists("$directory/app/routes/_app.php")) {
+            \Leaf\FS\File::write("$directory/app/routes/_app.php", function ($content) {
                 if (strpos($content, 'inertia(') === false) {
                     return str_replace(
                         "app()->view('/', 'index');",
@@ -255,7 +240,7 @@ class ViewInstallCommand extends Command
         }
 
         if (file_exists("$directory/app/views/css/app.css")) {
-            storage()->writeFile("$directory/app/views/css/app.css", function ($content) {
+            \Leaf\FS\File::write("$directory/app/views/css/app.css", function ($content) {
                 if (strpos($content, '@import "tailwindcss";') === false) {
                     return "@import \"tailwindcss\";\n@source \"../\";\n\n$content";
                 }
@@ -264,10 +249,10 @@ class ViewInstallCommand extends Command
             });
         }
 
-        $output->writeln("\n⚛️   <info>Svelte setup successfully</info>");
-        $output->writeln("👉  Get started with the following commands:\n");
-        $output->writeln('    php leaf serve <info>- start dev server</info>');
-        $output->writeln('    php leaf view:build <info>- build for production</info>');
+        $this->writeln("\n⚛️   <info>Svelte setup successfully</info>");
+        $this->writeln("👉  Get started with the following commands:\n");
+        $this->writeln('    php leaf serve <info>- start dev server</info>');
+        $this->writeln('    php leaf view:build <info>- build for production</info>');
 
         return 0;
     }
@@ -275,30 +260,26 @@ class ViewInstallCommand extends Command
     /**
      * Install tailwind
      */
-    protected function installTailwind($output)
+    protected function installTailwind()
     {
         $directory = getcwd();
-        $npm = \Aloe\Core::findNpm();
-        $composer = \Aloe\Core::findComposer();
 
-        $output->writeln("📦  <info>Installing tailwind...</info>\n");
+        $this->writeln("📦  <info>Installing tailwind...</info>\n");
 
-        $success = \Aloe\Core::run("$npm install @leafphp/vite-plugin vite tailwindcss @tailwindcss/vite", $output);
-
-        if (!$success) {
-            $output->writeln('❌  <error>Failed to install tailwind</error>');
+        if (!sprout()->npm()->install('@leafphp/vite-plugin vite tailwindcss @tailwindcss/vite')) {
+            $this->writeln('❌  <error>Failed to install tailwind</error>');
             return 1;
         }
 
-        \Aloe\Core::run("$npm install -D tailwindcss-animate", $output);
+        sprout()->process('npm install -D tailwindcss-animate')->run();
 
-        $output->writeln("\n✅  <info>Tailwind CSS installed successfully</info>");
-        $output->writeln("🧱  <info>Setting up Leaf server bridge...</info>\n");
+        $this->writeln("\n✅  <info>Tailwind CSS installed successfully</info>");
+        $this->writeln("🧱  <info>Setting up Leaf server bridge...</info>\n");
 
-        $success = \Aloe\Core::run("$composer require leafs/vite", $output);
+        $success = sprout()->composer()->install('leafs/vite');
 
         if (!$success) {
-            $output->writeln('❌  <error>Failed to setup Leaf server bridge</error>');
+            $this->writeln('❌  <error>Failed to setup Leaf server bridge</error>');
             return 1;
         }
 
@@ -345,7 +326,7 @@ class ViewInstallCommand extends Command
         }
 
         if (file_exists("$directory/app/views/css/app.css")) {
-            storage()->writeFile("$directory/app/views/css/app.css", function ($content) {
+            \Leaf\FS\File::write("$directory/app/views/css/app.css", function ($content) {
                 if (strpos($content, '@import "tailwindcss";') === false) {
                     return "@import \"tailwindcss\";\n@source \"../\";\n\n$content";
                 }
@@ -360,10 +341,10 @@ class ViewInstallCommand extends Command
         $package['scripts']['build'] = 'vite build';
         file_put_contents("$directory/package.json", json_encode($package, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-        $output->writeln("\n🎉  <info>Tailwind CSS setup successfully</info>");
-        $output->writeln("👉  Get started with the following commands:\n");
-        $output->writeln('    php leaf serve <info>- start dev server</info>');
-        $output->writeln("    php leaf view:build <info>- build for production</info>\n");
+        $this->writeln("\n🎉  <info>Tailwind CSS setup successfully</info>");
+        $this->writeln("👉  Get started with the following commands:\n");
+        $this->writeln('    php leaf serve <info>- start dev server</info>');
+        $this->writeln("    php leaf view:build <info>- build for production</info>\n");
 
         return 0;
     }
@@ -371,29 +352,24 @@ class ViewInstallCommand extends Command
     /**
      * Install vue
      */
-    protected function installVue($output)
+    protected function installVue()
     {
-        $output->writeln("📦  <info>Installing Vue...</info>\n");
+        $this->writeln("📦  <info>Installing Vue...</info>\n");
 
         $directory = getcwd();
-        $npm = \Aloe\Core::findNpm();
-        $composer = \Aloe\Core::findComposer();
-        $success = \Aloe\Core::run("$npm install @leafphp/vite-plugin @vitejs/plugin-vue @inertiajs/vue3@^1.0 vue vite tailwindcss @tailwindcss/vite", $output);
 
-        if (!$success) {
-            $output->writeln('❌  <error>Failed to install Vue</error>');
+        if (!sprout()->npm()->install('@leafphp/vite-plugin @vitejs/plugin-vue @inertiajs/vue3@^1.0 vue vite tailwindcss @tailwindcss/vite')) {
+            $this->writeln('❌  <error>Failed to install Vue</error>');
             return 1;
         }
 
-        \Aloe\Core::run("$npm install -D tailwindcss-animate prettier prettier-plugin-organize-imports prettier-plugin-tailwindcss eslint eslint-config-prettier eslint-plugin-vue", $output);
+        sprout()->npm()->install('-D tailwindcss-animate prettier prettier-plugin-organize-imports prettier-plugin-tailwindcss eslint eslint-config-prettier eslint-plugin-vue');
 
-        $output->writeln("\n✅  <info>Vue installed successfully</info>");
-        $output->writeln("🧱  <info>Setting up Leaf Vue server bridge...</info>\n");
+        $this->writeln("\n✅  <info>Vue installed successfully</info>");
+        $this->writeln("🧱  <info>Setting up Leaf Vue server bridge...</info>\n");
 
-        $success = \Aloe\Core::run("$composer require leafs/inertia leafs/vite", $output);
-
-        if (!$success) {
-            $output->writeln('❌  <error>Failed to setup Leaf Vue server bridge</error>');
+        if (!sprout()->composer()->install('leafs/inertia leafs/vite')) {
+            $this->writeln('❌  <error>Failed to setup Leaf Vue server bridge</error>');
             return 1;
         }
 
@@ -409,8 +385,8 @@ class ViewInstallCommand extends Command
         $package['scripts']['build'] = 'vite build';
         file_put_contents("$directory/package.json", json_encode($package, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-        if (storage()->exists("$directory/vite.config.js")) {
-            storage()->writeFile("$directory/vite.config.js", function ($content) {
+        if (\Leaf\FS\File::exists("$directory/vite.config.js")) {
+            \Leaf\FS\File::write("$directory/vite.config.js", function ($content) {
                 if (strpos($content, "@vitejs/plugin-vue") === false) {
                     $content = str_replace(
                         ["import leaf from '@leafphp/vite-plugin';", 'import leaf from "@leafphp/vite-plugin";'],
@@ -446,8 +422,8 @@ class ViewInstallCommand extends Command
             });
         }
 
-        if (storage()->exists("$directory/app/routes/_app.php")) {
-            storage()->writeFile("$directory/app/routes/_app.php", function ($content) {
+        if (\Leaf\FS\File::exists("$directory/app/routes/_app.php")) {
+            \Leaf\FS\File::write("$directory/app/routes/_app.php", function ($content) {
                 if (strpos($content, 'inertia(') === false) {
                     return str_replace(
                         "app()->view('/', 'index');",
@@ -463,7 +439,7 @@ class ViewInstallCommand extends Command
         }
 
         if (file_exists("$directory/app/views/css/app.css")) {
-            storage()->writeFile("$directory/app/views/css/app.css", function ($content) {
+            \Leaf\FS\File::write("$directory/app/views/css/app.css", function ($content) {
                 if (strpos($content, '@import "tailwindcss";') === false) {
                     return "@import \"tailwindcss\";\n@source \"../\";\n\n$content";
                 }
@@ -472,10 +448,10 @@ class ViewInstallCommand extends Command
             });
         }
 
-        $output->writeln("\n⚛️   <info>Vue setup successfully</info>");
-        $output->writeln("👉  Get started with the following commands:\n");
-        $output->writeln('    php leaf serve <info>- start dev server</info>');
-        $output->writeln("    php leaf view:build <info>- build for production</info>\n");
+        $this->writeln("\n⚛️   <info>Vue setup successfully</info>");
+        $this->writeln("👉  Get started with the following commands:\n");
+        $this->writeln('    php leaf serve <info>- start dev server</info>');
+        $this->writeln("    php leaf view:build <info>- build for production</info>\n");
 
         return 0;
     }

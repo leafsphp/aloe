@@ -2,35 +2,27 @@
 
 namespace Aloe\Command;
 
-use Aloe\Command;
+use Leaf\Sprout\Command;
 use Illuminate\Support\Str;
 
 class GenerateHelperCommand extends Command
 {
-    protected static $defaultName = 'g:helper';
-    public $description = 'Create a new helper class';
-    public $help = 'Create a new helper class';
-
-    protected function config()
-    {
-        $this->setArgument('helper', 'required', 'helper name');
-    }
+    protected static $defaultName = 'g:helper
+        {helper : The name of the helper}';
+    protected $description = 'Create a new helper class';
+    protected $help = 'Create a new helper class';
 
     protected function handle()
     {
         list($helper, $modelName) = $this->mapNames($this->argument('helper'));
 
-        $file = Config::rootpath(HelpersPath("$helper.php"));
+        $helperFile = getcwd() . HelpersPath("$helper.php");
 
-        if (file_exists($file)) {
+        if (file_exists($helperFile)) {
             return $this->error("$helper already exists!");
         }
 
-        if (file_exists(Config::rootpath(HelpersPath('.gitkeep')))) {
-            unlink(Config::rootpath(HelpersPath('.gitkeep')));
-        }
-
-        \Leaf\FS\File::create($file, function () use ($helper, $modelName) {
+        \Leaf\FS\File::create($helperFile, function () use ($helper, $modelName) {
             $fileContent = \file_get_contents(__DIR__ . '/stubs/helper.stub');
             $fileContent = str_replace(['ClassName', 'ModelName'], [$helper, $modelName], $fileContent);
 

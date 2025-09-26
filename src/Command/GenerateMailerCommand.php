@@ -2,19 +2,15 @@
 
 namespace Aloe\Command;
 
-use Aloe\Command;
+use Leaf\Sprout\Command;
 use Illuminate\Support\Str;
 
 class GenerateMailerCommand extends Command
 {
-    protected static $defaultName = 'g:mailer';
-    public $description = 'Create a new mailer';
-    public $help = 'Create a new mailer';
-
-    protected function config()
-    {
-        $this->setArgument('mailer', 'required', 'mailer name');
-    }
+    protected $signature = 'g:mailer
+        {mailer : The name of the mailer}';
+    protected $description = 'Create a new mailer';
+    protected $help = 'Create a new mailer';
 
     protected function handle()
     {
@@ -24,18 +20,18 @@ class GenerateMailerCommand extends Command
             $mailer .= 'Mailer';
         }
 
-        $file = Config::rootpath(AppPaths('mail') . "/$mailer.php");
+        $mailerFile = getcwd() . AppPaths('mail') . "/$mailer.php";
 
-        if (file_exists($file)) {
+        if (file_exists($mailerFile)) {
             $this->error("$mailer already exists");
             return 1;
         }
 
-        if (!is_dir(dirname($file))) {
-            mkdir(dirname($file), 0777, true);
+        if (!is_dir(dirname($mailerFile))) {
+            mkdir(dirname($mailerFile), 0777, true);
         }
 
-        \Leaf\FS\File::create($file, function () use ($mailer) {
+        \Leaf\FS\File::create($mailerFile, function () use ($mailer) {
             $fileContent = \file_get_contents(__DIR__ . '/stubs/mailer.stub');
             $fileContent = str_replace(
                 'ClassName',

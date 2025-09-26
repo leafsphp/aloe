@@ -3,18 +3,14 @@
 namespace Aloe\Command;
 
 use Aloe\Installer;
+use Leaf\Sprout\Command;
 
-class ScaffoldLandingPageCommand extends \Aloe\Command
+class ScaffoldLandingPageCommand extends Command
 {
-    protected static $defaultName = 'scaffold:landing-page';
-    public $description = 'Scaffold landing page for your app';
-    public $help = 'Create basic views, components and assets for your landing page';
-
-    protected function config()
-    {
-        $this
-            ->setOption('scaffold', 's', 'optional', 'Which scaffold to use for authentication (default/react/vue/svelte)', 'default');
-    }
+    protected $signature = 'scaffold:landing-page
+        {--s|scaffold=default : Which scaffold to use for authentication (default/react/vue/svelte)}';
+    protected $description = 'Scaffold landing page for your app';
+    protected $help = 'Create basic views, components and assets for your landing page';
 
     protected function handle()
     {

@@ -2,21 +2,16 @@
 
 namespace Aloe\Command;
 
-use Aloe\Command;
+use Leaf\Sprout\Command;
 use Illuminate\Support\Str;
 
 class GenerateModelCommand extends Command
 {
-    protected static $defaultName = 'g:model';
-    public $description = 'Create a new model class';
-    public $help = 'Create a new model class';
-
-    protected function config()
-    {
-        $this
-            ->setArgument('model', 'required', 'model file name')
-            ->setOption('migration', 'm', 'none', 'Create a migration for model');
-    }
+    protected $signature = 'g:model
+        {model : The name of the model}
+        {--m|migration? : Create a migration for model}';
+    protected $description = 'Create a new model class';
+    protected $help = 'Create a new model class';
 
     protected function handle()
     {
@@ -27,7 +22,7 @@ class GenerateModelCommand extends Command
             list($dirname, $className) = explode('/', $model);
         }
 
-        $file = Config::rootpath(ModelsPath("$model.php"));
+        $file = getcwd() . ModelsPath("$model.php");
 
         if (file_exists($file)) {
             $this->error('Model already exists');
@@ -41,16 +36,16 @@ class GenerateModelCommand extends Command
             return $fileContent;
         }, ['recursive' => true]);
 
-        $this->info(asComment($model) . ' model generated');
+        $this->info("<comment>$model</comment> model generated");
 
         if ($this->option('migration')) {
             $migration = Str::snake(Str::plural($model));
-            $process = $this->runProcess(['php', 'leaf', 'g:migration', $migration]);
+            $process = sprout()->process("php leaf g:migration $migration")->run();
 
             $this->info(
                 $process === 0 ?
-                    asComment($migration) . ' migration generated' :
-                    asError('Couldn\'t generate migration')
+                    "<comment>$migration</comment> migration generated" :
+                    "<error>Couldn't generate migration</error>"
             );
 
             return $process;

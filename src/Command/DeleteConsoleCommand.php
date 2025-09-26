@@ -2,19 +2,15 @@
 
 namespace Aloe\Command;
 
-use Aloe\Command;
+use Leaf\Sprout\Command;
 use Illuminate\Support\Str;
 
 class DeleteConsoleCommand extends Command
 {
-    protected static $defaultName = 'd:command';
-    public $description = 'Delete a console command';
-    public $help = 'Delete a console command';
-
-    protected function config()
-    {
-        $this->setArgument('file', 'required', 'The name of the console file');
-    }
+    protected $signature = 'd:command
+        {file : The name of the console file}';
+    protected $description = 'Delete a console command';
+    protected $help = 'Delete a console command';
 
     protected function handle()
     {
@@ -24,7 +20,7 @@ class DeleteConsoleCommand extends Command
             $command .= 'Command';
         }
 
-        $file = Config::rootpath(CommandsPath("$command.php"));
+        $file = getcwd() . CommandsPath("$command.php");
 
         if (!\Leaf\FS\File::exists($file)) {
             $this->error("$command doesn't exist!");

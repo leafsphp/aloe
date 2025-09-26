@@ -2,13 +2,13 @@
 
 namespace Aloe\Command;
 
-use Aloe\Command;
+use Leaf\Sprout\Command;
 
 class ConfigLibCommand extends Command
 {
-    protected static $defaultName = 'config:lib';
-    public $description = 'Setup Leaf MVC to use external libraries';
-    public $help = 'Setup Leaf MVC to use external libraries';
+    protected $signature = 'config:lib';
+    protected $description = 'Setup Leaf MVC to use external libraries';
+    protected $help = 'Setup Leaf MVC to use external libraries';
 
     protected function handle()
     {

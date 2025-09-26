@@ -2,13 +2,14 @@
 
 namespace Aloe\Command;
 
+use Leaf\Sprout\Command;
 use Psy\Shell;
 
-class InteractCommand extends \Aloe\Command
+class InteractCommand extends Command
 {
-    protected static $defaultName = 'interact';
-    public $description = 'Interact with your application';
-    public $help = 'Interact with your application';
+    protected $signature = 'interact';
+    protected $description = 'Interact with your application';
+    protected $help = 'Interact with your application';
 
     protected function handle()
     {

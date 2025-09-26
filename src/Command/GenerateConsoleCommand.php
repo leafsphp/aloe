@@ -2,36 +2,28 @@
 
 namespace Aloe\Command;
 
-use Aloe\Command;
+use Leaf\Sprout\Command;
 use Illuminate\Support\Str;
 
 class GenerateConsoleCommand extends Command
 {
-    protected static $defaultName = 'g:command';
-    public $description = 'Create a new console command';
-    public $help = 'Create a custom aloe cli command';
-
-    protected function config()
-    {
-        $this->setArgument('consoleCommand', 'required', 'command name');
-    }
+    protected $signature = 'g:command
+        {consoleCommand : The name of the console command}';
+    protected $description = 'Create a new console command';
+    protected $help = 'Create a custom aloe cli command';
 
     protected function handle()
     {
         list($commandName, $className) = $this->mapNames($this->argument('consoleCommand'));
 
-        $file = Config::rootpath(CommandsPath("$className.php"));
+        $commandFile = getcwd() . CommandsPath("$className.php");
 
-        if (file_exists($file)) {
+        if (file_exists($commandFile)) {
             $this->error("$className already exists!");
             return 1;
         }
 
-        if (file_exists(Config::rootpath(CommandsPath('.gitkeep')))) {
-            unlink(Config::rootpath(CommandsPath('.gitkeep')));
-        }
-
-        \Leaf\FS\File::create($file, function () use ($className, $commandName) {
+        \Leaf\FS\File::create($commandFile, function () use ($className, $commandName) {
             return str_replace(
                 ['ClassName', 'CommandName'],
                 [$className, $commandName],

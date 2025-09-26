@@ -3,12 +3,13 @@
 namespace Aloe\Command;
 
 use Aloe\Installer;
+use Leaf\Sprout\Command;
 
-class ScaffoldShadcnCommand extends \Aloe\Command
+class ScaffoldShadcnCommand extends Command
 {
-    protected static $defaultName = 'scaffold:shadcn';
-    public $description = 'Scaffold shadcn/ui for your react app';
-    public $help = 'Create support files for shadcn/ui in your react inertia app';
+    protected $signature = 'scaffold:shadcn';
+    protected $description = 'Scaffold shadcn/ui for your react app';
+    protected $help = 'Create support files for shadcn/ui in your react inertia app';
 
     protected function handle()
     {

@@ -2,35 +2,28 @@
 
 namespace Aloe\Command;
 
-use Aloe\Command;
+use Leaf\Sprout\Command;
 
 class EnvSetCommand extends Command
 {
-    protected static $defaultName = 'env:set';
-    public $description = 'Set a new environment variable for your app';
-    public $help = 'Set a new environment variable in the .env file and update .env.example if it exists.';
-
-    protected function configure()
-    {
-        $this
-            ->addArgument('key', null, 'The environment variable key')
-            ->addArgument('value', null, 'The environment variable value');
-    }
+    protected $signature = 'env:set
+        {key : The environment variable key}
+        {value : The environment variable value}';
+    protected $description = 'Set a new environment variable for your app';
+    protected $help = 'Set a new environment variable in the .env file and update .env.example if it exists.';
 
     protected function handle()
     {
         if (!file_exists(Config::rootpath('.env'))) {
-            $process = $this->runProcess(['php', 'leaf', 'env:generate']);
+            $this->comment('No .env file found. Generating one...');
 
-            if ($process !== 0) {
-                $this->error('Couldn\'t generate .env file. Please run `leaf env:generate` first.');
+            if (sprout()->process('php leaf env:generate')->run() !== 0) {
+                $this->error('Couldn\'t generate .env file. Please run `php leaf env:generate` first.');
                 return 1;
             }
         }
 
-        $directory = getcwd();
-
-        \Leaf\FS\File::write("$directory/.env", function ($env) {
+        \Leaf\FS\File::write(getcwd() . '/.env', function ($env) {
             $key = $this->argument('key');
             $value = $this->argument('value');
 
@@ -45,8 +38,8 @@ class EnvSetCommand extends Command
             return $env;
         });
 
-        if (file_exists(Config::rootpath('.env.example'))) {
-            \Leaf\FS\File::write(Config::rootpath('.env.example'), function ($envExample) {
+        if (file_exists($envExampleFile = getcwd() . '/.env.example')) {
+            \Leaf\FS\File::write($envExampleFile, function ($envExample) {
                 $key = $this->argument('key');
 
                 if (strpos($envExample, $key) === false) {

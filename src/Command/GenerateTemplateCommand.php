@@ -2,26 +2,23 @@
 
 namespace Aloe\Command;
 
-class GenerateTemplateCommand extends \Aloe\Command
+use Leaf\Sprout\Command;
+
+class GenerateTemplateCommand extends Command
 {
-    protected static $defaultName = 'g:template';
-    public $description = 'Create a new view file';
-    public $help = 'Create a new basic view file';
+    protected $signature = 'g:template
+        {name : The name of the template to create}
+        {--t|type=blade : The type of template to create: jsx, vue, svelte, blade}
+        {--r|route : Generate a route for the template}';
+    protected $description = 'Create a new view file';
+    protected $help = 'Create a new basic view file';
 
     protected $type = 'blade';
-
-    protected function config()
-    {
-        $this
-            ->setAliases(['g:view'])
-            ->setArgument('name', 'REQUIRED', 'The name of the template to create')
-            ->setOption('type', 't', 'OPTIONAL', 'The type of template to create: jsx, vue, svelte, blade')
-            ->setOption('route', 'r', 'NONE', 'Generate a route for the template');
-    }
+    protected $aliases = ['g:view'];
 
     protected function handle()
     {
-        $directory = Config::rootpath();
+        $directory = getcwd();
 
         if (\Leaf\FS\File::exists("$directory/app/views/_inertia.blade.php")) {
             $content = \Leaf\FS\File::read("$directory/app/views/_inertia.blade.php");
@@ -41,9 +38,9 @@ class GenerateTemplateCommand extends \Aloe\Command
 
         $templateName = strtolower($this->argument('name'));
         $templateName = $this->getTemplateName($templateName);
-        $template = Config::rootpath(ViewsPath(
+        $template = getcwd() . ViewsPath(
             $this->type === 'blade' ? $templateName : "/js/$templateName"
-        ));
+        );
 
         storage()->createFile($template, function () {
             return str_replace(

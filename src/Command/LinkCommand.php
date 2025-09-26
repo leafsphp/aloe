@@ -2,27 +2,28 @@
 
 namespace Aloe\Command;
 
-class LinkCommand extends \Aloe\Command
+use Leaf\Sprout\Command;
+
+class LinkCommand extends Command
 {
-    protected static $defaultName = 'link';
-    public $description = 'Create a symbolic link for the storage directory';
-    public $help = 'Create a symbolic link for the storage directory';
+    protected $signature = 'link';
+    protected $description = 'Create a symbolic link for the storage directory';
+    protected $help = 'Create a symbolic link for the storage directory';
 
     protected function handle()
     {
         $this->info('==> Creating symbolic link for storage directory...');
 
-        $publicPath = Config::rootpath('/public');
-        $storagePath = Config::rootpath(StoragePath('app/public'));
+        $publicPath = getcwd() . '/public';
+        $storagePath = getcwd() . StoragePath('app/public');
 
         if (file_exists("$publicPath/storage")) {
             $this->error('Symbolic link already exists');
-
             return 1;
         }
 
-        if (!file_exists($storagePath)) {
-            storage()->createFolder($storagePath, [
+        if (!file_exists(filename: $storagePath)) {
+            \Leaf\FS\Directory::create($storagePath, [
                 'recursive' => true,
             ]);
         }
@@ -32,7 +33,7 @@ class LinkCommand extends \Aloe\Command
             $publicPath = str_replace('/', '\\', $publicPath);
             $storagePath = str_replace('/', '\\', $storagePath);
 
-            $this->writeln(asComment('Experimental: ') . 'This command is experimental and may not work on Windows');
+            $this->writeln('<comment>Experimental: </comment>This command is experimental and may not work on Windows');
             $this->writeln(shell_exec("mklink /J $publicPath\\storage $storagePath"));
 
         } else {
@@ -44,6 +45,6 @@ class LinkCommand extends \Aloe\Command
             }
         }
 
-        $this->writeln(asInfo('✔') . ' Symbolic link created successfully');
+        $this->writeln('<info>✔</info> Symbolic link created successfully');
     }
 }

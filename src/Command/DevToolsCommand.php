@@ -2,23 +2,26 @@
 
 namespace Aloe\Command;
 
-use Aloe\Installer;
-use Leaf\FS\Storage;
+use Leaf\Sprout\Command;
 
-class DevToolsCommand extends \Aloe\Command
+class DevToolsCommand extends Command
 {
-    protected static $defaultName = 'devtools:install';
-    public $description = 'Install the Leaf PHP devtools';
-    public $help = 'Install the leaf PHP Dev tools';
+    protected $signature = 'devtools:install';
+    protected $description = 'Install the Leaf PHP devtools';
+    protected $help = 'Install the leaf PHP Dev tools';
 
     protected function handle()
     {
         $this->comment('Installing leaf devtools...');
-        Installer::installPackages('devtools');
+
+        if (sprout()->composer()->install('leafs/devtools')->getExitCode() !== 0) {
+            $this->error('Failed to install leaf devtools via composer. Please run "composer require leafs/devtools" manually.');
+            return 1;
+        }
 
         $this->comment('Installing leaf devtools routes...');
 
-        $rootFile = Storage::read(Config::rootPath(PublicPath('index.php')));
+        $rootFilePath = getcwd() . PublicPath('index.php');
         $rootFile = str_replace(
             "/*
 |--------------------------------------------------------------------------
@@ -30,11 +33,11 @@ class DevToolsCommand extends \Aloe\Command
 */
 \Leaf\DevTools::install();",
             '',
-            $rootFile
+            \Leaf\FS\File::read($rootFilePath)
         );
 
         $rootFile = str_replace(
-            "require dirname(__DIR__) . '/vendor/autoload.php';",
+            ["require dirname(__DIR__) . '/vendor/autoload.php';", 'require "$appPath/vendor/autoload.php"'],
             "require dirname(__DIR__) . '/vendor/autoload.php';
 
 /*
@@ -51,7 +54,7 @@ class DevToolsCommand extends \Aloe\Command
 
         $rootFile = str_replace("\n\n\n", "\n", $rootFile);
 
-        Storage::writeFile(Config::rootPath(PublicPath('index.php')), $rootFile);
+        \Leaf\FS\File::write($rootFilePath, $rootFile);
 
         $this->info('Leaf devtools installed successfully!');
 

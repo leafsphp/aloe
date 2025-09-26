@@ -2,27 +2,22 @@
 
 namespace Aloe\Command;
 
-use Aloe\Command;
+use Leaf\Sprout\Command;
 
 class ServeCommand extends Command
 {
-    protected static $defaultName = 'serve';
-    public $description = 'Start the leaf development server';
-    public $help = 'Run your Leaf app on PHP\'s local development server';
+    protected $signature = 'serve
+        {--p|port=5500 : Port to run Leaf app on}
+        {--t|path? : Path to your app}
+        {--s|host=localhost : Your application host}
+        {--c|no-concurrent? : Run PHP server without Vite server}
+        {--w|no-env-watch? : Run PHP server without automatic .env file watching}';
+    protected $description = 'Start the leaf development server';
+    protected $help = 'Run your Leaf app on PHP\'s local development server';
 
     protected $host;
     protected $port;
     protected $path;
-
-    protected function config()
-    {
-        $this
-            ->setOption('port', 'p', 'optional', 'Port to run Leaf app on', _env('APP_PORT', 5500))
-            ->setOption('path', 't', 'optional', 'Path to your app', getcwd() . '/public')
-            ->setOption('host', 's', 'optional', 'Your application host', 'localhost')
-            ->setOption('no-concurrent', 'c', 'none', 'Run PHP server without Vite server')
-            ->setOption('no-env-watch', 'w', 'none', 'Run PHP server without automatic .env file watching');
-    }
 
     protected function handle()
     {
@@ -46,11 +41,11 @@ class ServeCommand extends Command
             return 1;
         }
 
-        $this->writeln(asComment(" _                __   __  ____     ______
+        $this->writeln("<comment> _                __   __  ____     ______
 | |    ___  __ _ / _| |  \/  \ \   / / ___|
 | |   / _ \/ _` | |_  | |\/| |\ \ / / |
 | |__|  __/ (_| |  _| | |  | | \ V /| |___
-|_____\___|\__,_|_|   |_|  |_|  \_/  \____|\n"));
+|_____\___|\__,_|_|   |_|  |_|  \_/  \____|\n</comment>");
 
         $maxPortsToCheck = 50;
         $portsChecked = 0;
@@ -62,7 +57,7 @@ class ServeCommand extends Command
 
             if ($socket) {
                 fclose($socket);
-                $this->writeln(asInfo(" > ") . "Port {$this->port} is already in use, trying port " . ($this->port + 1) . '...');
+                $this->writeln("<info> > </info>Port {$this->port} is already in use, trying port " . ($this->port + 1) . '...');
                 $this->port++;
             } else {
                 break;
@@ -84,18 +79,18 @@ class ServeCommand extends Command
         }
 
         if ($useConcurrent && !$this->hasInternetConnection()) {
-            $this->writeln(asInfo(' > ') . 'No internet connection detected. Falling back to simple server mode.');
+            $this->writeln("<info> > </info>No internet connection detected. Falling back to simple server mode.");
 
             if ($viteDetected) {
-                $this->writeln(asInfo(' > ') . 'Vite detected → remember to start the Vite server separately with "npm run dev"');
+                $this->writeln("<info> > </info>Vite detected → remember to start the Vite server separately with \"npm run dev\"");
             }
 
             if ($redisDetected) {
-                $this->writeln(asInfo(' > ') . 'Redis detected → remember to start your Redis server separately');
+                $this->writeln("<info> > </info>Redis detected → remember to start your Redis server separately");
             }
 
             if ($jobsDetected) {
-                $this->writeln(asInfo(' > ') . 'Jobs detected → remember to start your queue workers separately with "php leaf queue:work"');
+                $this->writeln("<info> > </info>Jobs detected → remember to start your queue workers separately with \"php leaf queue:work\"");
             }
 
             $useConcurrent = false;
@@ -112,7 +107,7 @@ class ServeCommand extends Command
             ];
 
             if ($viteDetected) {
-                $this->writeln(asInfo(' > ') . 'Vite detected → starting Vite server concurrently');
+                $this->writeln("<info> > </info>Vite detected → starting Vite server concurrently");
                 $commands['#bd34fe'] = ['Vite', $this->buildNpmRunCommand('dev')];
             }
 
@@ -121,7 +116,7 @@ class ServeCommand extends Command
                 $redisPort = _env('REDIS_PORT', 6379);
 
                 if (strpos($redisHost, 'tls://') !== false || strpos($redisHost, 'rediss://') !== false) {
-                    $this->writeln(asInfo(' > ') . 'Managed Redis detected (TLS) → skipping embedded server startup');
+                    $this->writeln("<info> > </info>Managed Redis detected (TLS) → skipping embedded server startup");
                 } else {
                     $redisPingCommand = $this->isWindows() ?
                         "redis-cli -h $redisHost -p $redisPort ping 2>nul" :
@@ -130,9 +125,9 @@ class ServeCommand extends Command
                     exec($redisPingCommand, $output, $status);
 
                     if ($status === 0 && isset($output[0]) && $output[0] === 'PONG') {
-                        $this->writeln(asInfo(' > ') . "Redis detected at $redisHost:$redisPort → already running, skipping embedded server startup");
+                        $this->writeln("<info> > </info>Redis detected at $redisHost:$redisPort → already running, skipping embedded server startup");
                     } else {
-                        $this->writeln(asInfo(' > ') . "Redis detected (local) → starting embedded Redis server");
+                        $this->writeln("<info> > </info>Redis detected (local) → starting embedded Redis server");
 
                         \Leaf\FS\Directory::create(getcwd() . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'database');
                         $commands['#ff4438'] = ['Redis', '"redis-server --dir storage' . DIRECTORY_SEPARATOR . 'database"'];
@@ -141,7 +136,7 @@ class ServeCommand extends Command
             }
 
             if ($jobsDetected) {
-                $this->writeln(asInfo(' > ') . 'Jobs detected → starting queue workers concurrently');
+                $this->writeln("<info> > </info>Jobs detected → starting queue workers concurrently");
                 $commands['#f9c851'] = ['Workers', '"php leaf queue:work"'];
             }
 
@@ -155,10 +150,9 @@ class ServeCommand extends Command
                 return $cmd[1];
             }, $commands);
 
-            \Aloe\Core::run(
-                "npx concurrently -c \"$colors\" " . implode(' ', $commandsToRun) . " --names=" . implode(',', $commandNames) . " --colors",
-                $this->output()
-            );
+            sprout()
+                ->process("npx concurrently -c \"$colors\" " . implode(' ', $commandsToRun) . " --names=" . implode(',', $commandNames) . " --colors")
+                ->run();
         } else {
             $this->info("\nHappy gardening 🍁\n");
 
@@ -187,6 +181,7 @@ class ServeCommand extends Command
         return false;
     }
 
+
     /**
      * Check if running on Windows
      */
@@ -202,9 +197,9 @@ class ServeCommand extends Command
     {
         if ($this->isWindows()) {
             return "php -S {$this->host}:{$this->port} -t " . escapeshellarg($this->path);
-        } else {
-            return "php -S {$this->host}:{$this->port} -t \"{$this->path}\"";
         }
+
+        return "php -S {$this->host}:{$this->port} -t \"{$this->path}\"";
     }
 
     /**
@@ -216,9 +211,9 @@ class ServeCommand extends Command
 
         if ($this->isWindows()) {
             return "npx @leafphp/watcher --watch .env --exec " . escapeshellarg($phpCommand);
-        } else {
-            return "\"npx @leafphp/watcher --watch .env --exec \\\"$phpCommand\\\"\"";
         }
+
+        return "\"npx @leafphp/watcher --watch .env --exec \\\"$phpCommand\\\"\"";
     }
 
     /**
@@ -228,8 +223,8 @@ class ServeCommand extends Command
     {
         if ($this->isWindows()) {
             return "npm run $script";
-        } else {
-            return "\"npm run $script\"";
         }
+
+        return "\"npm run $script\"";
     }
 }

@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace Aloe\Command;
 
-class KeyGenerateCommand extends \Aloe\Command
-{
-    protected static $defaultName = 'key:generate';
+use Leaf\Sprout\Command;
 
-    protected function configure()
-    {
-        $this
-            ->setHelp('Generate/Regenerate your app key')
-            ->setDescription('Generate/Regenerate your app key');
-    }
+class KeyGenerateCommand extends Command
+{
+    protected $signature = 'key:generate';
+    protected $description = 'Generate/Regenerate your app key';
+    protected $help = 'Generate/Regenerate your app key';
 
     protected function generateKey()
     {
@@ -22,9 +19,7 @@ class KeyGenerateCommand extends \Aloe\Command
 
     protected function handle(): int
     {
-        $directory = getcwd();
-
-        \Leaf\FS\File::write("$directory/.env", function ($env) {
+        \Leaf\FS\File::write(getcwd() . '/.env', function ($env) {
             if (strpos($env, 'APP_KEY') !== false) {
                 $this->info('APP_KEY already exists. Regenerating APP_KEY');
                 $env = preg_replace('/APP_KEY=(.*)/', "APP_KEY={$this->generateKey()}", $env);

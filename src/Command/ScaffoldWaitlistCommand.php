@@ -3,18 +3,14 @@
 namespace Aloe\Command;
 
 use Aloe\Installer;
+use Leaf\Sprout\Command;
 
-class ScaffoldWaitlistCommand extends \Aloe\Command
+class ScaffoldWaitlistCommand extends Command
 {
-    protected static $defaultName = 'scaffold:waitlist';
-    public $description = 'Scaffold waitlist for your app';
-    public $help = 'Create basic views, components and assets for your waitlist';
-
-    protected function config()
-    {
-        $this
-            ->setOption('scaffold', 's', 'optional', 'Which scaffold to use for authentication (default/react/vue/svelte)', 'default');
-    }
+    protected $signature = 'scaffold:waitlist
+        {--s|scaffold=default : Which scaffold to use for authentication (default/react/vue/svelte)}';
+    protected $description = 'Scaffold waitlist for your app';
+    protected $help = 'Create basic views, components and assets for your waitlist';
 
     protected function handle()
     {
@@ -127,8 +123,8 @@ class ScaffoldWaitlistCommand extends \Aloe\Command
             );
         });
 
-        \Aloe\Core::run('php leaf db:migrate waitlist_emails', $this->output);
-        \Aloe\Core::run('php leaf db:migrate waitlist_invites', $this->output);
+        sprout()->process('php leaf db:migrate waitlist_emails')->run();
+        sprout()->process('php leaf db:migrate waitlist_invites')->run();
 
         $this->info('Waitlist generated successfully.');
 

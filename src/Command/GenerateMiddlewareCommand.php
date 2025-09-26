@@ -2,19 +2,15 @@
 
 namespace Aloe\Command;
 
-use Aloe\Command;
+use Leaf\Sprout\Command;
 use Illuminate\Support\Str;
 
 class GenerateMiddlewareCommand extends Command
 {
-    protected static $defaultName = 'g:middleware';
-    public $description = 'Create a new application middleware';
-    public $help = 'Create a new application middleware';
-
-    protected function config()
-    {
-        $this->setArgument('middleware', 'required', 'middleware name');
-    }
+    protected $signature = 'g:middleware
+        {middleware : The name of the middleware}';
+    protected $description = 'Create a new application middleware';
+    protected $help = 'Create a new application middleware';
 
     protected function handle()
     {
@@ -24,14 +20,14 @@ class GenerateMiddlewareCommand extends Command
             $middleware .= 'Middleware';
         }
 
-        $file = Config::rootpath(AppPaths('middleware') . "/$middleware.php");
+        $middlewareFile = getcwd() . AppPaths('middleware') . "/$middleware.php";
 
-        if (file_exists($file)) {
+        if (file_exists($middlewareFile)) {
             $this->error("$middleware already exists");
             return 1;
         }
 
-        \Leaf\FS\File::create($file, function () use ($middleware) {
+        \Leaf\FS\File::create($middlewareFile, function () use ($middleware) {
             $fileContent = \file_get_contents(__DIR__ . '/stubs/middleware.stub');
             $fileContent = str_replace(
                 'ClassName',
