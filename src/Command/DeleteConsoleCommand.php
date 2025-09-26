@@ -7,8 +7,7 @@ use Illuminate\Support\Str;
 
 class DeleteConsoleCommand extends Command
 {
-    protected $signature = 'd:command
-        {file : The name of the console file}';
+    protected $signature = 'd:command {file : The name of the console file}';
     protected $description = 'Delete a console command';
     protected $help = 'Delete a console command';
 

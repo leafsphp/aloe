@@ -7,8 +7,7 @@ use Illuminate\Support\Str;
 
 class DeleteModelCommand extends Command
 {
-    protected $signature = 'd:model
-        {model : The name of the model}';
+    protected $signature = 'd:model {model : The name of the model}';
     protected $description = 'Delete a model';
     protected $help = 'Delete a model file';
 

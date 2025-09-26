@@ -7,8 +7,7 @@ use Illuminate\Support\Str;
 
 class DeleteControllerCommand extends Command
 {
-    protected $signature = 'd:controller
-        {controller : The name of the controller}';
+    protected $signature = 'd:controller {controller : The name of the controller}';
     protected $description = 'Delete a controller';
     protected $help = 'Delete a controller';
 

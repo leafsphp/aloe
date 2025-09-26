@@ -7,8 +7,7 @@ use Illuminate\Support\Str;
 
 class GenerateMailerCommand extends Command
 {
-    protected $signature = 'g:mailer
-        {mailer : The name of the mailer}';
+    protected $signature = 'g:mailer {mailer : The name of the mailer}';
     protected $description = 'Create a new mailer';
     protected $help = 'Create a new mailer';
 

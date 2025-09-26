@@ -7,8 +7,7 @@ use Illuminate\Support\Str;
 
 class GenerateConsoleCommand extends Command
 {
-    protected $signature = 'g:command
-        {consoleCommand : The name of the console command}';
+    protected $signature = 'g:command {consoleCommand : The name of the console command}';
     protected $description = 'Create a new console command';
     protected $help = 'Create a custom aloe cli command';
 

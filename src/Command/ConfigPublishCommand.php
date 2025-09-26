@@ -6,8 +6,7 @@ use Leaf\Sprout\Command;
 
 class ConfigPublishCommand extends Command
 {
-    protected $signature = 'config:publish
-        {config? : Config file to publish}';
+    protected $signature = 'config:publish {config? : Config file to publish}';
     protected $description = 'Publish config files to your project';
     protected $help = 'Publish config files to your project';
 

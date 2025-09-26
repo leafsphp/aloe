@@ -7,8 +7,7 @@ use Illuminate\Support\Str;
 
 class GenerateHelperCommand extends Command
 {
-    protected static $defaultName = 'g:helper
-        {helper : The name of the helper}';
+    protected $signature = 'g:helper {helper : The name of the helper}';
     protected $description = 'Create a new helper class';
     protected $help = 'Create a new helper class';
 
