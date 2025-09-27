@@ -42,9 +42,7 @@ class GenerateControllerCommand extends Command
 
         $this->generateController($controllerFile, $controller, $modelName);
 
-        $this->generateExtraFiles($modelName);
-
-        return 0;
+        return $this->generateExtraFiles($modelName);
     }
 
     protected function generateController($controllerFile, $controller, $modelName)

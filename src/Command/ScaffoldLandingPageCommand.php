@@ -2,7 +2,6 @@
 
 namespace Aloe\Command;
 
-use Aloe\Installer;
 use Leaf\Sprout\Command;
 
 class ScaffoldLandingPageCommand extends Command
@@ -37,11 +36,15 @@ class ScaffoldLandingPageCommand extends Command
         $this->comment("Scaffolding landing page using $scaffold scaffold...");
 
         if ($scaffold === 'default') {
-            Installer::installPackages('zero');
+            sprout()->composer()->install('leafs/zero');
             $this->writeln(shell_exec('php leaf view:install --tailwind'));
         }
 
-        Installer::magicCopy(__DIR__ . '/themes/landing-page/' . $scaffold);
+        \Leaf\FS\Directory::copy(
+            __DIR__ . '/themes/landing-page/' . $scaffold,
+            getcwd(),
+            ['recursive' => true]
+        );
 
         if (\Leaf\FS\File::exists("$directory/app/views/js/pages/welcome.jsx")) {
             \Leaf\FS\File::delete("$directory/app/views/js/pages/welcome.jsx");

@@ -2,7 +2,6 @@
 
 namespace Aloe\Command;
 
-use Aloe\Installer;
 use Leaf\Sprout\Command;
 
 class ScaffoldAuthCommand extends Command
@@ -38,8 +37,16 @@ class ScaffoldAuthCommand extends Command
 
         $this->comment("Installing leaf auth using $scaffold scaffold...");
 
-        Installer::installPackages('auth');
-        Installer::magicCopy(__DIR__ . '/themes/auth/' . $scaffold);
+        if (!sprout()->composer()->install('leafs/auth')) {
+            $this->error('Failed to install Leafs Auth package. Please run "composer require leafs/auth" manually.');
+            return 1;
+        }
+
+        \Leaf\FS\Directory::copy(
+            __DIR__ . '/themes/auth/' . $scaffold,
+            getcwd(),
+            ['recursive' => true]
+        );
 
         if (\Leaf\FS\File::exists("$directory/app/views/js/pages/welcome.jsx")) {
             sprout()->npm()->install("class-variance-authority clsx tailwind-merge lucide-react @radix-ui/react-separator @radix-ui/react-tooltip @radix-ui/react-dialog @radix-ui/react-avatar @radix-ui/react-dropdown-menu @radix-ui/react-navigation-menu");

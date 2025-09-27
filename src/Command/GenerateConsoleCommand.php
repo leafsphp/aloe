@@ -15,7 +15,7 @@ class GenerateConsoleCommand extends Command
     {
         list($commandName, $className) = $this->mapNames($this->argument('consoleCommand'));
 
-        $commandFile = getcwd() . CommandsPath("$className.php");
+        $commandFile = getcwd() . DIRECTORY_SEPARATOR . CommandsPath("$className.php");
 
         if (file_exists($commandFile)) {
             $this->error("$className already exists!");

@@ -2,7 +2,6 @@
 
 namespace Aloe\Command;
 
-use Aloe\Installer;
 use Leaf\Sprout\Command;
 
 class ScaffoldWaitlistCommand extends Command
@@ -36,7 +35,11 @@ class ScaffoldWaitlistCommand extends Command
 
         $this->comment("Scaffolding Waitlist using $scaffold scaffold...");
 
-        Installer::magicCopy(__DIR__ . '/themes/waitlist/' . $scaffold);
+        \Leaf\FS\Directory::copy(
+            __DIR__ . '/themes/waitlist/' . $scaffold,
+            getcwd(),
+            ['recursive' => true]
+        );
 
         if (\Leaf\FS\File::exists("$directory/app/views/js/pages/welcome.jsx")) {
             \Leaf\FS\File::delete("$directory/app/views/js/pages/welcome.jsx");

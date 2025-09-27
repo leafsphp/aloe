@@ -2,7 +2,6 @@
 
 namespace Aloe\Command;
 
-use Aloe\Installer;
 use Leaf\Sprout\Command;
 
 class ScaffoldMailCommand extends Command
@@ -14,10 +13,16 @@ class ScaffoldMailCommand extends Command
     protected function handle()
     {
         $this->comment('Installing leaf mail...');
+
         sprout()->composer()->install('leafs/mail');
 
         $this->comment('Setting up leaf mail...');
-        Installer::magicCopy(dirname(__DIR__) . '/themes/mail');
+
+        \Leaf\FS\Directory::copy(
+            __DIR__ . '/themes/mail',
+            getcwd(),
+            ['recursive' => true]
+        );
 
         $this->info('Leaf mail installed successfully!');
 

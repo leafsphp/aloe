@@ -2,7 +2,6 @@
 
 namespace Aloe\Command;
 
-use Aloe\Installer;
 use Leaf\Sprout\Command;
 
 class ScaffoldShadcnCommand extends Command
@@ -15,7 +14,11 @@ class ScaffoldShadcnCommand extends Command
     {
         $this->comment("Scaffolding Shadcn support files...");
 
-        Installer::magicCopy(__DIR__ . '/themes/shadcn');
+        \Leaf\FS\Directory::copy(
+            __DIR__ . '/themes/shadcn',
+            getcwd(),
+            ['recursive' => true]
+        );
 
         $this->info('Shadcn files generated successfully.');
 
