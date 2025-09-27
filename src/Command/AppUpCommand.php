@@ -7,7 +7,7 @@ use Leaf\Sprout\Command;
 class AppUpCommand extends Command
 {
     protected $signature = 'app:up';
-    protected $description = 'Remove app from maintainance mode';
+    protected $description = 'Remove app from maintenance mode';
     protected $help = 'Set app in normal mode';
 
     protected function handle()

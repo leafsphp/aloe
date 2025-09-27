@@ -14,7 +14,7 @@ class EnvSetCommand extends Command
 
     protected function handle()
     {
-        if (!file_exists(Config::rootpath('.env'))) {
+        if (!file_exists(getcwd() . '/.env')) {
             $this->comment('No .env file found. Generating one...');
 
             if (sprout()->process('php leaf env:generate')->run() !== 0) {

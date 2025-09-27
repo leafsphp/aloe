@@ -7,8 +7,8 @@ use Leaf\Sprout\Command;
 class AppDownCommand extends Command
 {
     protected $signature = 'app:down';
-    protected $description = 'Place app in maintainance mode';
-    protected $help = 'Set app in maintainance mode';
+    protected $description = 'Place app in maintenance mode';
+    protected $help = 'Set app in maintenance mode';
 
     protected function handle()
     {

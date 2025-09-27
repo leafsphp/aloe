@@ -95,7 +95,7 @@ class GenerateControllerCommand extends Command
                 '<error>Couldn\'t generate files</error>'
             );
 
-            if (Config::$env === 'WEB') {
+            if (\Leaf\Core::mode() === 'web') {
                 $process = sprout()->process("php leaf g:template $modelName")->run();
 
                 $this->comment(
