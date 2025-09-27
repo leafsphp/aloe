@@ -2,24 +2,15 @@
 
 namespace App\Console;
 
-use Aloe\Command;
+use Leaf\Sprout\Command;
 
 class ClassName extends Command
 {
-    protected static $defaultName = 'CommandName';
-    public $description = 'CommandName command\'s description';
-    public $help = 'CommandName command\'s help';
-
-    /**
-     * Configure your command
-     */
-    protected function config()
-    {
-        // you can add arguments and options in the config method
-        $this
-            ->setArgument('argument', 'optional', 'argument description')
-            ->setOption('option', 'o', 'required', 'option description');
-    }
+    protected $signature = 'CommandName
+        {argument? : argument description}
+        {--o|option? : option description}';
+    protected $description = 'CommandName command\'s description';
+    protected $help = 'CommandName command\'s help';
 
     /**
      * Main body for your command
