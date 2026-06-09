@@ -71,8 +71,8 @@ class Console
             \Aloe\Command\ViewDevCommand::class,
             \Aloe\Command\ViewInstallCommand::class,
 
-            // Symbolic link command
-            \Aloe\Command\LinkCommand::class,
+            // Create Storage Symbolic link command
+            \Aloe\Command\StorageLinkCommand::class,
 
             // Scaffold Commands
             \Aloe\Command\ScaffoldAuthCommand::class,
